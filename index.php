@@ -17,6 +17,7 @@
 <html lang="en">
 
 <!-- Including Header -->
+<?php include './includes/code.login.php' ?>
 <?php include './partials/head.php' ?>
 
 <body class="">
