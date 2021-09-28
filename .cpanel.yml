@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/engroup/ofs.e-n-group.com
+    - /bin/cp * $DEPLOYPATH
