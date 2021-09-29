@@ -8,6 +8,7 @@ $email    = "";
 $password = "";
 $errors   = array();
 
+
 if (isset($_SESSION['name'])) {
    header('location: index.php');
    exit();
