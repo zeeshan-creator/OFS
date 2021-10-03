@@ -18,7 +18,7 @@
 ob_start();
 session_start();
 
-if (isset($_SESSION['name']) == null) {
+if (is_null(isset($_SESSION["id"]))) {
   header("Location: login");
   exit();
 }
