@@ -13,7 +13,6 @@ $errors   = array();
 
 if (isset($_SESSION['name'])) {
    header("Location: index");
-
    exit();
 }
 
