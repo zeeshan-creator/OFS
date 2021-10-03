@@ -19,7 +19,9 @@ ob_start();
 session_start();
 
 if (!isset($_SESSION['name'])) {
-  header('location: login');
+  echo '<script type="text/javascript">
+           window.location = "login"
+      </script>';
   exit();
 }
 
