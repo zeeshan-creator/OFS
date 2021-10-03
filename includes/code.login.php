@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 require('./config/db.php');
 
 session_start();
@@ -55,5 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }
    }
 }
+ob_end_flush();
 
 // ...

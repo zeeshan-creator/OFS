@@ -1,7 +1,5 @@
 <?php
-ob_start();
 include("./includes/code.login.php");
-ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html lang="en">
