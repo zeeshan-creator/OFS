@@ -1,9 +1,9 @@
 <?php
 ob_start();
+session_start();
 
 require('./config/db.php');
 
-session_start();
 
 // initializing variables
 $email    = "";
