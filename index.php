@@ -18,11 +18,10 @@
 ob_start();
 session_start();
 
-if (is_null(isset($_SESSION["id"]))) {
+if (!isset($_SESSION['name'])) {
   header("Location: login");
   exit();
 }
-
 
 ob_end_flush();
 ?>
