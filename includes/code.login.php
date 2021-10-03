@@ -10,7 +10,9 @@ $errors   = array();
 
 
 if (isset($_SESSION['name'])) {
-   header('location: index');
+   echo '<script type="text/javascript">
+           window.location = "index"
+      </script>';
    exit();
 }
 
