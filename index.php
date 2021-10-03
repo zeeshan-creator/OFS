@@ -13,11 +13,22 @@
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+
+<?php session_start();
+
+if (!isset($_SESSION['name'])) {
+  header('location: login');
+  exit();
+}
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <!-- Including Header -->
-<?php include './apis/api.login.php' ?>
 <?php include './partials/head.php' ?>
 
 <body class="">

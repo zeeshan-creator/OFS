@@ -8,7 +8,17 @@
            <span class="navbar-toggler-bar bar3"></span>
          </button>
        </div>
-       <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+       <a class="navbar-brand" href="#">
+         <span class="" style="opacity: .5;">
+           USER :
+         </span>
+         <?php
+          if (isset($_SESSION['name'])) {
+            echo $_SESSION['name'];
+          }
+          ?>
+
+       </a>
      </div>
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
        <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -18,18 +28,18 @@
      <div class="collapse navbar-collapse" id="navigation">
        <ul class="navbar-nav ml-auto">
          <li class="search-bar input-group">
-           <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="tim-icons icon-zoom-split"></i>
+           <!-- <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="tim-icons icon-zoom-split"></i>
              <span class="d-lg-none d-md-block">Search</span>
-           </button>
+           </button> -->
          </li>
          <li class="dropdown nav-item">
-           <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+           <!-- <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
              <div class="notification d-none d-lg-block d-xl-block"></div>
              <i class="tim-icons icon-sound-wave"></i>
              <p class="d-lg-none">
                Notifications
              </p>
-           </a>
+           </a> -->
            <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
              <li class="nav-link"><a href="#" class="nav-item dropdown-item">Mike John responded to your email</a></li>
              <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">You have 5 more tasks</a></li>
@@ -38,6 +48,7 @@
              <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another one</a></li>
            </ul>
          </li>
+
          <li class="dropdown nav-item">
            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
              <div class="photo">
@@ -49,10 +60,10 @@
              </p>
            </a>
            <ul class="dropdown-menu dropdown-navbar">
-             <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Profile</a></li>
+             <li class="nav-link"><a href="#" class="nav-item dropdown-item">Profile</a></li>
              <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Settings</a></li>
              <li class="dropdown-divider"></li>
-             <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Log out</a></li>
+             <li class="nav-link"><a href="logout" class="nav-item dropdown-item">Logout</a></li>
            </ul>
          </li>
          <li class="separator d-lg-none"></li>
