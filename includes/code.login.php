@@ -6,8 +6,8 @@ require('./config/db.php');
 
 
 // initializing variables
-$email    = "";
-$password = "";
+$email;
+$password;
 $errors   = array();
 
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    }
 
    // $password = md5($password);
-   $query = "SELECT * FROM admin WHERE email='$email'";
+   $query = "SELECT * FROM admin WHERE email='$email' limit 1";
    $results = mysqli_query($conn, $query);
 
    if (mysqli_num_rows($results) == 1) {
@@ -38,7 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          array_push($errors, "Password is Wrong");
       }
    } else {
-      array_push($errors, "Your Email Does Not Exist");
+      if (!empty($email) && !empty($password)) {
+         array_push($errors, "Your Email Does Not Exist");
+      }
    }
 
    if (count($errors) == 0) {

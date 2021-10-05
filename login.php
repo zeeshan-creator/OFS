@@ -9,11 +9,12 @@ include("./includes/code.login.php");
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Login Page 2</title>
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
    <style>
       body {
@@ -158,19 +159,7 @@ include("./includes/code.login.php");
                      </div>
 
                      <!-- 2 column grid layout for inline styling -->
-                     <div class="row mb-4">
-                        <div class="col d-flex justify-content-center">
-                           <!-- Checkbox -->
-                           <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
-                              <label class="form-check-label" for="form1Example3"> Remember me </label>
-                           </div>
-                           <div class="foP">
-                              <a href="#">Forgot password?</a>
-                           </div>
-                        </div>
-                     </div>
-
+                     <br>
                      <!-- Submit button -->
                      <button type="submit" class="btn btn-outline-primary btn-block mb-5">Log in</button>
                   </form>
