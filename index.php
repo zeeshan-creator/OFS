@@ -1,27 +1,8 @@
-<!--
-=========================================================
-* * Black Dashboard - v1.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
-
 <?php
 ob_start();
 session_start();
 
-if (!isset($_SESSION['name'])) {
-  header("Location: login");
-  exit();
-}
+include './auth/login_auth.php';
 
 ob_end_flush();
 ?>
