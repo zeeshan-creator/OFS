@@ -149,13 +149,13 @@ include("./includes/code.login.php");
                      <!-- Email input -->
                      <div class="form-outline mb-4">
                         <label class="form-label" for="form1Example1">Email address</label>
-                        <input type="email" name="email" id="form1Example1" class="form-control" />
+                        <input type="email" name="email" id="form1Example1" class="form-control" required />
                      </div>
 
                      <!-- Password input -->
                      <div class="form-outline mb-4">
                         <label class="form-label" for="form1Example2">Password</label>
-                        <input type="password" name="password" id="form1Example2" class="form-control" />
+                        <input type="password" name="password" id="form1Example2" class="form-control" required />
                      </div>
 
                      <!-- 2 column grid layout for inline styling -->
