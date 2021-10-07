@@ -36,7 +36,7 @@ ob_end_flush();
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
   <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
-  <style>
+  <!-- <style>
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -48,6 +48,6 @@ ob_end_flush();
     input[type=number] {
       -moz-appearance: textfield;
     }
-  </style>
+  </style> -->
 
 </head>
