@@ -1,4 +1,4 @@
- <footer class="footer">
+ <!-- <footer class="footer">
    <div class="container-fluid">
      <ul class="nav">
        <li class="nav-item">
@@ -25,8 +25,8 @@
        <a href="#" target="_blank">Creative Tim</a> for a better web.
      </div>
    </div>
- </footer>
-
+ </footer> -->
+ <!-- 
  <div class="fixed-plugin">
    <div class="dropdown show-dropdown">
      <a href="#" data-toggle="dropdown">
@@ -67,10 +67,9 @@
        </li>
      </ul>
    </div>
- </div>
+ </div> -->
 
  <!--   Core JS Files   -->
- <script src="./assets/js/core/jquery.min.js"></script>
  <script src="./assets/js/core/popper.min.js"></script>
  <script src="./assets/js/core/bootstrap.min.js"></script>
  <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>

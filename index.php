@@ -1,12 +1,3 @@
-<?php
-ob_start();
-session_start();
-
-include './auth/login_auth.php';
-
-ob_end_flush();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
