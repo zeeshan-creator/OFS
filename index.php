@@ -1,3 +1,6 @@
+<?php ob_start(); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -392,6 +395,7 @@
 
       <!-- Including footer -->
       <?php include './partials/footer.php' ?>
+      <?php ob_end_flush(); ?>
 
     </div>
   </div>
