@@ -1,5 +1,5 @@
 <?php
-include("./includes/code.fetchBranches.php");
+include("./includes/branches/code.fetchBranches.php");
 ?>
 
 <!DOCTYPE html>
@@ -79,12 +79,12 @@ include("./includes/code.fetchBranches.php");
               <td>" . $row['role'] . "</td>
               <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
-                <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
+               <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-single-02'></i>
-                </button>
-                <button type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                </button> -->
+                <a href='update.branches?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
-                </button>
+                </a>
                 <button type='button' rel='tooltip' title='Delete' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-simple-remove'></i>
                 </button>

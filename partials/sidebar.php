@@ -27,7 +27,7 @@
         echo $activeNav;
         ?>
       ">
-        <a href="./index">
+        <a href="index">
           <i class="tim-icons icon-chart-pie-36"></i>
           <p>Dashboard</p>
         </a>
@@ -37,7 +37,7 @@
         echo $activeNav;
         ?>
       ">
-        <a href="./allbranches">
+        <a href="allbranches">
           <i class="tim-icons icon-chart-pie-36"></i>
           <p>Branches</p>
         </a>
