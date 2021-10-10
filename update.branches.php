@@ -4,7 +4,7 @@ if (!isset($_GET['id'])) {
    ob_start();
    if (!isset($_SESSION['name'])) {
       // header("Location: allbranches");
-      echo 'window.location.href = "allbranches";';
+      echo '<script>window.location.href = "allbranches";</script>';
       exit();
    }
 }
@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
    } else {
       // URL doesn't contain valid id. Redirect to allbranches
       // header("location: allbranches");
-      echo 'window.location.href = "allbranches";';
+      echo '<script>window.location.href = "allbranches";</script>';
       exit();
    }
 }

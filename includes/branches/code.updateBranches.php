@@ -65,7 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
-         header('location: allbranches');
+         // header('location: allbranches');
+         echo '<script>window.location.href = "allbranches";</script>';
          exit();
       }
    }
