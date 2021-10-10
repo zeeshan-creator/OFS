@@ -4,7 +4,7 @@ if (!isset($_GET['id'])) {
    ob_start();
    if (!isset($_SESSION['name'])) {
       // header("Location: allbranches");
-      echo '<script>window.location.href = "allbranches";</script>';
+      echo '<script>window.location.href = "login";</script>';
       exit();
    }
 }

@@ -18,7 +18,6 @@ include("./includes/branches/code.fetchBranches.php");
     color: white !important;
   }
 
-
   #branches_paginate span a,
   #branches_length select option {
     color: black !important;
