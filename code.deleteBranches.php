@@ -1,6 +1,6 @@
 <?php
 ob_start();
-// include './auth/login_auth.php';
+include './auth/login_auth.php';
 
 require('./config/db.php');
 
