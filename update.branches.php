@@ -3,7 +3,8 @@ include("./includes/branches/code.updateBranches.php");
 if (!isset($_GET['id'])) {
    ob_start();
    if (!isset($_SESSION['name'])) {
-      header("Location: allbranches");
+      // header("Location: allbranches");
+      echo 'window.location.href = "allbranches";';
       exit();
    }
 }
