@@ -38,6 +38,10 @@ ob_end_flush();
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
   <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
+  <!-- Sweet Alert Script & CSS Links -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
+
   <style>
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,

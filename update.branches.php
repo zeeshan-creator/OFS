@@ -131,6 +131,7 @@ ob_end_flush();
                            </div>
                         </div>
                         <button class="btn btn-primary float-right" type="submit">Submit form</button>
+                        <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
                   </div>
 
                   </form>
@@ -154,6 +155,11 @@ ob_end_flush();
                            });
                         }, false);
                      })();
+
+                     // GO BACK 
+                     function goBack() {
+                        window.history.back();
+                     }
                   </script>
                </div>
             </div>

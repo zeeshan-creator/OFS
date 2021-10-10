@@ -85,7 +85,8 @@ include("./includes/branches/code.fetchBranches.php");
                 <a href='update.branches?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
                 </a>
-                <button type='button' rel='tooltip' title='Delete' class='btn btn-danger btn-link btn-icon btn-sm'>
+                <button type='button' rel='tooltip' id='delete-branch' title='Delete'
+                s onclick='deleteBranch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-simple-remove'></i>
                 </button>
               </td>
@@ -110,6 +111,43 @@ include("./includes/branches/code.fetchBranches.php");
         ]
       });
     });
+
+    function deleteBranch(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function() {
+          return new Promise(function(resolve) {
+            $.ajax({
+                url: 'code.deleteBranches',
+                type: 'POST',
+                data: {
+                  branchId: id
+                },
+              })
+              .done(function(response) {
+                if (response == 1) {
+                  Swal.fire('Deleted!', "Records deleted", "success");
+                  location.reload();
+                } else {
+                  Swal.fire('INVALID ID!', "Something went wrong", "error");
+                }
+                location.reload();
+              })
+              .fail(function() {
+                swal('Oops...', 'Something went wrong with ajax !', 'error');
+              });
+          });
+        },
+        allowOutsideClick: false
+      });
+    }
   </script>
 </body>
 
