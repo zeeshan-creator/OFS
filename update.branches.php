@@ -25,7 +25,8 @@ if (isset($_GET['id'])) {
       $active_status = $row["active_status"];
    } else {
       // URL doesn't contain valid id. Redirect to allbranches
-      header("location: allbranches");
+      // header("location: allbranches");
+      echo 'window.location.href = "allbranches";';
       exit();
    }
 }
