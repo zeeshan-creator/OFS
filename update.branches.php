@@ -1,6 +1,8 @@
 <?php
 
 include './auth/login_auth.php';
+include './auth/admin_auth.php';
+
 
 include("./includes/branches/code.updateBranches.php");
 if (!isset($_GET['id'])) {

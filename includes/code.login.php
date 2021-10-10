@@ -28,32 +28,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       array_push($errors, "Password is required");
    }
 
-   // $password = md5($password);
    $query = "SELECT * FROM admin WHERE email='$email' limit 1";
-   $results = mysqli_query($conn, $query);
+   $adminResults = mysqli_query($conn, $query);
 
-   if (mysqli_num_rows($results) == 1) {
-      $row = mysqli_fetch_assoc($results);
+   if (mysqli_num_rows($adminResults) == 1) {
+      $row = mysqli_fetch_assoc($adminResults);
       if ($row["password"] !== $password) {
          array_push($errors, "Password is Wrong");
       }
+      if ($row["password"] == $password) {
+         if ($row["active_status"] !== "active") {
+            array_push($errors, "Your Account is Not Inactive Please Contact the administration");
+         }
+      }
+
+      if (count($errors) == 0) {
+         $query = "SELECT * FROM admin WHERE email='$email'";
+         $results = mysqli_query($conn, $query);
+         if (mysqli_num_rows($results) == 1) {
+            $row = mysqli_fetch_assoc($results);
+            $_SESSION['name'] = $row["name"];
+            $_SESSION['role'] = $row["role"];
+            header('location: index');
+            exit();
+         } else {
+            array_push($errors, "Wrong email/password combination");
+         }
+      }
    } else {
-      if (!empty($email) && !empty($password)) {
-         array_push($errors, "Your Email Does Not Exist");
+      $query = "SELECT * FROM branches WHERE email='$email' limit 1";
+      $bracnhResults = mysqli_query($conn, $query);
+
+      if (mysqli_num_rows($bracnhResults) == 1) {
+         $row = mysqli_fetch_assoc($bracnhResults);
+         if ($row["password"] !== $password) {
+            array_push($errors, "Password is Wrong");
+         }
+         if ($row["password"] == $password) {
+            if ($row["active_status"] !== "active") {
+               array_push($errors, "Your Account is Not Inactive Please Contact the administration");
+            }
+         }
+         if (count($errors) == 0) {
+            $query = "SELECT * FROM branches WHERE email='$email'";
+            $results = mysqli_query($conn, $query);
+            if (mysqli_num_rows($results) == 1) {
+               $row = mysqli_fetch_assoc($results);
+               $_SESSION['name'] = $row["name"];
+               $_SESSION['role'] = $row["role"];
+               header('location: index');
+               exit();
+            } else {
+               array_push($errors, "Wrong email/password combination");
+            }
+         }
       }
    }
-
    if (count($errors) == 0) {
-      // $password = md5($password);
-      $query = "SELECT * FROM admin WHERE email='$email'";
-      $results = mysqli_query($conn, $query);
-      if (mysqli_num_rows($results) == 1) {
-         $row = mysqli_fetch_assoc($results);
-         $_SESSION['name'] = $row["name"];
-         header('location: index');
-         exit();
-      } else {
-         array_push($errors, "Wrong email/password combination");
+      if (!empty($email) && !empty($password)) {
+         array_push($errors, "Your Email Does Not Exist");
       }
    }
 }

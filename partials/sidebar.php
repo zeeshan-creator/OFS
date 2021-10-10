@@ -1,17 +1,4 @@
 <div class="sidebar">
-  <script>
-    $(document).ready(function() {
-      $().ready(function() {
-        $navLi = $('li');
-
-        $('li').click(function() {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
-        })
-
-      })
-    });
-  </script>
   <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
     -->
@@ -22,26 +9,23 @@
       </a>
     </div>
     <ul class="nav">
-      <li class="
-        <?php
-        echo $activeNav;
-        ?>
-      ">
+      <li class="">
         <a href="index">
           <i class="tim-icons icon-chart-pie-36"></i>
           <p>Dashboard</p>
         </a>
       </li>
-      <li class="
-        <?php
-        echo $activeNav;
-        ?>
-      ">
+      <?php
+      if ($_SESSION['role'] == 'admin') {
+        echo '<li class="">
         <a href="allbranches">
           <i class="tim-icons icon-chart-pie-36"></i>
           <p>Branches</p>
         </a>
-      </li>
+      </li>';
+      }
+      ?>
+
     </ul>
   </div>
 </div>
