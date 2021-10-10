@@ -1,4 +1,7 @@
 <?php
+
+include './auth/login_auth.php';
+
 include("./includes/branches/code.updateBranches.php");
 if (!isset($_GET['id'])) {
    // if (!isset($_SESSION['name'])) {
