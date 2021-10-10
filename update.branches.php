@@ -24,7 +24,7 @@ if (isset($_GET['id'])) {
       $role = $row["role"];
       $active_status = $row["active_status"];
    } else {
-      // URL doesn't contain valid id. Redirect to error page
+      // URL doesn't contain valid id. Redirect to allbranches
       header("location: allbranches");
       exit();
    }

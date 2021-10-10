@@ -60,9 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "UPDATE `branches` SET `name` = '$branchName',`phone` = '$branchPhone',`email` = '$branchEmail',`password` = '$branchPassword',`role` = '$role',`active_status` = '$active_status' WHERE `branches`.`id` = $branchId";
-
-
+      $query = "UPDATE `branches` SET `name` = '$branchName',`phone` = '$branchPhone',`email` = '$branchEmail',`password` = '$branchPassword',`role` = '$role',`active_status` = '$active_status',`updated_at` = '$date' WHERE `branches`.`id` = $branchId";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 

@@ -1,11 +1,8 @@
 <?php
-ob_start();
-session_start();
 
 include './auth/login_auth.php';
 
-$activeNav = "";
-ob_end_flush();
+// $activeNav = "";
 ?>
 
 <head>
