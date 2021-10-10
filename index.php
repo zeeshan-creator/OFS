@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php ob_start();
+include './auth/login_auth.php';
+
+?>
 
 
 <!DOCTYPE html>
