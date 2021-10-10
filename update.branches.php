@@ -1,11 +1,11 @@
 <?php
 include("./includes/branches/code.updateBranches.php");
 if (!isset($_GET['id'])) {
-   if (!isset($_SESSION['name'])) {
-      // header("Location: allbranches");
-      echo '<script>window.location.href = "login";</script>';
-      exit();
-   }
+   // if (!isset($_SESSION['name'])) {
+   // header("Location: allbranches");
+   echo '<script>window.location.href = "allbranches";</script>';
+   exit();
+   // }
 }
 
 if (isset($_GET['id'])) {
