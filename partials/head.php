@@ -5,6 +5,81 @@
 // $activeNav = "";
 ?>
 
+<style>
+  .sidebar {
+    background:
+      -moz-linear-gradient(-72deg,
+        #dedede,
+        #ffffff 16%,
+        #dedede 21%,
+        #ffffff 24%,
+        #454545 27%,
+        #dedede 36%,
+        #ffffff 45%,
+        #ffffff 60%,
+        #dedede 72%,
+        #ffffff 80%,
+        #dedede 84%,
+        #a1a1a1) !important;
+    background:
+      -webkit-linear-gradient(-72deg,
+        #dedede,
+        #ffffff 16%,
+        #dedede 21%,
+        #ffffff 24%,
+        #454545 27%,
+        #dedede 36%,
+        #ffffff 45%,
+        #ffffff 60%,
+        #dedede 72%,
+        #ffffff 80%,
+        #dedede 84%,
+        #a1a1a1) !important;
+    background:
+      -o-linear-gradient(-72deg,
+        #dedede,
+        #ffffff 16%,
+        #dedede 21%,
+        #ffffff 24%,
+        #454545 27%,
+        #dedede 36%,
+        #ffffff 45%,
+        #ffffff 60%,
+        #dedede 72%,
+        #ffffff 80%,
+        #dedede 84%,
+        #a1a1a1) !important;
+    background:
+      linear-gradient(-72deg,
+        #dedede,
+        #ffffff 16%,
+        #dedede 21%,
+        #ffffff 24%,
+        #454545 27%,
+        #dedede 36%,
+        #ffffff 45%,
+        #ffffff 60%,
+        #dedede 72%,
+        #ffffff 80%,
+        #dedede 84%,
+        #a1a1a1) !important;
+  }
+
+  .sidebar a,
+  .sidebar p,
+  .sidebar i {
+    color: rgba(0, 0, 0, 0.5) !important;
+    text-decoration: none !important;
+    letter-spacing: 0.2em !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 0 #ffffff !important;
+  }
+
+  /* .btn {
+    border: 1px solid #dedede !important;
+  } */
+</style>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

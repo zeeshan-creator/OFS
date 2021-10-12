@@ -4,7 +4,7 @@
     -->
   <div class="sidebar-wrapper">
     <div class="logo">
-      <a href="" class="simple-text logo-normal ml-5">
+      <a class="simple-text logo-normal ml-5">
         Dashboard
       </a>
     </div>
