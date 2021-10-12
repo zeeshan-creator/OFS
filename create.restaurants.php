@@ -2,7 +2,7 @@
 include './auth/login_auth.php';
 include './auth/admin_auth.php';
 
-include("./includes/branches/code.createBranches.php");
+include("./includes/restaurants/code.createrestaurants.php");
 ?>
 
 <!DOCTYPE html>

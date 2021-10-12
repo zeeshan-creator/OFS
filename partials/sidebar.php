@@ -18,9 +18,9 @@
       <?php
       if ($_SESSION['role'] == 'admin') {
         echo '<li class="">
-        <a href="allbranches">
+        <a href="allrestaurants">
           <i class="tim-icons icon-chart-pie-36"></i>
-          <p>Branches</p>
+          <p>restaurants</p>
         </a>
       </li>';
       }

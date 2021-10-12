@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (!empty($branchName)) {
       // first check the database to make sure 
       // a user does not already exist with the same email 
-      $branch_check_query = "SELECT email FROM branches WHERE email='$branchEmail' LIMIT 1";
+      $branch_check_query = "SELECT email FROM restaurants WHERE email='$branchEmail' LIMIT 1";
       $result = mysqli_query($conn, $branch_check_query);
       $branch = mysqli_fetch_assoc($result);
 
@@ -56,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "INSERT INTO `branches` (`name`, `email`, `password`, `phone`, `role`, `login_status`, `active_status`, `created_at`) VALUES ('$branchName', '$branchEmail', '$branchPassword', '$branchPhone', 'main_branch', 'offline', 'active', '$date')";
+      $query = "INSERT INTO `restaurants` (`name`, `email`, `password`, `phone`, `role`, `login_status`, `active_status`, `created_at`) VALUES ('$branchName', '$branchEmail', '$branchPassword', '$branchPhone', 'main_branch', 'offline', 'active', '$date')";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
-         header('location: allbranches');
+         header('location: allrestaurants');
          exit();
       }
    }

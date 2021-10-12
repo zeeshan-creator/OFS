@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (!empty($branchEmail)) {
       // first check the database to make sure 
       // a user does not already exist with the same email 
-      $branch_check_query = "SELECT email,id FROM branches WHERE email='$branchEmail' LIMIT 1";
+      $branch_check_query = "SELECT email,id FROM restaurants WHERE email='$branchEmail' LIMIT 1";
       $result = mysqli_query($conn, $branch_check_query);
       $branch = mysqli_fetch_assoc($result);
 
@@ -60,13 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "UPDATE `branches` SET `name` = '$branchName',`phone` = '$branchPhone',`email` = '$branchEmail',`password` = '$branchPassword',`role` = '$role',`active_status` = '$active_status',`updated_at` = '$date' WHERE `branches`.`id` = $branchId";
+      $query = "UPDATE `restaurants` SET `name` = '$branchName',`phone` = '$branchPhone',`email` = '$branchEmail',`password` = '$branchPassword',`role` = '$role',`active_status` = '$active_status',`updated_at` = '$date' WHERE `restaurants`.`id` = $branchId";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
-         // header('location: allbranches');
-         echo '<script>window.location.href = "allbranches";</script>';
+         // header('location: allrestaurants');
+         echo '<script>window.location.href = "allrestaurants";</script>';
          exit();
       }
    }

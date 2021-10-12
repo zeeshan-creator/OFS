@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          }
       }
    } else {
-      $query = "SELECT * FROM branches WHERE email='$email' limit 1";
+      $query = "SELECT * FROM restaurants WHERE email='$email' limit 1";
       $bracnhResults = mysqli_query($conn, $query);
 
       if (mysqli_num_rows($bracnhResults) == 1) {
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
          }
          if (count($errors) == 0) {
-            $query = "SELECT * FROM branches WHERE email='$email'";
+            $query = "SELECT * FROM restaurants WHERE email='$email'";
             $results = mysqli_query($conn, $query);
             if (mysqli_num_rows($results) == 1) {
                $row = mysqli_fetch_assoc($results);

@@ -2,7 +2,7 @@
 include './auth/login_auth.php';
 include './auth/admin_auth.php';
 
-include("./includes/branches/code.fetchBranches.php");
+include("./includes/restaurants/code.fetchrestaurants.php");
 ?>
 
 <!DOCTYPE html>
@@ -11,18 +11,18 @@ include("./includes/branches/code.fetchBranches.php");
 <!-- Including header -->
 <?php include './partials/head.php' ?>
 <style>
-  #branches_filter,
-  #branches_filter input,
-  #branches_length,
-  #branches_length select,
+  #restaurants_filter,
+  #restaurants_filter input,
+  #restaurants_length,
+  #restaurants_length select,
 
-  #branches_info,
-  #branches_paginate a {
+  #restaurants_info,
+  #restaurants_paginate a {
     color: white !important;
   }
 
-  #branches_paginate span a,
-  #branches_length select option {
+  #restaurants_paginate span a,
+  #restaurants_length select option {
     color: black !important;
   }
 
@@ -48,10 +48,10 @@ include("./includes/branches/code.fetchBranches.php");
       <div class="content">
         <div class="row">
           <div class="col-lg-12">
-            <a href="./create.branches" class="btn btn-primary mb-3">Create Branches</a>
+            <a href="./create.restaurants" class="btn btn-primary mb-3">Create restaurants</a>
           </div>
         </div>
-        <table class="table" id="branches">
+        <table class="table" id="restaurants">
           <thead>
             <tr class="text-center">
               <th>#</th>
@@ -84,7 +84,7 @@ include("./includes/branches/code.fetchBranches.php");
                <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-single-02'></i>
                 </button> -->
-                <a href='update.branches?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                <a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
                 </a>
                 <button type='button' rel='tooltip' id='delete-branch' title='Delete'
@@ -107,7 +107,7 @@ include("./includes/branches/code.fetchBranches.php");
   </div>
   <script>
     $(document).ready(function() {
-      $('#branches').DataTable({
+      $('#restaurants').DataTable({
         "order": [
           [0, "desc"]
         ]
@@ -127,7 +127,7 @@ include("./includes/branches/code.fetchBranches.php");
         preConfirm: function() {
           return new Promise(function(resolve) {
             $.ajax({
-                url: 'code.deleteBranches',
+                url: 'code.deleterestaurants',
                 type: 'POST',
                 data: {
                   branchId: id
@@ -136,14 +136,13 @@ include("./includes/branches/code.fetchBranches.php");
               .done(function(response) {
                 if (response == 1) {
                   Swal.fire('Deleted!', "Records deleted", "success");
-                  location.reload();
                 } else {
                   Swal.fire('INVALID ID!', "Something went wrong", "error");
                 }
                 location.reload();
               })
               .fail(function() {
-                swal('Oops...', 'Something went wrong with ajax !', 'error');
+                swal('Oops...', 'Something went wrong!', 'error');
               });
           });
         },

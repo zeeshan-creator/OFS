@@ -4,11 +4,11 @@ include './auth/login_auth.php';
 include './auth/admin_auth.php';
 
 
-include("./includes/branches/code.updateBranches.php");
+include("./includes/restaurants/code.updaterestaurants.php");
 if (!isset($_GET['id'])) {
    // if (!isset($_SESSION['name'])) {
-   // header("Location: allbranches");
-   echo '<script>window.location.href = "allbranches";</script>';
+   // header("Location: allrestaurants");
+   echo '<script>window.location.href = "allrestaurants";</script>';
    exit();
    // }
 }
@@ -16,7 +16,7 @@ if (!isset($_GET['id'])) {
 if (isset($_GET['id'])) {
    $id = trim($_GET['id']);
 
-   $branch_query = "SELECT * FROM branches WHERE id='$id' LIMIT 1";
+   $branch_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
    $result = mysqli_query($conn, $branch_query);
    $row = mysqli_fetch_assoc($result);
 
@@ -29,9 +29,9 @@ if (isset($_GET['id'])) {
       $role = $row["role"];
       $active_status = $row["active_status"];
    } else {
-      // URL doesn't contain valid id. Redirect to allbranches
-      // header("location: allbranches");
-      echo '<script>window.location.href = "allbranches";</script>';
+      // URL doesn't contain valid id. Redirect to allrestaurants
+      // header("location: allrestaurants");
+      echo '<script>window.location.href = "allrestaurants";</script>';
       exit();
    }
 }

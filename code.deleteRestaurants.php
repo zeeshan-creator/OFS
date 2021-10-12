@@ -13,12 +13,12 @@ if (isset($_POST['branchId'])) {
 }
 if ($id > 0) {
    // Check record exists
-   $checkRecord = mysqli_query($conn, "SELECT * FROM branches WHERE id=" . $id);
+   $checkRecord = mysqli_query($conn, "SELECT * FROM restaurants WHERE id=" . $id);
    $totalrows = mysqli_num_rows($checkRecord);
 
    if ($totalrows > 0) {
       // Delete record
-      $query = "DELETE FROM branches WHERE id=" . $id;
+      $query = "DELETE FROM restaurants WHERE id=" . $id;
       $result = mysqli_query($conn, $query);
       if ($result) {
          echo 1;
