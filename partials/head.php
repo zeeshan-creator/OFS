@@ -7,6 +7,7 @@
 
 <style>
   .sidebar {
+    position: relative;
     background:
       -moz-linear-gradient(-72deg,
         #dedede,
@@ -68,16 +69,19 @@
   .sidebar a,
   .sidebar p,
   .sidebar i {
-    color: rgba(0, 0, 0, 0.5) !important;
+    color: rgba(0, 0, 0, 0.8) !important;
     text-decoration: none !important;
     letter-spacing: 0.2em !important;
     font-weight: bold !important;
     text-shadow: 1px 1px 0 #ffffff !important;
   }
 
-  /* .btn {
-    border: 1px solid #dedede !important;
-  } */
+  .opac {
+    /* can change the opacity for the silver gradient */
+    opacity: 0;
+    background-color: black;
+    position: absolute;
+  }
 </style>
 
 <head>

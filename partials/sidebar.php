@@ -1,4 +1,6 @@
 <div class="sidebar">
+  <div class="opac" style="width: 100%; height:100%;">
+  </div>
   <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
     -->
