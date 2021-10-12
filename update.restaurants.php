@@ -104,12 +104,12 @@ ob_end_flush();
                               <select class="form-control" id="roleSelect" name="role" required>
                                  <?php
                                  if ($role == "main_branch") {
-                                    echo '<option value="main_branch" selected>Main restaurant</option>
-                                    <option value="main_branch" >Sub restaurant</option>';
+                                    echo '<option value="main_branch" selected>Main branch</option>
+                                    <option value="main_branch" >Sub branch</option>';
                                  }
                                  if ($role == "sub_branch") {
-                                    echo '<option value="sub_branch" selected>Sub restaurant</option>
-                                    <option value="sub_branch">Main restaurant</option>';
+                                    echo '<option value="sub_branch" selected>Sub branch</option>
+                                    <option value="sub_branch">Main branch</option>';
                                  }
                                  ?>
                               </select>
