@@ -33,32 +33,32 @@ include("./includes/restaurants/code.createrestaurants.php");
               <form method="POST" class="needs-validation" novalidate>
                 <div class="form-row">
                   <div class="col-md-6 mb-3">
-                    <label for="Branchname">Branch name</label>
-                    <input type="text" class="form-control" name="branchName" min="3" max="15" placeholder="Enter branch Name" id="Branchname" required>
+                    <label for="restaurantname">restaurant name</label>
+                    <input type="text" class="form-control" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
                     <div class="invalid-feedback">
-                      Please enter a Branch name
+                      Please enter a restaurant name
                     </div>
                   </div>
 
                   <div class="col-md-6 mb-3">
                     <label for="phone">Phone</label>
-                    <input type="number" class="form-control" name="branchPhone" placeholder="Enter branch phone number" id="phone" required>
+                    <input type="number" class="form-control" name="restaurantPhone" placeholder="Enter restaurant phone number" id="phone" required>
                     <div class="invalid-feedback">
-                      Please enter a Branch phone number (min=11, max=13)
+                      Please enter a restaurant phone number (min=11, max=13)
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="branchEmail">Branch E-Mail</label>
-                    <input type="email" class="form-control" name="branchEmail" max="55" placeholder="Enter branch Email" id="Branchname" required>
+                    <label for="restaurantEmail">restaurant E-Mail</label>
+                    <input type="email" class="form-control" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required>
                     <div class="invalid-feedback">
-                      Please enter a Branch Email
+                      Please enter a restaurant Email
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="branchPassword">Branch Password</label>
-                    <input type="text" class="form-control" name="branchPassword" min="6" max="16" placeholder="Enter branch password" id="phone" required>
+                    <label for="restaurantPassword">restaurant Password</label>
+                    <input type="text" class="form-control" name="restaurantPassword" min="6" max="16" placeholder="Enter restaurant password" id="phone" required>
                     <div class="invalid-feedback">
-                      Please enter a Branch password
+                      Please enter a restaurant password
                     </div>
                   </div>
                 </div>

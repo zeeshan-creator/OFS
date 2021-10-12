@@ -4,34 +4,34 @@ ob_start();
 require('./config/db.php');
 
 // initializing variables
-$branchId;
-$branchName;
-$branchPhone;
-$branchEmail;
-$branchPassword;
+$restaurantId;
+$restaurantName;
+$restaurantPhone;
+$restaurantEmail;
+$restaurantPassword;
 $errors   = array();
 // array_push($errors, "JUST CHECKING");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    // receive all input values from the form
-   $branchId = mysqli_real_escape_string($conn, trim($_POST['branchId']));
-   $branchName = mysqli_real_escape_string($conn, trim($_POST['branchName']));
-   $branchPhone = mysqli_real_escape_string($conn, trim($_POST['branchPhone']));
-   $branchEmail = mysqli_real_escape_string($conn, trim($_POST['branchEmail']));
-   $branchPassword = mysqli_real_escape_string($conn, trim($_POST['branchPassword']));
+   $restaurantId = mysqli_real_escape_string($conn, trim($_POST['restaurantId']));
+   $restaurantName = mysqli_real_escape_string($conn, trim($_POST['restaurantName']));
+   $restaurantPhone = mysqli_real_escape_string($conn, trim($_POST['restaurantPhone']));
+   $restaurantEmail = mysqli_real_escape_string($conn, trim($_POST['restaurantEmail']));
+   $restaurantPassword = mysqli_real_escape_string($conn, trim($_POST['restaurantPassword']));
    $role = mysqli_real_escape_string($conn, trim($_POST['role']));
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
 
-   if (!empty($branchEmail)) {
+   if (!empty($restaurantEmail)) {
       // first check the database to make sure 
       // a user does not already exist with the same email 
-      $branch_check_query = "SELECT email,id FROM restaurants WHERE email='$branchEmail' LIMIT 1";
-      $result = mysqli_query($conn, $branch_check_query);
-      $branch = mysqli_fetch_assoc($result);
+      $restaurant_check_query = "SELECT email,id FROM restaurants WHERE email='$restaurantEmail' LIMIT 1";
+      $result = mysqli_query($conn, $restaurant_check_query);
+      $restaurant = mysqli_fetch_assoc($result);
 
-      if ($branch) { // if branch exists
-         if ($branch['id'] != $branchId) {
-            if ($branch['email'] == $branchEmail) {
+      if ($restaurant) { // if restaurant exists
+         if ($restaurant['id'] != $restaurantId) {
+            if ($restaurant['email'] == $restaurantEmail) {
                array_push($errors, "email already exists try something else");
             }
          }
@@ -40,27 +40,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
-   if (empty($branchName)) {
-      array_push($errors, "Branch Name is required");
+   if (empty($restaurantName)) {
+      array_push($errors, "restaurant Name is required");
    }
 
-   if (empty($branchPhone)) {
-      array_push($errors, "Branch Phone number is required");
+   if (empty($restaurantPhone)) {
+      array_push($errors, "restaurant Phone number is required");
    }
 
-   if (empty($branchEmail)) {
-      array_push($errors, "Branch E-Mail is required");
+   if (empty($restaurantEmail)) {
+      array_push($errors, "restaurant E-Mail is required");
    }
 
-   if (empty($branchPassword)) {
-      array_push($errors, "Branch Password is required");
+   if (empty($restaurantPassword)) {
+      array_push($errors, "restaurant Password is required");
    }
 
    // Finally, register user if there are no errors in the form
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "UPDATE `restaurants` SET `name` = '$branchName',`phone` = '$branchPhone',`email` = '$branchEmail',`password` = '$branchPassword',`role` = '$role',`active_status` = '$active_status',`updated_at` = '$date' WHERE `restaurants`.`id` = $branchId";
+      $query = "UPDATE `restaurants` SET `name` = '$restaurantName',`phone` = '$restaurantPhone',`email` = '$restaurantEmail',`password` = '$restaurantPassword',`role` = '$role',`active_status` = '$active_status',`updated_at` = '$date' WHERE `restaurants`.`id` = $restaurantId";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 

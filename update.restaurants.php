@@ -4,7 +4,7 @@ include './auth/login_auth.php';
 include './auth/admin_auth.php';
 
 
-include("./includes/restaurants/code.updaterestaurants.php");
+include("./includes/restaurants/code.updateRestaurants.php");
 if (!isset($_GET['id'])) {
    // if (!isset($_SESSION['name'])) {
    // header("Location: allrestaurants");
@@ -16,8 +16,8 @@ if (!isset($_GET['id'])) {
 if (isset($_GET['id'])) {
    $id = trim($_GET['id']);
 
-   $branch_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
-   $result = mysqli_query($conn, $branch_query);
+   $restaurant_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
+   $result = mysqli_query($conn, $restaurant_query);
    $row = mysqli_fetch_assoc($result);
 
    if ($row) {
@@ -70,33 +70,33 @@ ob_end_flush();
                      <?php include('./errors.php'); ?>
                      <form method="POST" class="needs-validation" novalidate>
                         <div class="form-row">
-                           <input type="hidden" name="branchId" value="<?php echo $id; ?>">
+                           <input type="hidden" name="restaurantId" value="<?php echo $id; ?>">
                            <div class=" col-md-6 mb-3">
-                              <label for="Branchname">Branch name</label>
-                              <input type="text" class="form-control" value="<?php echo $name; ?>" name="branchName" min="3" max="15" placeholder="Enter branch Name" id="Branchname" required>
+                              <label for="restaurantname">restaurant name</label>
+                              <input type="text" class="form-control" value="<?php echo $name; ?>" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
                               <div class="invalid-feedback">
-                                 Please enter a Branch name
+                                 Please enter a restaurant name
                               </div>
                            </div>
                            <div class="col-md-6 mb-3">
                               <label for="phone">Phone</label>
-                              <input type="number" class="form-control" value="<?php echo $phone; ?>" name="branchPhone" placeholder="Enter branch phone number" id="phone" required>
+                              <input type="number" class="form-control" value="<?php echo $phone; ?>" name="restaurantPhone" placeholder="Enter restaurant phone number" id="phone" required>
                               <div class="invalid-feedback">
-                                 Please enter a Branch phone number (min=11, max=13)
+                                 Please enter a restaurant phone number (min=11, max=13)
                               </div>
                            </div>
                            <div class="col-md-6 mb-3">
-                              <label for="branchEmail">Branch E-Mail</label>
-                              <input type="email" class="form-control" value="<?php echo $email; ?>" name="branchEmail" max="55" placeholder="Enter branch Email" id="Branchname" required>
+                              <label for="restaurantEmail">restaurant E-Mail</label>
+                              <input type="email" class="form-control" value="<?php echo $email; ?>" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required>
                               <div class="invalid-feedback">
-                                 Please enter a Branch Email
+                                 Please enter a restaurant Email
                               </div>
                            </div>
                            <div class="col-md-6 mb-3">
-                              <label for="branchPassword">Branch Password</label>
-                              <input type="text" class="form-control" value="<?php echo $password; ?>" name="branchPassword" min="6" max="16" placeholder="Enter branch password" id="phone" required>
+                              <label for="restaurantPassword">restaurant Password</label>
+                              <input type="text" class="form-control" value="<?php echo $password; ?>" name="restaurantPassword" min="6" max="16" placeholder="Enter restaurant password" id="phone" required>
                               <div class="invalid-feedback">
-                                 Please enter a Branch password
+                                 Please enter a restaurant password
                               </div>
                            </div>
                            <div class="col-md-6 mb-3">
@@ -104,17 +104,17 @@ ob_end_flush();
                               <select class="form-control" id="roleSelect" name="role" required>
                                  <?php
                                  if ($role == "main_branch") {
-                                    echo '<option value="main_branch" selected>Main Branch</option>
-                                    <option value="sub_branch" >Sub Branch</option>';
+                                    echo '<option value="main_branch" selected>Main restaurant</option>
+                                    <option value="main_branch" >Sub restaurant</option>';
                                  }
                                  if ($role == "sub_branch") {
-                                    echo '<option value="sub_branch" selected>Sub Branch</option>
-                                    <option value="main_branch">Main Branch</option>';
+                                    echo '<option value="sub_branch" selected>Sub restaurant</option>
+                                    <option value="sub_branch">Main restaurant</option>';
                                  }
                                  ?>
                               </select>
                               <div class="invalid-feedback">
-                                 Please enter a Branch password
+                                 Please enter a restaurant password
                               </div>
                            </div>
                            <div class="col-md-6 mb-3">
@@ -132,7 +132,7 @@ ob_end_flush();
                                  ?>
                               </select>
                               <div class="invalid-feedback">
-                                 Please enter a Branch password
+                                 Please enter a restaurant password
                               </div>
                            </div>
                         </div>

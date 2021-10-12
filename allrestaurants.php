@@ -2,7 +2,7 @@
 include './auth/login_auth.php';
 include './auth/admin_auth.php';
 
-include("./includes/restaurants/code.fetchrestaurants.php");
+include("./includes/restaurants/code.fetchRestaurants.php");
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +48,7 @@ include("./includes/restaurants/code.fetchrestaurants.php");
       <div class="content">
         <div class="row">
           <div class="col-lg-12">
-            <a href="./create.restaurants" class="btn btn-primary mb-3">Create restaurants</a>
+            <a href="./create.restaurants" class="btn btn-primary mb-3">Create Restaurant</a>
           </div>
         </div>
         <table class="table" id="restaurants">
@@ -87,8 +87,8 @@ include("./includes/restaurants/code.fetchrestaurants.php");
                 <a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
                 </a>
-                <button type='button' rel='tooltip' id='delete-branch' title='Delete'
-                s onclick='deleteBranch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                s onclick='deleterestaurant(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-simple-remove'></i>
                 </button>
               </td>
@@ -114,7 +114,7 @@ include("./includes/restaurants/code.fetchrestaurants.php");
       });
     });
 
-    function deleteBranch(id) {
+    function deleterestaurant(id) {
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -127,10 +127,10 @@ include("./includes/restaurants/code.fetchrestaurants.php");
         preConfirm: function() {
           return new Promise(function(resolve) {
             $.ajax({
-                url: 'code.deleterestaurants',
+                url: 'code.deleteRestaurants',
                 type: 'POST',
                 data: {
-                  branchId: id
+                  restaurantId: id
                 },
               })
               .done(function(response) {

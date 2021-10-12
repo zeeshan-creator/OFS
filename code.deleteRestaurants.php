@@ -8,8 +8,8 @@ require('./config/db.php');
 
 $id = 0;
 
-if (isset($_POST['branchId'])) {
-   $id = mysqli_real_escape_string($conn, $_POST['branchId']);
+if (isset($_POST['restaurantId'])) {
+   $id = mysqli_real_escape_string($conn, $_POST['restaurantId']);
 }
 if ($id > 0) {
    // Check record exists
