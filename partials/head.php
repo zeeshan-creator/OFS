@@ -8,7 +8,7 @@
 <style>
   .sidebar {
     position: relative;
-    background:
+    /* background:
       -moz-linear-gradient(-72deg,
         #dedede,
         #ffffff 16%,
@@ -63,13 +63,16 @@
         #dedede 72%,
         #ffffff 80%,
         #dedede 84%,
-        #a1a1a1) !important;
+        #a1a1a1) !important; */
+
+    background-color: #ffffff !important;
+    background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%) !important;
   }
 
   .sidebar a,
   .sidebar p,
   .sidebar i {
-    color: rgba(0, 0, 0, 0.8) !important;
+    color: rgba(0, 0, 0, .7) !important;
     text-decoration: none !important;
     letter-spacing: 0.2em !important;
     font-weight: bold !important;
