@@ -65,14 +65,14 @@
         #dedede 84%,
         #a1a1a1) !important; */
 
-    background-color: #ffffff !important;
-    background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%) !important;
+    background-color: #f9fcff !important;
+    background-image: linear-gradient(140deg, #f9fcff 0%, #dee4ea 75%) !important;
   }
 
   .sidebar a,
   .sidebar p,
   .sidebar i {
-    color: rgba(0, 0, 0, .7) !important;
+    color: rgba(0, 0, 0, .6) !important;
     text-decoration: none !important;
     letter-spacing: 0.2em !important;
     font-weight: bold !important;
