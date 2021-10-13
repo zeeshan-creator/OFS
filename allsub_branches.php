@@ -49,9 +49,6 @@ include("./includes/restaurants/code.fetchSub_branches.php");
       <div class="content">
         <div class="row">
           <div class="col-lg-3 col-md-3">
-            <a href="./create.restaurants" class="btn btn-primary mb-3">Create Restaurant</a>
-          </div>
-          <div class="col-lg-3 col-md-3 ml-auto">
             <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
           </div>
         </div>
