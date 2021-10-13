@@ -20,7 +20,13 @@
         echo '<li class="">
         <a href="allrestaurants">
           <i class="tim-icons icon-chart-pie-36"></i>
-          <p>restaurants</p>
+          <p>Restaurants</p>
+        </a>
+      </li>
+      <li class="">
+        <a href="allsub_branches">
+          <i class="tim-icons icon-chart-pie-36"></i>
+          <p>Sub Branches</p>
         </a>
       </li>';
       }

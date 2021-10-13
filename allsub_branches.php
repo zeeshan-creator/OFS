@@ -2,7 +2,8 @@
 include './auth/login_auth.php';
 include './auth/admin_auth.php';
 
-include("./includes/restaurants/code.fetchRestaurants.php");
+include("./includes/restaurants/code.fetchSub_branches.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -11,18 +12,18 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 <!-- Including header -->
 <?php include './partials/head.php' ?>
 <style>
-  #restaurants_filter,
-  #restaurants_filter input,
-  #restaurants_length,
-  #restaurants_length select,
+  #sub_restaurants_filter,
+  #sub_restaurants_filter input,
+  #sub_restaurants_length,
+  #sub_restaurants_length select,
 
-  #restaurants_info,
-  #restaurants_paginate a {
+  #sub_restaurants_info,
+  #sub_restaurants_paginate a {
     color: white !important;
   }
 
-  #restaurants_paginate span a,
-  #restaurants_length select option {
+  #sub_restaurants_paginate span a,
+  #sub_restaurants_length select option {
     color: black !important;
   }
 
@@ -54,7 +55,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
             <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
           </div>
         </div>
-        <table class="table" id="restaurants">
+        <table class="table" id="sub_restaurants">
           <thead>
             <tr class="text-center">
               <th>#</th>
@@ -65,7 +66,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               <th>Role</th>
               <!-- <th>Last login</th>
               <th>Login Status</th> -->
-              <th>Active Status</th>
+              <th>Main Branch</th>
               <!-- <th>created_at</th>
               <th>updated_at</th> -->
               <th>Actions</th>
@@ -77,19 +78,19 @@ include("./includes/restaurants/code.fetchRestaurants.php");
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
-              <td>" . $row['name'] . "</td>
+              <td>" . $row['subBranchName'] . "</td>
               <td>" . $row['email'] . "</td>
               <td>" . $row['password'] . "</td>
               <td>" . $row['phone'] . "</td>
               <td>" . $row['role'] . "</td>
-              <td>" . $row['active_status'] . "</td>
+              <td>" . $row['mainBranchName'] . "</td>
               <td class='td-actions text-right'>
                <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-single-02'></i>
                 </button> -->
-                <a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                <!--<a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
-                </a>
+                </a>-->
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleterestaurant(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-simple-remove'></i>
@@ -110,7 +111,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
   </div>
   <script>
     $(document).ready(function() {
-      $('#restaurants').DataTable({
+      $('#sub_restaurants').DataTable({
         "order": [
           [0, "desc"]
         ]
@@ -130,10 +131,10 @@ include("./includes/restaurants/code.fetchRestaurants.php");
         preConfirm: function() {
           return new Promise(function(resolve) {
             $.ajax({
-                url: 'code.deleteRestaurants',
+                url: 'code.deleteSub_branch',
                 type: 'POST',
                 data: {
-                  restaurantId: id
+                  subRestaurantId: id
                 },
               })
               .done(function(response) {
