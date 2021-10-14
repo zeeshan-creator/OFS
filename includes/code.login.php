@@ -28,68 +28,88 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       array_push($errors, "Password is required");
    }
 
+   // run if entered email, password is in admin's table
    $query = "SELECT * FROM admin WHERE email='$email' limit 1";
-   $adminResults = mysqli_query($conn, $query);
+   $results = mysqli_query($conn, $query);
+   $row = mysqli_fetch_assoc($results);
 
-   if (mysqli_num_rows($adminResults) == 1) {
-      $row = mysqli_fetch_assoc($adminResults);
+   if (mysqli_num_rows($results) == 1) {
       if ($row["password"] !== $password) {
          array_push($errors, "Password is Wrong");
       }
+
       if ($row["password"] == $password) {
          if ($row["active_status"] !== "active") {
-            array_push($errors, "Your Account is Not Inactive Please Contact the administration");
+            array_push($errors, "Your Account is Not Inactive Please Contact the Administration");
          }
       }
 
       if (count($errors) == 0) {
-         $query = "SELECT * FROM admin WHERE email='$email'";
-         $results = mysqli_query($conn, $query);
-         if (mysqli_num_rows($results) == 1) {
-            $row = mysqli_fetch_assoc($results);
-            $_SESSION['name'] = $row["name"];
-            $_SESSION['role'] = $row["role"];
-            header('location: index');
-            exit();
-         } else {
-            array_push($errors, "Wrong email/password combination");
-         }
-      }
-   } else {
-      $query = "SELECT * FROM restaurants WHERE email='$email' limit 1";
-      $bracnhResults = mysqli_query($conn, $query);
-
-      if (mysqli_num_rows($bracnhResults) == 1) {
-         $row = mysqli_fetch_assoc($bracnhResults);
-         if ($row["password"] !== $password) {
-            array_push($errors, "Password is Wrong");
-         }
-         if ($row["password"] == $password) {
-            if ($row["active_status"] !== "active") {
-               array_push($errors, "Your Account is Not Inactive Please Contact the administration");
-            }
-         }
-         if (count($errors) == 0) {
-            $query = "SELECT * FROM restaurants WHERE email='$email'";
-            $results = mysqli_query($conn, $query);
-            if (mysqli_num_rows($results) == 1) {
-               $row = mysqli_fetch_assoc($results);
-               $_SESSION['name'] = $row["name"];
-               $_SESSION['role'] = $row["role"];
-               header('location: index');
-               exit();
-            } else {
-               array_push($errors, "Wrong email/password combination");
-            }
-         }
+         userLogin('admin', $email, $conn);
       }
    }
+
+   // run if entered email, password is in restaurant's table
+   $query = "SELECT * FROM restaurants WHERE email='$email' limit 1";
+   $results = mysqli_query($conn, $query);
+   $row = mysqli_fetch_assoc($results);
+
+   if (mysqli_num_rows($results) == 1) {
+      if ($row["password"] !== $password) {
+         array_push($errors, "Password is Wrong");
+      }
+
+      if ($row["password"] == $password) {
+         if ($row["active_status"] !== "active") {
+            array_push($errors, "Your Account is Not Inactive Please Contact the Administration");
+         }
+      }
+      if (count($errors) == 0) {
+         userLogin('restaurants', $email, $conn);
+      }
+   }
+
+   // run if entered email, password is in sub_restaurant's table
+   $query = "SELECT * FROM sub_restaurants WHERE email='$email' limit 1";
+   $results = mysqli_query($conn, $query);
+   $row = mysqli_fetch_assoc($results);
+
+   if (mysqli_num_rows($results) == 1) {
+      if ($row["password"] !== $password) {
+         array_push($errors, "Password is Wrong");
+      }
+
+      if ($row["password"] == $password) {
+         if ($row["active_status"] !== "active") {
+            array_push($errors, "Your Account is Not Inactive Please Contact the Administration");
+         }
+      }
+      if (count($errors) == 0) {
+         userLogin('sub_restaurants', $email, $conn);
+      }
+   }
+
    if (count($errors) == 0) {
       if (!empty($email) && !empty($password)) {
          array_push($errors, "Your Email Does Not Exist");
       }
    }
 }
+
+function userLogin($db, $email, $conn)
+{
+   $query = "SELECT * FROM $db WHERE email='$email'";
+   $results = mysqli_query($conn, $query);
+
+   if (mysqli_num_rows($results) == 1) {
+      $row = mysqli_fetch_assoc($results);
+      $_SESSION['name'] = $row["name"];
+      $_SESSION['role'] = $row["role"];
+      header('location: index');
+      exit();
+   }
+};
+
 ob_end_flush();
 
 // ...

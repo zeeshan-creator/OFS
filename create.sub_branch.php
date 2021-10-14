@@ -5,7 +5,6 @@ include("./includes/restaurants/code.sub_branch.php");
 
 $restaurant_query = "SELECT id,name, email FROM restaurants";
 $result = mysqli_query($conn, $restaurant_query);
-
 ?>
 
 <!DOCTYPE html>

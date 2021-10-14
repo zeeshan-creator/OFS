@@ -85,9 +85,9 @@ include("./includes/restaurants/code.fetchSub_branches.php");
                <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-single-02'></i>
                 </button> -->
-                <!--<a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                <a href='update.sub_branch?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
-                </a>-->
+                </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleterestaurant(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-simple-remove'></i>
