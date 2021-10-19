@@ -30,6 +30,15 @@
         </a>
       </li>';
       }
+      if ($_SESSION['role'] == 'main_branch') {
+        echo '
+      <li class="">
+        <a href="allsub_branches">
+          <i class="tim-icons icon-chart-pie-36"></i>
+          <p>Sub Branches</p>
+        </a>
+      </li>';
+      }
       ?>
 
     </ul>

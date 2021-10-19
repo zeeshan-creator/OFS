@@ -67,8 +67,8 @@ $result = mysqli_query($conn, $restaurant_query);
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="roleSelect">Main branch</label>
-                    <select class="form-control" id="roleSelect" name="main_branch" required>
+                    <label for="main_branch">Main branch</label>
+                    <select class="form-control" id="main_branch" name="main_branch" required>
                       <?php
                       while ($row = mysqli_fetch_array($result)) {
                         echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";  // displaying data in option menu

@@ -9,6 +9,7 @@ $restaurantName;
 $restaurantPhone;
 $restaurantEmail;
 $restaurantPassword;
+$main_branch;
 $errors   = array();
 // array_push($errors, "JUST CHECKING");
 
@@ -19,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $restaurantPhone = mysqli_real_escape_string($conn, trim($_POST['restaurantPhone']));
    $restaurantEmail = mysqli_real_escape_string($conn, trim($_POST['restaurantEmail']));
    $restaurantPassword = mysqli_real_escape_string($conn, trim($_POST['restaurantPassword']));
+   $main_branch = mysqli_real_escape_string($conn, trim($_POST['main_branch']));
    $role = mysqli_real_escape_string($conn, trim($_POST['role']));
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
 
@@ -71,7 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "UPDATE `sub_restaurants` SET `name` = '$restaurantName',`phone` = '$restaurantPhone',`email` = '$restaurantEmail',`password` = '$restaurantPassword',`role` = '$role',`active_status` = '$active_status',`updated_at` = '$date' WHERE `sub_restaurants`.`id` = $restaurantId";
+      $query = "UPDATE `sub_restaurants` SET 
+         `name` = '$restaurantName', 
+         `main_branch` = $main_branch,
+         `phone` = '$restaurantPhone',
+         `email` = '$restaurantEmail',
+         `password` = '$restaurantPassword',
+         `role` = '$role',
+         `active_status` = '$active_status',
+         `updated_at` = '$date'
+         WHERE `sub_restaurants`.`id` = $restaurantId";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 

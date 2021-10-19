@@ -145,10 +145,6 @@ $result = mysqli_query($conn, $restaurant_query);
                               <label for="roleSelect">Main branch</label>
                               <select class="form-control" id="roleSelect" name="main_branch" required>
                                  <?php
-                                 if ($row['id'] == $main_branch) {
-                                    # code...
-                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";
-                                 }
                                  while ($row = mysqli_fetch_array($result)) {
                                     if ($row['id'] == $main_branch) {
                                        # code...
