@@ -1,8 +1,8 @@
 <?php
 include './auth/login_auth.php';
-include './auth/admin_auth.php';
+include './auth/sub_branch_auth.php';
 
-include("./includes/restaurants/code.fetchSub_branches.php");
+include("./includes/sub_branch/code.fetchSub_branches.php");
 
 ?>
 
@@ -47,11 +47,13 @@ include("./includes/restaurants/code.fetchSub_branches.php");
       <?php include './partials/nav.php' ?>
       <!-- End Navbar -->
       <div class="content">
-        <div class="row">
-          <div class="col-lg-3 col-md-3">
-            <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
+        <?php if ($_SESSION['role'] == 'admin') : ?>
+          <div class="row">
+            <div class="col-lg-3 col-md-3">
+              <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
+            </div>
           </div>
-        </div>
+        <?php endif ?>
         <table class="table" id="sub_restaurants">
           <thead>
             <tr class="text-center">
@@ -63,7 +65,12 @@ include("./includes/restaurants/code.fetchSub_branches.php");
               <th>Role</th>
               <!-- <th>Last login</th>
               <th>Login Status</th> -->
-              <th>Main Branch</th>
+              <?php if ($_SESSION['role'] == 'admin') : ?>
+                <th>Main Branch</th>
+              <?php endif ?>
+              <?php if ($_SESSION['role'] == 'main_branch') : ?>
+                <th>Active Status</th>
+              <?php endif ?>
               <!-- <th>created_at</th>
               <th>updated_at</th> -->
               <th>Actions</th>
@@ -72,6 +79,13 @@ include("./includes/restaurants/code.fetchSub_branches.php");
           <tbody>
             <?php
             $count = 1;
+            $feildName;
+            if ($_SESSION['role'] == 'main_branch') {
+              $feildName = 'active_status';
+            }
+            if ($_SESSION['role'] == 'admin') {
+              $feildName = 'mainBranchName';
+            }
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
@@ -80,7 +94,7 @@ include("./includes/restaurants/code.fetchSub_branches.php");
               <td>" . $row['password'] . "</td>
               <td>" . $row['phone'] . "</td>
               <td>" . $row['role'] . "</td>
-              <td>" . $row['mainBranchName'] . "</td>
+              <td>" . $row[$feildName] . "</td>
               <td class='td-actions text-right'>
                <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-single-02'></i>

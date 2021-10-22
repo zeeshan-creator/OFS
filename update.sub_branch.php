@@ -1,10 +1,10 @@
 <?php
 
 include './auth/login_auth.php';
-include './auth/admin_auth.php';
+include './auth/sub_branch_auth.php';
 
 
-include("./includes/restaurants/code.updateSub_branch.php");
+include("./includes/sub_branch/code.updateSub_branch.php");
 if (!isset($_GET['id'])) {
    // if (!isset($_SESSION['name'])) {
    // header("Location: allrestaurants");
@@ -109,7 +109,7 @@ $result = mysqli_query($conn, $restaurant_query);
                                  <?php
                                  // if ($role == "main_branch") {
                                  //    echo '<option value="main_branch" selected>Main branch</option>
-                                 //    <option value="main_branch" >Sub branch</option>';
+                                 //    <option value="sub_branch" >Sub branch</option>';
                                  // }
                                  // if ($role == "sub_branch") {
                                  //    echo '<option value="sub_branch" selected>Sub branch</option>
@@ -141,26 +141,31 @@ $result = mysqli_query($conn, $restaurant_query);
                                  Please enter a active status
                               </div>
                            </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="roleSelect">Main branch</label>
-                              <select class="form-control" id="roleSelect" name="main_branch" required>
-                                 <?php
-                                 while ($row = mysqli_fetch_array($result)) {
-                                    if ($row['id'] == $main_branch) {
-                                       # code...
-                                       echo "<option selected value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";
-                                       continue;
+                           <?php if ($_SESSION['role'] == 'admin') : ?>
+                              <div class="col-md-6 mb-3">
+                                 <label for="roleSelect">Main branch</label>
+                                 <select class="form-control" id="roleSelect" name="main_branch" required>
+                                    <?php
+                                    while ($row = mysqli_fetch_array($result)) {
+                                       if ($row['id'] == $main_branch) {
+                                          # code...
+                                          echo "<option selected value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";
+                                          continue;
+                                       }
+                                       echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";  // displaying data in option menu
                                     }
-                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";  // displaying data in option menu
-                                 }
-
-                                 ?>
-                              </select>
-                              <div class="invalid-feedback">
-                                 Please enter a restaurant Main branch
+                                    ?>
+                                 </select>
+                                 <div class="invalid-feedback">
+                                    Please enter a restaurant Main branch
+                                 </div>
                               </div>
-                           </div>
+                           <?php endif ?>
+                           <?php if ($_SESSION['role'] == 'main_branch') : ?>
+                              <input type="hidden" name="main_branch" value="<?php echo $main_branch ?>">
+                           <?php endif ?>
                         </div>
+
                         <button class="btn btn-primary float-right" type="submit">Submit form</button>
                         <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
                   </div>

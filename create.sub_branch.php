@@ -1,7 +1,7 @@
 <?php
 include './auth/login_auth.php';
 include './auth/admin_auth.php';
-include("./includes/restaurants/code.sub_branch.php");
+include("./includes/sub_branch/code.sub_branch.php");
 
 $restaurant_query = "SELECT id,name, email FROM restaurants";
 $result = mysqli_query($conn, $restaurant_query);

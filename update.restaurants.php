@@ -6,11 +6,8 @@ include './auth/admin_auth.php';
 
 include("./includes/restaurants/code.updateRestaurants.php");
 if (!isset($_GET['id'])) {
-   // if (!isset($_SESSION['name'])) {
-   // header("Location: allrestaurants");
    echo '<script>window.location.href = "allrestaurants";</script>';
    exit();
-   // }
 }
 
 if (isset($_GET['id'])) {
@@ -105,7 +102,7 @@ ob_end_flush();
                                  <?php
                                  if ($role == "main_branch") {
                                     echo '<option value="main_branch" selected>Main branch</option>
-                                    <option value="main_branch" >Sub branch</option>';
+                                    <option value="sub_branch" >Sub branch</option>';
                                  }
                                  if ($role == "sub_branch") {
                                     echo '<option value="sub_branch" selected>Sub branch</option>

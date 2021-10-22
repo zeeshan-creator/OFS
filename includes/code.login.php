@@ -105,6 +105,10 @@ function userLogin($db, $email, $conn)
       $row = mysqli_fetch_assoc($results);
       $_SESSION['name'] = $row["name"];
       $_SESSION['role'] = $row["role"];
+      $_SESSION['id'] = $row["id"];
+      $date = date('Y-m-d H:i:s');
+      $query = "UPDATE $db set `last_login` = '$date' WHERE `email`= '$email'";
+      mysqli_query($conn, $query) or die(mysqli_error($conn));
       header('location: index');
       exit();
    }
