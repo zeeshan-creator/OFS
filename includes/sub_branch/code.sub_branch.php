@@ -1,7 +1,7 @@
 <?php
 ob_start();
 
-require('./config/db.php');
+// require('./config/db.php');
 
 // initializing variables
 $restaurantName;

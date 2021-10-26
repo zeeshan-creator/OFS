@@ -106,6 +106,7 @@ function userLogin($db, $email, $conn)
       $_SESSION['name'] = $row["name"];
       $_SESSION['role'] = $row["role"];
       $_SESSION['id'] = $row["id"];
+      $_SESSION['active_status'] = $row["active_status"];
       $date = date('Y-m-d H:i:s');
       $query = "UPDATE $db set `last_login` = '$date' WHERE `email`= '$email'";
       mysqli_query($conn, $query) or die(mysqli_error($conn));

@@ -106,7 +106,7 @@ ob_end_flush();
                                  }
                                  if ($role == "sub_branch") {
                                     echo '<option value="sub_branch" selected>Sub branch</option>
-                                    <option value="sub_branch">Main branch</option>';
+                                    <option value="main_branch">Main branch</option>';
                                  }
                                  ?>
                               </select>
