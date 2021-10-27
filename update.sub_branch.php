@@ -1,7 +1,7 @@
 <?php
 
 include './auth/login_auth.php';
-include './auth/sub_branch_auth.php';
+include './auth/==sub_branch_auth.php';
 
 
 include("./includes/sub_branch/code.updateSub_branch.php");

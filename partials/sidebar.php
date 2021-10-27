@@ -15,32 +15,38 @@
           <p>Dashboard</p>
         </a>
       </li>
-      <?php
-      if ($_SESSION['role'] == 'admin') {
-        echo '<li class="">
-        <a href="allrestaurants">
-          <i class="tim-icons icon-chart-pie-36"></i>
-          <p>Restaurants</p>
-        </a>
-      </li>
-      <li class="">
-        <a href="allsub_branches">
-          <i class="tim-icons icon-chart-pie-36"></i>
-          <p>Sub Branches</p>
-        </a>
-      </li>';
-      }
-      if ($_SESSION['role'] == 'main_branch') {
-        echo '
-      <li class="">
-        <a href="allsub_branches">
-          <i class="tim-icons icon-chart-pie-36"></i>
-          <p>Sub Branches</p>
-        </a>
-      </li>';
-      }
-      ?>
 
+      <!-- If the user is admin show him/her these links -->
+      <?php if ($_SESSION['role'] == 'admin') : ?>
+        <li class="">
+          <a href="allrestaurants">
+            <i class="tim-icons icon-chart-pie-36"></i>
+            <p>Restaurants</p>
+          </a>
+        </li>
+        <li class="">
+          <a href="allsub_branches">
+            <i class="tim-icons icon-chart-pie-36"></i>
+            <p>Sub Branches</p>
+          </a>
+        </li>
+      <?php endif ?>
+
+      <!-- If the user is restaurant(main_branch) show him/her these links -->
+      <?php if ($_SESSION['role'] == 'main_branch') : ?>
+        <li class="">
+          <a href="allsub_branches">
+            <i class="tim-icons icon-chart-pie-36"></i>
+            <p>Sub Branches</p>
+          </a>
+        </li>
+        <li class="">
+          <a href="restaurantCategories">
+            <i class="tim-icons icon-chart-pie-36"></i>
+            <p>Categories</p>
+          </a>
+        </li>
+      <?php endif ?>
     </ul>
   </div>
 </div>

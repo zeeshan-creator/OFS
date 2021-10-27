@@ -1,8 +1,10 @@
 <?php
 include './auth/login_auth.php';
-include './auth/!=admin_auth.php';
+include './auth/!=main_branch_auth.php';
 
-include("./includes/restaurants/code.createrestaurants.php");
+
+include("./includes/restaurants/categories/code.restaurantCategories.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -32,33 +34,19 @@ include("./includes/restaurants/code.createrestaurants.php");
               <?php include('./errors.php'); ?>
               <form method="POST" class="needs-validation" novalidate>
                 <div class="form-row">
-                  <div class="col-md-6 mb-3">
-                    <label for="restaurantname">restaurant name</label>
-                    <input type="text" class="form-control" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
+                  <div class="col-md-12 mb-6">
+                    <label for="categoryName">Category name</label>
+                    <input type="text" class="form-control" name="categoryName" min="3" max="15" placeholder="Enter Category Name" id="categoryName" required>
                     <div class="invalid-feedback">
-                      Please enter a restaurant name
+                      Please enter a Category name
                     </div>
                   </div>
 
-                  <div class="col-md-6 mb-3">
-                    <label for="phone">Phone</label>
-                    <input type="number" class="form-control" name="restaurantPhone" placeholder="Enter restaurant phone number" id="phone" required>
+                  <div class="col-md-12 mb-6">
+                    <label for="description">Description</label>
+                    <textarea rows="5" cols="10" class="form-control" name="categoryDesc" placeholder="Enter description" id="description" required></textarea>
                     <div class="invalid-feedback">
-                      Please enter a restaurant phone number (min=11, max=13)
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="restaurantEmail">restaurant E-Mail</label>
-                    <input type="email" class="form-control" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required>
-                    <div class="invalid-feedback">
-                      Please enter a restaurant Email
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="restaurantPassword">restaurant Password</label>
-                    <input type="text" class="form-control" name="restaurantPassword" min="6" max="16" placeholder="Enter restaurant password" id="phone" required>
-                    <div class="invalid-feedback">
-                      Please enter a restaurant password
+                      Please enter a description
                     </div>
                   </div>
                 </div>

@@ -1,0 +1,125 @@
+<?php
+
+include './auth/login_auth.php';
+include './auth/!=main_branch_auth.php';
+
+include("./includes/restaurants/categories/code.updaterestaurantCategories.php");
+
+if (!isset($_GET['id'])) {
+   echo '<script>window.location.href = "restaurantCategories";</script>';
+   exit();
+}
+
+if (isset($_GET['id'])) {
+   $id = trim($_GET['id']);
+
+   $restaurantCategory_query = "SELECT * FROM categories WHERE id='$id' LIMIT 1";
+   $result = mysqli_query($conn, $restaurantCategory_query);
+   $row = mysqli_fetch_assoc($result);
+
+   if ($row) {
+      // Retrieve individual field value
+      $id = $row["id"];
+      $category_name = $row["category_name"];
+      $category_desc = $row["category_desc"];
+   } else {
+      // URL doesn't contain valid id. Redirect to restaurantCategories
+      echo '<script>window.location.href = "restaurantCategories";</script>';
+      exit();
+   }
+}
+ob_end_flush();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Including header -->
+<?php include './partials/head.php' ?>
+<style>
+   option {
+      color: black !important;
+   }
+</style>
+
+<body class="">
+   <div class="wrapper">
+
+      <!-- Including sidebar -->
+      <?php include './partials/sidebar.php' ?>
+
+
+      <div class="main-panel">
+         <!-- Navbar -->
+         <!-- Including nav -->
+
+         <?php include './partials/nav.php' ?>
+         <!-- End Navbar -->
+         <div class="content">
+            <div class="row">
+               <div class="card">
+                  <div class="card-body">
+                     <?php include('./errors.php'); ?>
+                     <form method="POST" class="needs-validation" novalidate>
+                        <div class="form-row">
+                           <input type="hidden" name="categoryId" value="<?php echo $id; ?>">
+                           <div class=" col-md-12 mb-6">
+                              <label for="category_name">Category name</label>
+                              <input type="text" class="form-control" value="<?php echo $category_name; ?>" name="category_name" placeholder="Enter Category Name" id="category_name" required>
+                              <div class="invalid-feedback">
+                                 Please enter a category name
+                              </div>
+                           </div>
+                           <div class="col-md-12 mb-6">
+                              <label for="category_desc">Category description</label>
+                              <textarea type="text" class="form-control" value="" name="category_desc" placeholder="Enter category description" id="category_desc" required><?php echo $category_desc; ?></textarea>
+                              <div class="invalid-feedback">
+                                 Please enter category description
+                              </div>
+                           </div>
+                        </div>
+
+                        <button class="btn btn-primary float-right" type="submit">Submit form</button>
+                        <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
+                  </div>
+
+                  </form>
+
+                  <script>
+                     // Example starter JavaScript for disabling form submissions if there are invalid fields
+                     (function() {
+                        'use strict';
+                        window.addEventListener('load', function() {
+                           // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                           var forms = document.getElementsByClassName('needs-validation');
+                           // Loop over them and prevent submission
+                           var validation = Array.prototype.filter.call(forms, function(form) {
+                              form.addEventListener('submit', function(event) {
+                                 if (form.checkValidity() === false) {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                 }
+                                 form.classList.add('was-validated');
+                              }, false);
+                           });
+                        }, false);
+                     })();
+
+                     // GO BACK 
+                     function goBack() {
+                        window.history.back();
+                     }
+                  </script>
+               </div>
+            </div>
+         </div>
+
+         <!-- Including footer -->
+         <?php include './partials/footer.php' ?>
+
+      </div>
+   </div>
+
+</body>
+
+</html>

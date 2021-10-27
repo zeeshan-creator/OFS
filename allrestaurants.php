@@ -1,6 +1,6 @@
 <?php
 include './auth/login_auth.php';
-include './auth/admin_auth.php';
+include './auth/!=admin_auth.php';
 
 include("./includes/restaurants/code.fetchRestaurants.php");
 ?>
@@ -139,7 +139,8 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               .done(function(response) {
                 if (response == 1) {
                   Swal.fire('Deleted!', "Records deleted", "success");
-                } else {
+                }
+                if (response == 0) {
                   Swal.fire('INVALID ID!', "Something went wrong", "error");
                 }
                 location.reload();

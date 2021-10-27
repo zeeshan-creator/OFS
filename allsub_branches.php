@@ -1,6 +1,6 @@
 <?php
 include './auth/login_auth.php';
-include './auth/sub_branch_auth.php';
+include './auth/==sub_branch_auth.php';
 
 include("./includes/sub_branch/code.fetchSub_branches.php");
 
@@ -151,7 +151,8 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
               .done(function(response) {
                 if (response == 1) {
                   Swal.fire('Deleted!', "Records deleted", "success");
-                } else {
+                }
+                if (response == 0) {
                   Swal.fire('INVALID ID!', "Something went wrong", "error");
                 }
                 location.reload();
