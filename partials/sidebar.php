@@ -46,6 +46,12 @@
             <p>Categories</p>
           </a>
         </li>
+        <li class="">
+          <a href="products">
+            <i class="tim-icons icon-chart-pie-36"></i>
+            <p>Products</p>
+          </a>
+        </li>
       <?php endif ?>
     </ul>
   </div>

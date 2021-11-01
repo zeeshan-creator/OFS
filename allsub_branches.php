@@ -62,17 +62,12 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
               <th>Email</th>
               <th>Password</th>
               <th>Phone</th>
-              <th>Role</th>
-              <!-- <th>Last login</th>
-              <th>Login Status</th> -->
-              <?php if ($_SESSION['role'] == 'admin') : ?>
-                <th>Main Branch</th>
-              <?php endif ?>
               <?php if ($_SESSION['role'] == 'main_branch') : ?>
                 <th>Active Status</th>
               <?php endif ?>
-              <!-- <th>created_at</th>
-              <th>updated_at</th> -->
+              <?php if ($_SESSION['role'] == 'admin') : ?>
+                <th>Main Branch</th>
+              <?php endif ?>
               <th>Actions</th>
             </tr>
           </thead>
@@ -93,7 +88,6 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
               <td>" . $row['email'] . "</td>
               <td>" . $row['password'] . "</td>
               <td>" . $row['phone'] . "</td>
-              <td>" . $row['role'] . "</td>
               <td>" . $row[$feildName] . "</td>
               <td class='td-actions text-right'>
                <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
