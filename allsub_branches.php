@@ -97,7 +97,7 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
                   <i class='tim-icons icon-settings'></i>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deleterestaurant(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                s onclick='deleteSub_branch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-simple-remove'></i>
                 </button>
               </td>
@@ -123,7 +123,7 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
       });
     });
 
-    function deleterestaurant(id) {
+    function deleteSub_branch(id) {
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",

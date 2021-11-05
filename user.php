@@ -1,18 +1,8 @@
-<!--
-=========================================================
-* * Black Dashboard - v1.0.1
-=========================================================
+<?php ob_start();
+include './auth/login_auth.php';
+include './auth/!=main_branch_auth.php';
 
-* Product Page: https://www.creative-tim.com/product/black-dashboard
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+?>
 <!DOCTYPE html>
 <html lang="en">
 

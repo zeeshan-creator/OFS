@@ -5,6 +5,7 @@ include './auth/!=admin_auth.php';
 
 
 include("./includes/restaurants/code.updateRestaurants.php");
+
 if (!isset($_GET['id'])) {
    echo '<script>window.location.href = "allrestaurants";</script>';
    exit();

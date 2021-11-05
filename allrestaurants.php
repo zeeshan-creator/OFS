@@ -84,9 +84,9 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               <td>" . $row['role'] . "</td>
               <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
-               <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
+                <a href='restaurantDetails?id=" . $row['id'] . "' type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-single-02'></i>
-                </button> -->
+                </a>
                 <a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                   <i class='tim-icons icon-settings'></i>
                 </a>
