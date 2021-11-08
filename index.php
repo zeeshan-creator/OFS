@@ -1,8 +1,7 @@
-<?php ob_start();
+<?php
 include './auth/login_auth.php';
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,398 +9,299 @@ include './auth/login_auth.php';
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
 
-<body class="">
+<body class="hold-transition sidebar-mini sidebar-collapse">
+
   <div class="wrapper">
 
-    <!-- Including sidebar -->
+    <!-- Navbar -->
+    <?php include './partials/nav.php' ?>
+    <!-- End Navbar -->
+
+
+    <!-- Main Sidebar Container -->
     <?php include './partials/sidebar.php' ?>
+    <!-- END Sidebar Container -->
 
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Dashboard v3</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard v3</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
 
-    <div class="main-panel">
-
-      <!-- Navbar -->
-      <!-- Including nav -->
-
-      <?php include './partials/nav.php' ?>
-      <!-- End Navbar -->
-
+      <!-- Main content -->
       <div class="content">
-        <div class="row">
-          <div class="col-12">
-            <div class="card card-chart">
-              <div class="card-header ">
-                <div class="row">
-                  <div class="col-sm-6 text-left">
-                    <h5 class="card-category">Total Shipments</h5>
-                    <h2 class="card-title">Performance</h2>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                      <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                        <input type="radio" name="options" checked>
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Accounts</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-single-02"></i>
-                        </span>
-                      </label>
-                      <label class="btn btn-sm btn-primary btn-simple" id="1">
-                        <input type="radio" class="d-none d-sm-none" name="options">
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Purchases</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-gift-2"></i>
-                        </span>
-                      </label>
-                      <label class="btn btn-sm btn-primary btn-simple" id="2">
-                        <input type="radio" class="d-none" name="options">
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Sessions</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-tap-02"></i>
-                        </span>
-                      </label>
-                    </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Online Store Visitors</h3>
+                    <a href="javascript:void(0);">View Report</a>
                   </div>
                 </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="chartBig1"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="card card-chart">
-              <div class="card-header">
-                <h5 class="card-category">Total Shipments</h5>
-                <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> 763,215</h3>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="chartLinePurple"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card card-chart">
-              <div class="card-header">
-                <h5 class="card-category">Daily Sales</h5>
-                <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info"></i> 3,500€</h3>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="CountryChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card card-chart">
-              <div class="card-header">
-                <h5 class="card-category">Completed Tasks</h5>
-                <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> 12,100K</h3>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="chartLineGreen"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header ">
-                <h6 class="title d-inline">Tasks(5)</h6>
-                <p class="card-category d-inline">today</p>
-                <div class="dropdown">
-                  <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-                    <i class="tim-icons icon-settings-gear-63"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
+                <div class="card-body">
+                  <div class="d-flex">
+                    <p class="d-flex flex-column">
+                      <span class="text-bold text-lg">820</span>
+                      <span>Visitors Over Time</span>
+                    </p>
+                    <p class="ml-auto d-flex flex-column text-right">
+                      <span class="text-success">
+                        <i class="fas fa-arrow-up"></i> 12.5%
+                      </span>
+                      <span class="text-muted">Since last week</span>
+                    </p>
+                  </div>
+                  <!-- /.d-flex -->
+
+                  <div class="position-relative mb-4">
+                    <canvas id="visitors-chart" height="200"></canvas>
+                  </div>
+
+                  <div class="d-flex flex-row justify-content-end">
+                    <span class="mr-2">
+                      <i class="fas fa-square text-primary"></i> This Week
+                    </span>
+
+                    <span>
+                      <i class="fas fa-square text-gray"></i> Last Week
+                    </span>
                   </div>
                 </div>
               </div>
-              <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="title">Update the Documentation</p>
-                          <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="" checked="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="title">GDPR Compliance</p>
-                          <p class="text-muted">The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="title">Solve the issues</p>
-                          <p class="text-muted">Fifty percent of all respondents said they would be more likely to shop at a company </p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="title">Release v2.0.0</p>
-                          <p class="text-muted">Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="title">Export the processed files</p>
-                          <p class="text-muted">The report also shows that consumers will not easily forgive a company once a breach exposing their personal data occurs. </p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="title">Arival at export process</p>
-                          <p class="text-muted">Capitol Hill, Seattle, WA 12:34 AM</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+              <!-- /.card -->
+
+              <div class="card">
+                <div class="card-header border-0">
+                  <h3 class="card-title">Products</h3>
+                  <div class="card-tools">
+                    <a href="#" class="btn btn-tool btn-sm">
+                      <i class="fas fa-download"></i>
+                    </a>
+                    <a href="#" class="btn btn-tool btn-sm">
+                      <i class="fas fa-bars"></i>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card ">
-              <div class="card-header">
-                <h4 class="card-title"> Simple Table</h4>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table tablesorter " id="">
-                    <thead class=" text-primary">
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-striped table-valign-middle">
+                    <thead>
                       <tr>
-                        <th>
-                          Name
-                        </th>
-                        <th>
-                          Country
-                        </th>
-                        <th>
-                          City
-                        </th>
-                        <th class="text-center">
-                          Salary
-                        </th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Sales</th>
+                        <th>More</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>
-                          Dakota Rice
+                          <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                          Some Product
+                        </td>
+                        <td>$13 USD</td>
+                        <td>
+                          <small class="text-success mr-1">
+                            <i class="fas fa-arrow-up"></i>
+                            12%
+                          </small>
+                          12,000 Sold
                         </td>
                         <td>
-                          Niger
-                        </td>
-                        <td>
-                          Oud-Turnhout
-                        </td>
-                        <td class="text-center">
-                          $36,738
+                          <a href="#" class="text-muted">
+                            <i class="fas fa-search"></i>
+                          </a>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Minerva Hooper
+                          <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                          Another Product
+                        </td>
+                        <td>$29 USD</td>
+                        <td>
+                          <small class="text-warning mr-1">
+                            <i class="fas fa-arrow-down"></i>
+                            0.5%
+                          </small>
+                          123,234 Sold
                         </td>
                         <td>
-                          Curaçao
-                        </td>
-                        <td>
-                          Sinaai-Waas
-                        </td>
-                        <td class="text-center">
-                          $23,789
+                          <a href="#" class="text-muted">
+                            <i class="fas fa-search"></i>
+                          </a>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Sage Rodriguez
+                          <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                          Amazing Product
+                        </td>
+                        <td>$1,230 USD</td>
+                        <td>
+                          <small class="text-danger mr-1">
+                            <i class="fas fa-arrow-down"></i>
+                            3%
+                          </small>
+                          198 Sold
                         </td>
                         <td>
-                          Netherlands
-                        </td>
-                        <td>
-                          Baileux
-                        </td>
-                        <td class="text-center">
-                          $56,142
+                          <a href="#" class="text-muted">
+                            <i class="fas fa-search"></i>
+                          </a>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Philip Chaney
+                          <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                          Perfect Item
+                          <span class="badge bg-danger">NEW</span>
+                        </td>
+                        <td>$199 USD</td>
+                        <td>
+                          <small class="text-success mr-1">
+                            <i class="fas fa-arrow-up"></i>
+                            63%
+                          </small>
+                          87 Sold
                         </td>
                         <td>
-                          Korea, South
-                        </td>
-                        <td>
-                          Overland Park
-                        </td>
-                        <td class="text-center">
-                          $38,735
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Doris Greene
-                        </td>
-                        <td>
-                          Malawi
-                        </td>
-                        <td>
-                          Feldkirchen in Kärnten
-                        </td>
-                        <td class="text-center">
-                          $63,542
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Mason Porter
-                        </td>
-                        <td>
-                          Chile
-                        </td>
-                        <td>
-                          Gloucester
-                        </td>
-                        <td class="text-center">
-                          $78,615
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Jon Porter
-                        </td>
-                        <td>
-                          Portugal
-                        </td>
-                        <td>
-                          Gloucester
-                        </td>
-                        <td class="text-center">
-                          $98,615
+                          <a href="#" class="text-muted">
+                            <i class="fas fa-search"></i>
+                          </a>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
+              <!-- /.card -->
             </div>
+            <!-- /.col-md-6 -->
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Sales</h3>
+                    <a href="javascript:void(0);">View Report</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex">
+                    <p class="d-flex flex-column">
+                      <span class="text-bold text-lg">$18,230.00</span>
+                      <span>Sales Over Time</span>
+                    </p>
+                    <p class="ml-auto d-flex flex-column text-right">
+                      <span class="text-success">
+                        <i class="fas fa-arrow-up"></i> 33.1%
+                      </span>
+                      <span class="text-muted">Since last month</span>
+                    </p>
+                  </div>
+                  <!-- /.d-flex -->
+
+                  <div class="position-relative mb-4">
+                    <canvas id="sales-chart" height="200"></canvas>
+                  </div>
+
+                  <div class="d-flex flex-row justify-content-end">
+                    <span class="mr-2">
+                      <i class="fas fa-square text-primary"></i> This year
+                    </span>
+
+                    <span>
+                      <i class="fas fa-square text-gray"></i> Last year
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card -->
+
+              <div class="card">
+                <div class="card-header border-0">
+                  <h3 class="card-title">Online Store Overview</h3>
+                  <div class="card-tools">
+                    <a href="#" class="btn btn-sm btn-tool">
+                      <i class="fas fa-download"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-tool">
+                      <i class="fas fa-bars"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                    <p class="text-success text-xl">
+                      <i class="ion ion-ios-refresh-empty"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                      <span class="font-weight-bold">
+                        <i class="ion ion-android-arrow-up text-success"></i> 12%
+                      </span>
+                      <span class="text-muted">CONVERSION RATE</span>
+                    </p>
+                  </div>
+                  <!-- /.d-flex -->
+                  <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                    <p class="text-warning text-xl">
+                      <i class="ion ion-ios-cart-outline"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                      <span class="font-weight-bold">
+                        <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
+                      </span>
+                      <span class="text-muted">SALES RATE</span>
+                    </p>
+                  </div>
+                  <!-- /.d-flex -->
+                  <div class="d-flex justify-content-between align-items-center mb-0">
+                    <p class="text-danger text-xl">
+                      <i class="ion ion-ios-people-outline"></i>
+                    </p>
+                    <p class="d-flex flex-column text-right">
+                      <span class="font-weight-bold">
+                        <i class="ion ion-android-arrow-down text-danger"></i> 1%
+                      </span>
+                      <span class="text-muted">REGISTRATION RATE</span>
+                    </p>
+                  </div>
+                  <!-- /.d-flex -->
+                </div>
+              </div>
+            </div>
+            <!-- /.col-md-6 -->
           </div>
+          <!-- /.row -->
         </div>
+        <!-- /.container-fluid -->
       </div>
-
-      <!-- Including footer -->
-      <?php include './partials/footer.php' ?>
-      <?php ob_end_flush(); ?>
-
+      <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
+
+
+    <!-- Including footer -->
+    <?php include './partials/footer.php' ?>
+    <?php ob_end_flush(); ?>
+
   </div>
+  <!-- ./wrapper -->
 
 </body>
 

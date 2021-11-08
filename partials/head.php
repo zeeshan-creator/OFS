@@ -1,37 +1,21 @@
-<?php
-
-// include './auth/login_auth.php';
-
-// $activeNav = "";
-?>
-
-
+<!-- HEAD -->
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="./assets/img/favicon.png">
-  <title>
-    Black Dashboard
-  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OFS</title>
 
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- IonIcons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
-  <!--   Core JS Files   -->
-  <script src="./assets/js/core/jquery.min.js"></script>
-
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-
-  <!-- Nucleo Icons -->
-  <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
-
-  <!-- CSS Files -->
-  <link href="./assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
-
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <!-- <link href="./assets/demo/demo.css" rel="stylesheet" /> -->
+  <!-- jQuery -->
+  <script src="plugins/jquery/jquery.min.js"></script>
 
   <!-- DataTables Script & CSS Links -->
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -41,18 +25,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
 
+
   <style>
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    #DataTables_wrapper {
+      padding-top: 25px;
+      background-color: #f4f6f9;
     }
 
-    /* Firefox */
-    input[type=number] {
-      -moz-appearance: textfield;
+    #DataTables_wrapper tbody tr {
+      /* background-color: #f4f6f9 !important; */
     }
   </style>
-
 </head>
+
+<div class="preloader flex-column justify-content-center align-items-center">
+  <img class="animation__shake" src="docs/assets/img/AdminLTELogo.png" alt=" AdminLTELogo" height="60" width="60">
+</div>

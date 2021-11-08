@@ -8,74 +8,47 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Including header -->
+<!-- Including Header -->
 <?php include './partials/head.php' ?>
-<style>
-  #restaurants_filter,
-  #restaurants_filter input,
-  #restaurants_length,
-  #restaurants_length select,
 
-  #restaurants_info,
-  #restaurants_paginate a {
-    color: white !important;
-  }
+<body class="hold-transition sidebar-mini sidebar-collapse">
 
-  #restaurants_paginate span a,
-  #restaurants_length select option {
-    color: black !important;
-  }
-
-  tbody tr {
-    background: none !important;
-  }
-</style>
-
-<body class="" style="color: white">
   <div class="wrapper">
-    <?php
-    // $activeNav = "active";
-    ?>
-    <!-- Including sidebar -->
+
+    <!-- Navbar -->
+    <?php include './partials/nav.php' ?>
+    <!-- End Navbar -->
+
+
+    <!-- Main Sidebar Container -->
     <?php include './partials/sidebar.php' ?>
+    <!-- END Sidebar Container -->
 
-    <div class="main-panel">
-      <!-- Navbar -->
-      <!-- Including nav -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
 
-      <?php include './partials/nav.php' ?>
-      <!-- End Navbar -->
-      <div class="content">
-        <div class="row">
-          <div class="col-lg-3 col-md-3">
-            <a href="./create.restaurants" class="btn btn-primary mb-3">Create Restaurant</a>
-          </div>
-          <div class="col-lg-3 col-md-3 ml-auto">
-            <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
-          </div>
-        </div>
-        <table class="table" id="restaurants">
-          <thead>
-            <tr class="text-center">
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Password</th>
-              <th>Phone</th>
-              <th>Role</th>
-              <!-- <th>Last login</th>
+      <table class="table" id="DataTables">
+        <thead>
+          <tr class="text-center">
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <!-- <th>Last login</th>
               <th>Login Status</th> -->
-              <th>Active Status</th>
-              <!-- <th>created_at</th>
+            <th>Active Status</th>
+            <!-- <th>created_at</th>
               <th>updated_at</th> -->
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $count = 1;
-            while ($row = mysqli_fetch_assoc($results)) {
-              echo "<tr class='text-center'>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $count = 1;
+          while ($row = mysqli_fetch_assoc($results)) {
+            echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['email'] . "</td>
@@ -96,27 +69,25 @@ include("./includes/restaurants/code.fetchRestaurants.php");
                 </button>
               </td>
             </tr>";
-              $count++;
-            }
-            ?>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Including footer -->
-      <?php include './partials/footer.php' ?>
+            $count++;
+          }
+          ?>
+        </tbody>
+      </table>
 
     </div>
-  </div>
-  <script>
-    $(document).ready(function() {
-      $('#restaurants').DataTable({
-        "order": [
-          [0, "desc"]
-        ]
-      });
-    });
+    <!-- /.content-wrapper -->
 
+
+    <!-- Including footer -->
+    <?php include './partials/footer.php' ?>
+    <?php ob_end_flush(); ?>
+
+  </div>
+  <!-- ./wrapper -->
+
+
+  <script>
     function deleterestaurant(id) {
       Swal.fire({
         title: 'Are you sure?',

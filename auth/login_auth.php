@@ -5,6 +5,13 @@ require('./config/db.php');
 
 $db;
 
+
+if (!isset($_SESSION['name'])) {
+   // header("Location: login");
+   echo '<script>window.location.href = "login";</script>';
+   exit();
+}
+
 if (isset($_SESSION['name'])) {
    if ($_SESSION['role'] == "admin") {
       $db = 'admin';
@@ -54,11 +61,7 @@ if (isset($_SESSION['name'])) {
    }
 }
 
-if (!isset($_SESSION['name'])) {
-   // header("Location: login");
-   echo '<script>window.location.href = "login";</script>';
-   exit();
-}
+
 
 
 function sessionalteration()

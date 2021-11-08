@@ -7,30 +7,30 @@ include './auth/!=main_branch_auth.php';
 include("./includes/restaurants/products/code.updateProduct.php");
 
 if (!isset($_GET['id'])) {
-   echo '<script>window.location.href = "products";</script>';
-   exit();
+  echo '<script>window.location.href = "products";</script>';
+  exit();
 }
 
 if (isset($_GET['id'])) {
-   $id = trim($_GET['id']);
+  $id = trim($_GET['id']);
 
-   $product_query = "SELECT * FROM products WHERE id='$id' LIMIT 1";
-   $result = mysqli_query($conn, $product_query);
-   $row = mysqli_fetch_assoc($result);
+  $product_query = "SELECT * FROM products WHERE id='$id' LIMIT 1";
+  $result = mysqli_query($conn, $product_query);
+  $row = mysqli_fetch_assoc($result);
 
-   if ($row) {
-      // Retrieve individual field value
-      $name = $row["name"];
-      $price = $row["price"];
-      $photo = $row["photo"];
-      $description = $row["description"];
-      $categoryID = $row["category_id"];
-      $item_availability = $row["item_availability"];
-      $active_status = $row["active_status"];
-   } else {
-      echo '<script>window.location.href = "products";</script>';
-      exit();
-   }
+  if ($row) {
+    // Retrieve individual field value
+    $name = $row["name"];
+    $price = $row["price"];
+    $photo = $row["photo"];
+    $description = $row["description"];
+    $categoryID = $row["category_id"];
+    $item_availability = $row["item_availability"];
+    $active_status = $row["active_status"];
+  } else {
+    echo '<script>window.location.href = "products";</script>';
+    exit();
+  }
 }
 ob_end_flush();
 
@@ -38,163 +38,163 @@ $category_query = "SELECT id,category_name FROM categories WHERE restaurant_id =
 $result = mysqli_query($conn, $category_query);
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Including header -->
+<!-- Including Header -->
 <?php include './partials/head.php' ?>
-<style>
-   option {
-      color: black !important;
-   }
-</style>
 
-<body class="">
-   <div class="wrapper">
+<body class="hold-transition sidebar-mini sidebar-collapse">
 
-      <!-- Including sidebar -->
-      <?php include './partials/sidebar.php' ?>
+  <div class="wrapper">
+
+    <!-- Navbar -->
+    <?php include './partials/nav.php' ?>
+    <!-- End Navbar -->
 
 
-      <div class="main-panel">
-         <!-- Navbar -->
-         <!-- Including nav -->
+    <!-- Main Sidebar Container -->
+    <?php include './partials/sidebar.php' ?>
+    <!-- END Sidebar Container -->
 
-         <?php include './partials/nav.php' ?>
-         <!-- End Navbar -->
-         <div class="content">
-            <div class="row">
-               <div class="card">
-                  <div class="card-body">
-                     <?php include('./errors.php'); ?>
-                     <form method="POST" class="needs-validation" novalidate>
-                        <div class="form-row">
-                           <input type="hidden" name="id" value="<?php echo $id; ?>">
-                           <div class=" col-md-6 mb-3">
-                              <label for="productname">Product name</label>
-                              <input type="text" class="form-control" value="<?php echo $name; ?>" name="productName" min="3" max="15" placeholder="Enter product Name" id="productname" required>
-                              <div class="invalid-feedback">
-                                 Please enter a product name
-                              </div>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="price">price</label>
-                              <input type="number" class="form-control" value="<?php echo $price; ?>" name="price" placeholder="Enter product price" id="price" required>
-                              <div class="invalid-feedback">
-                                 Please enter a product price
-                              </div>
-                           </div>
-                           <div class="col-md-12 mb-6">
-                              <label for="description">Product description</label>
-                              <textarea type="text" class="form-control" name="description" placeholder="Enter Product description" id="description" required><?php echo $description; ?></textarea>
-                              <div class="invalid-feedback">
-                                 Please enter a Product description
-                              </div>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="photo">Products photo</label>
-                              <input type="text" class="form-control" value="<?php echo $photo; ?>" name="photo" placeholder="Enter photo" id="photo" required>
-                              <div class="invalid-feedback">
-                                 Please enter a product photo
-                              </div>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="activeStatus">Active Status</label>
-                              <select class="form-control" id="activeStatus" name="active_status" required>
-                                 <?php
-                                 if ($active_status == "active") {
-                                    echo '<option value="active" selected>Active</option>
-                                          <option value="inactive">Inactive</option>';
-                                 }
-                                 if ($active_status == "inactive") {
-                                    echo '<option value="inactive" selected>Inactive</option>
-                                       <option value="active">Active</option>';
-                                 }
-                                 ?>
-                              </select>
-                              <div class="invalid-feedback">
-                                 Please enter a active status
-                              </div>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="itemavailabilitySELECT">Item availability</label>
-                              <select class="form-control" id="itemavailabilitySELECT" name="item_availability" required>
-                                 <?php
-                                 if ($item_availability == "available") {
-                                    echo '<option value="available" selected>Available</option>
-                                          <option value="not_available">not Available</option>';
-                                 }
-                                 if ($item_availability == "not_available") {
-                                    echo '<option value="not_available" selected>Not Available</option>
-                                       <option value="available">Available</option>';
-                                 }
-                                 ?>
-                              </select>
-                              <div class="invalid-feedback">
-                                 Please enter a item availability
-                              </div>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="categoriesSelect">Category</label>
-                              <select class="form-control" id="categoriesSelect" name="category" required>
-                                 <?php
-                                 while ($row = mysqli_fetch_array($result)) {
-                                    if ($row['id'] == $categoryID) {
-                                       echo "<option selected value='" . $row['id'] . "'>" . $row['category_name'] .  "</option>";
-                                       continue;
-                                    }
-                                    echo "<option value='" . $row['id'] . "'>" . $row['category_name'] . "</option>";
-                                    // displaying data in option menu
-                                 }
-                                 ?>
-                              </select>
-                              <div class="invalid-feedback">
-                                 Please enter a category
-                              </div>
-                           </div>
-                        </div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
 
-                        <button class="btn btn-primary float-right" type="submit">Submit form</button>
-                        <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
+      <div class="row">
+        <div class="card">
+          <div class="card-body">
+            <?php include('./errors.php'); ?>
+            <form method="POST" class="needs-validation" novalidate>
+              <div class="form-row">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                <div class=" col-md-6 mb-3">
+                  <label for="productname">Product name</label>
+                  <input type="text" class="form-control" value="<?php echo $name; ?>" name="productName" min="3" max="15" placeholder="Enter product Name" id="productname" required>
+                  <div class="invalid-feedback">
+                    Please enter a product name
                   </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="price">price</label>
+                  <input type="number" class="form-control" value="<?php echo $price; ?>" name="price" placeholder="Enter product price" id="price" required>
+                  <div class="invalid-feedback">
+                    Please enter a product price
+                  </div>
+                </div>
+                <div class="col-md-12 mb-6">
+                  <label for="description">Product description</label>
+                  <textarea type="text" class="form-control" name="description" placeholder="Enter Product description" id="description" required><?php echo $description; ?></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a Product description
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="photo">Products photo</label>
+                  <input type="text" class="form-control" value="<?php echo $photo; ?>" name="photo" placeholder="Enter photo" id="photo" required>
+                  <div class="invalid-feedback">
+                    Please enter a product photo
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="activeStatus">Active Status</label>
+                  <select class="form-control" id="activeStatus" name="active_status" required>
+                    <?php
+                    if ($active_status == "active") {
+                      echo '<option value="active" selected>Active</option>
+                                          <option value="inactive">Inactive</option>';
+                    }
+                    if ($active_status == "inactive") {
+                      echo '<option value="inactive" selected>Inactive</option>
+                                       <option value="active">Active</option>';
+                    }
+                    ?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please enter a active status
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="itemavailabilitySELECT">Item availability</label>
+                  <select class="form-control" id="itemavailabilitySELECT" name="item_availability" required>
+                    <?php
+                    if ($item_availability == "available") {
+                      echo '<option value="available" selected>Available</option>
+                                          <option value="not_available">not Available</option>';
+                    }
+                    if ($item_availability == "not_available") {
+                      echo '<option value="not_available" selected>Not Available</option>
+                                       <option value="available">Available</option>';
+                    }
+                    ?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please enter a item availability
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="categoriesSelect">Category</label>
+                  <select class="form-control" id="categoriesSelect" name="category" required>
+                    <?php
+                    while ($row = mysqli_fetch_array($result)) {
+                      if ($row['id'] == $categoryID) {
+                        echo "<option selected value='" . $row['id'] . "'>" . $row['category_name'] .  "</option>";
+                        continue;
+                      }
+                      echo "<option value='" . $row['id'] . "'>" . $row['category_name'] . "</option>";
+                      // displaying data in option menu
+                    }
+                    ?>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please enter a category
+                  </div>
+                </div>
+              </div>
 
-                  </form>
+              <button class="btn btn-primary float-right" type="submit">Submit form</button>
+              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
+          </div>
 
-                  <script>
-                     // Example starter JavaScript for disabling form submissions if there are invalid fields
-                     (function() {
-                        'use strict';
-                        window.addEventListener('load', function() {
-                           // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                           var forms = document.getElementsByClassName('needs-validation');
-                           // Loop over them and prevent submission
-                           var validation = Array.prototype.filter.call(forms, function(form) {
-                              form.addEventListener('submit', function(event) {
-                                 if (form.checkValidity() === false) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                 }
-                                 form.classList.add('was-validated');
-                              }, false);
-                           });
-                        }, false);
-                     })();
+          </form>
 
-                     // GO BACK 
-                     function goBack() {
-                        window.history.back();
-                     }
-                  </script>
-               </div>
-            </div>
-         </div>
+          <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+              'use strict';
+              window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                  form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                  }, false);
+                });
+              }, false);
+            })();
 
-         <!-- Including footer -->
-         <?php include './partials/footer.php' ?>
-
+            // GO BACK 
+            function goBack() {
+              window.history.back();
+            }
+          </script>
+        </div>
       </div>
-   </div>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+
+    <!-- Including footer -->
+    <?php include './partials/footer.php' ?>
+    <?php ob_end_flush(); ?>
+
+  </div>
+  <!-- ./wrapper -->
 
 </body>
 
