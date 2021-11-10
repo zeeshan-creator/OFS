@@ -62,8 +62,11 @@ if (isset($_GET['id'])) {
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="card">
+      <div class="row m-1">
+        <div class="card card-info w-100 p-2">
+          <div class="card-header">
+            <h3 class="card-title">Edit Restaurant</h3>
+          </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>
@@ -137,7 +140,6 @@ if (isset($_GET['id'])) {
               <button class="btn btn-primary float-right" type="submit">Submit form</button>
               <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
           </div>
-
           </form>
 
           <script>
@@ -169,34 +171,37 @@ if (isset($_GET['id'])) {
       </div>
 
       <!-- SUB BRANCHES -->
-      <div class="row">
-        <div class="col-lg-3 col-md-3">
-          <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
+      <div class="row mt-5 text-center">
+        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              SUB-BRANCHES
+            </span>
+          </h1>
+        </div>
+        <div class=" ml-auto mt-3">
+          <a href="./create.sub_branch" class="btn btn-primary mb-3 mr-4">Create Sub Branch</a>
         </div>
       </div>
-      <div class="row mt-5">
-        <div class="col-lg-3 col-md-3">
-          <h1 class="">Sub-Branches</h1>
-        </div>
-      </div>
-      <table class="table" id="sub_branches">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Active Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          while ($row = mysqli_fetch_assoc($sub_branches)) {
-            echo "<tr class='text-center'>
+      <div class="p-3">
+        <table class="table" id="sub_branches">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <th>Active Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            while ($row = mysqli_fetch_assoc($sub_branches)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['email'] . "</td>
@@ -206,84 +211,106 @@ if (isset($_GET['id'])) {
               <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                 <a href='update.sub_branch?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-settings'></i>
+                 <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleteSub_branch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-simple-remove'></i>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
       <!-- CATEGORIES -->
-      <div class="row mt-5">
-        <div class="col-lg-3 col-md-3">
-          <h1 class="">Categories</h1>
+      <div class="row mt-5  text-center">
+        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              CATEGORIES
+            </span>
+          </h1>
         </div>
       </div>
-      <table class="table" id="categories">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>category name</th>
-            <th>Description</th>
-            <th>Published</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          $productsIndex = 0;
-          while ($row = mysqli_fetch_assoc($categories)) {
-            echo "<tr class='text-center'>
+      <div class="p-3">
+
+        <table class="table" id="categories">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>category name</th>
+              <th>Description</th>
+              <th>Published</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            $productsIndex = 0;
+            while ($row = mysqli_fetch_assoc($categories)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['category_name'] . "</td>
               <td>" . $row['category_desc'] . "</td>
               <td>" . $row['created_at'] . "</td>
               <td class='td-actions text-right'>
                 <a href='update.restaurantCategories?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-settings'></i>
+                 <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleterestaurantCategory(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-simple-remove'></i>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
       <!-- products -->
-      <div class="row mt-5">
-        <div class="col-lg-3 col-md-3">
-          <h1 class="">Products</h1>
+      <div class="row mt-5  text-center">
+        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              PRODUCTS
+            </span>
+          </h1>
         </div>
       </div>
-      <table class="table" id="products">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>Product</th>
-            <th>price</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          while ($row = mysqli_fetch_assoc($products)) {
-            echo "<tr class='text-center'>
+      <div class="p-3">
+
+        <table class="table" id="products">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Product</th>
+              <th>price</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            while ($row = mysqli_fetch_assoc($products)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['productName'] . "</td>
               <td>" . $row['price'] . "</td>
@@ -291,19 +318,24 @@ if (isset($_GET['id'])) {
               <td>" . $row['description'] . "</td>
               <td class='td-actions text-right'>
                 <a href='update.restaurantCategories?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-settings'></i>
+                 <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleterestaurantCategory(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-simple-remove'></i>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
     </div>
     <!-- /.content-wrapper -->

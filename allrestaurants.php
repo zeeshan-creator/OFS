@@ -26,29 +26,48 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+      <div class="row text-center ">
+        <div class="col-lg-12 col-md-12 ml-3 mt-4">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              RESTAURANTS
+            </span>
+          </h1>
+        </div>
+      </div>
 
-      <table class="table" id="DataTables">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <!-- <th>Last login</th>
+      <div class="row">
+        <div class="col-lg-3 col-md-3 ml-3">
+          <a href="./create.restaurants" class="btn btn-primary">Create Restaurant</a>
+        </div>
+        <div class="ml-auto">
+          <a href="./create.sub_branch" class="btn btn-primary mr-4">Create Sub Branch</a>
+        </div>
+      </div>
+
+      <div class="p-3 pt-0">
+        <table class="table" id="DataTables">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <!-- <th>Last login</th>
               <th>Login Status</th> -->
-            <th>Active Status</th>
-            <!-- <th>created_at</th>
+              <th>Active Status</th>
+              <!-- <th>created_at</th>
               <th>updated_at</th> -->
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          while ($row = mysqli_fetch_assoc($results)) {
-            echo "<tr class='text-center'>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            while ($row = mysqli_fetch_assoc($results)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['email'] . "</td>
@@ -58,23 +77,29 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                 <a href='restaurantDetails?id=" . $row['id'] . "' type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-single-02'></i>
+                  <span style='color:white;'>
+                    <i class='fas fa-info-circle'></i>
+                  </span>
                 </a>
                 <a href='update.restaurants?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-settings'></i>
+                 <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleterestaurant(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-simple-remove'></i>
+                 <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
-
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
     </div>
     <!-- /.content-wrapper -->
 

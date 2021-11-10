@@ -1,6 +1,6 @@
 <?php
 include './auth/login_auth.php';
-include './auth/==sub_branch_auth.php';
+include './auth/!=main_branch_auth.php';
 
 include("./includes/sub_branch/code.fetchSub_branches.php");
 
@@ -28,42 +28,46 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 
-      <?php if ($_SESSION['role'] == 'admin') : ?>
-        <div class="row">
-          <div class="col-lg-3 col-md-3">
-            <a href="./create.sub_branch" class="btn btn-primary mb-3">Create Sub Branch</a>
-          </div>
+      <div class="row text-center ">
+        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              SUB-BRANCHES
+            </span>
+          </h1>
         </div>
-      <?php endif ?>
-      <table class="table" id="sub_restaurants">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Phone</th>
-            <?php if ($_SESSION['role'] == 'main_branch') : ?>
-              <th>Active Status</th>
-            <?php endif ?>
-            <?php if ($_SESSION['role'] == 'admin') : ?>
-              <th>Main Branch</th>
-            <?php endif ?>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          $feildName;
-          if ($_SESSION['role'] == 'main_branch') {
-            $feildName = 'active_status';
-          }
-          if ($_SESSION['role'] == 'admin') {
-            $feildName = 'mainBranchName';
-          }
-          while ($row = mysqli_fetch_assoc($results)) {
-            echo "<tr class='text-center'>
+      </div>
+
+      <div class="p-3">
+        <table class="table" id="sub_restaurants">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Phone</th>
+              <?php if ($_SESSION['role'] == 'main_branch') : ?>
+                <th>Active Status</th>
+              <?php endif ?>
+              <?php if ($_SESSION['role'] == 'admin') : ?>
+                <th>Main Branch</th>
+              <?php endif ?>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            $feildName;
+            if ($_SESSION['role'] == 'main_branch') {
+              $feildName = 'active_status';
+            }
+            if ($_SESSION['role'] == 'admin') {
+              $feildName = 'mainBranchName';
+            }
+            while ($row = mysqli_fetch_assoc($results)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['subBranchName'] . "</td>
               <td>" . $row['email'] . "</td>
@@ -83,11 +87,12 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
     </div>
     <!-- /.content-wrapper -->

@@ -28,8 +28,11 @@ include("./includes/restaurants/categories/code.restaurantCategories.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="card">
+      <div class="row m-1">
+        <div class="card card-info w-100 p-2">
+          <div class="card-header">
+            <h3 class="card-title">Edit Restaurant</h3>
+          </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>
@@ -50,7 +53,7 @@ include("./includes/restaurants/categories/code.restaurantCategories.php");
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary float-right" type="submit">Submit form</button>
+              <button class="btn btn-primary float-right mt-3" type="submit">Submit form</button>
           </div>
 
           </form>
