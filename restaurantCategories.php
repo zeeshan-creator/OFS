@@ -27,26 +27,35 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="col-lg-3 col-md-3">
-          <a href="./create.restaurantsCategory" class="btn btn-primary mb-3">Create Category</a>
+      <div class="row text-center">
+        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              Categories
+            </span>
+          </h1>
+        </div>
+        <div class=" ml-auto mt-3">
+          <a href="./create.restaurantsCategory" class="btn btn-primary mb-3 mr-4">Create Category</a>
         </div>
       </div>
-      <table class="table" id="restaurantCategories">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Created at</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          while ($row = mysqli_fetch_assoc($results)) {
-            echo "<tr class='text-center'>
+
+      <div class="p-3">
+        <table class="table" id="restaurantCategories">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Publish Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            while ($row = mysqli_fetch_assoc($results)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['category_name'] . "</td>
               <td>" . $row['category_desc'] . "</td>
@@ -65,11 +74,12 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
     </div>
     <!-- /.content-wrapper -->

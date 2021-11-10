@@ -59,8 +59,11 @@ $result = mysqli_query($conn, $restaurant_query);
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="card">
+      <div class="row m-1">
+        <div class="card card-info w-100 p-2">
+          <div class="card-header">
+            <h3 class="card-title">Edit Sub Branch</h3>
+          </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>

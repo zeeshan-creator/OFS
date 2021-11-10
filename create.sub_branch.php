@@ -28,8 +28,11 @@ $result = mysqli_query($conn, $restaurant_query);
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="card">
+      <div class="row m-1">
+        <div class="card card-info w-100 p-2">
+          <div class="card-header">
+            <h3 class="card-title">Create Sub Branch</h3>
+          </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>
@@ -77,7 +80,7 @@ $result = mysqli_query($conn, $restaurant_query);
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary float-right" type="submit">Submit form</button>
+              <button class="btn btn-primary float-right" type="submit">Create</button>
           </div>
 
           </form>

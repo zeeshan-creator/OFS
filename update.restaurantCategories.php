@@ -1,7 +1,7 @@
 <?php
 
 include './auth/login_auth.php';
-include './auth/!=main_branch_auth.php';
+include './auth/==sub_branch_auth.php';
 
 include("./includes/restaurants/categories/code.updaterestaurantCategories.php");
 
@@ -52,21 +52,24 @@ ob_end_flush();
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="card">
+      <div class="row m-1">
+        <div class="card card-info w-100 p-2">
+          <div class="card-header">
+            <h3 class="card-title">Edit Category</h3>
+          </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>
               <div class="form-row">
                 <input type="hidden" name="categoryId" value="<?php echo $id; ?>">
-                <div class=" col-md-12 mb-6">
+                <div class=" col-md-12 mb-4">
                   <label for="category_name">Category name</label>
                   <input type="text" class="form-control" value="<?php echo $category_name; ?>" name="category_name" placeholder="Enter Category Name" id="category_name" required>
                   <div class="invalid-feedback">
                     Please enter a category name
                   </div>
                 </div>
-                <div class="col-md-12 mb-6">
+                <div class="col-md-12 mb-4">
                   <label for="category_desc">Category description</label>
                   <textarea type="text" class="form-control" value="" name="category_desc" placeholder="Enter category description" id="category_desc" required><?php echo $category_desc; ?></textarea>
                   <div class="invalid-feedback">
@@ -75,8 +78,8 @@ ob_end_flush();
                 </div>
               </div>
 
-              <button class="btn btn-primary float-right" type="submit">Submit form</button>
-              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
+              <button class="btn btn-primary float-right" type="submit">Save</button>
+              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Discard</button>
           </div>
 
           </form>

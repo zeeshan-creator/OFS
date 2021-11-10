@@ -4,9 +4,20 @@ ob_start();
 // require('./config/db.php');
 
 // initializing variables
+$branchId;
+if (isset($_GET['branchId'])) {
+   $branchId = trim($_GET['branchId']);
+   if ($_SESSION['role'] != 'admin') {
+      header("location: restaurantDetails?id=$branchId");
+      exit();
+   }
+} else {
+   $branchId = $_SESSION['id'];
+}
+
 $categoryName;
 $categoryDesc;
-$restaurantID = $_SESSION['id'];
+$restaurantID = $branchId;
 $errors   = array();
 // array_push($errors, "JUST CHECKING");
 
@@ -18,13 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (!empty($categoryName)) {
       // first check the database to make sure 
       // a category does not already exist with the same email 
-      $restaurant_check_query = "SELECT category_name FROM categories 
+      $Category_check_query = "SELECT category_name FROM categories 
       WHERE category_name='$categoryName' LIMIT 1";
-      $result = mysqli_query($conn, $restaurant_check_query);
+      $result = mysqli_query($conn, $Category_check_query);
       $category = mysqli_fetch_assoc($result);
 
       if ($category) { // if category exists
-         if ($category['email'] == $restaurantEmail) {
+         if ($category['restaurant_id'] == $branchId) {
             array_push($errors, "category already exists try something else");
          }
       }
@@ -51,6 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
+         $id;
+         if (isset($_GET['branchId'])) {
+            $id = trim($_GET['branchId']);
+            if ($_SESSION['role'] == 'admin') {
+               header("location: restaurantDetails?id=$id");
+               exit();
+            }
+         }
          header('location: restaurantCategories');
          exit();
       }

@@ -1,6 +1,6 @@
 <?php
 include './auth/login_auth.php';
-include './auth/!=main_branch_auth.php';
+include './auth/==sub_branch_auth.php';
 
 
 include("./includes/restaurants/categories/code.restaurantCategories.php");
@@ -31,13 +31,13 @@ include("./includes/restaurants/categories/code.restaurantCategories.php");
       <div class="row m-1">
         <div class="card card-info w-100 p-2">
           <div class="card-header">
-            <h3 class="card-title">Edit Restaurant</h3>
+            <h3 class="card-title">Create Category</h3>
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>
               <div class="form-row">
-                <div class="col-md-12 mb-6">
+                <div class="col-md-12 mb-3">
                   <label for="categoryName">Category name</label>
                   <input type="text" class="form-control" name="categoryName" min="3" max="15" placeholder="Enter Category Name" id="categoryName" required>
                   <div class="invalid-feedback">
@@ -45,7 +45,7 @@ include("./includes/restaurants/categories/code.restaurantCategories.php");
                   </div>
                 </div>
 
-                <div class="col-md-12 mb-6">
+                <div class="col-md-12 mb-3">
                   <label for="description">Description</label>
                   <textarea rows="5" cols="10" class="form-control" name="categoryDesc" placeholder="Enter description" id="description" required></textarea>
                   <div class="invalid-feedback">
@@ -53,7 +53,7 @@ include("./includes/restaurants/categories/code.restaurantCategories.php");
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary float-right mt-3" type="submit">Submit form</button>
+              <button class="btn btn-primary float-right" type="submit">Create</button>
           </div>
 
           </form>

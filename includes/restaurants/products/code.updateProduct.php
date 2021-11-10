@@ -2,7 +2,7 @@
 ob_start();
 
 // initializing variables
-$id;
+$productID;
 $productName;
 $price;
 $description;
@@ -14,7 +14,7 @@ $errors   = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    // receive all input values from the form
-   $id = mysqli_real_escape_string($conn, trim($_POST['id']));
+   $productID = mysqli_real_escape_string($conn, trim($_POST['productID']));
    $productName = mysqli_real_escape_string($conn, trim($_POST['productName']));
    $price = mysqli_real_escape_string($conn, trim($_POST['price']));
    $description = mysqli_real_escape_string($conn, trim($_POST['description']));
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $product = mysqli_fetch_assoc($result);
 
       if ($product) { // if product exists
-         if ($product['id'] != $id) {
+         if ($product['id'] != $productID) {
             if ($product['name'] == $productName) {
                array_push($errors, "product name already exists try something else");
             }
@@ -92,11 +92,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          `item_availability` = '$item_availability',
          `category_id` = '$category',
          `updated_at` = '$date'
-         WHERE `products`.`id` = $id";
+         WHERE `products`.`id` = $productID";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
+         $id;
+         if (isset($_GET['branchId'])) {
+            $id = trim($_GET['branchId']);
+            if ($_SESSION['role'] == 'admin') {
+               header("location: restaurantDetails?id=$id");
+               exit();
+            }
+         }
          echo '<script>window.location.href = "products";</script>';
          exit();
       }

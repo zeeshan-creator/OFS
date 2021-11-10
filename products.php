@@ -1,6 +1,6 @@
 <?php
 include './auth/login_auth.php';
-include './auth/!=main_branch_auth.php';
+include './auth/==admin_auth.php';
 
 include("./includes/restaurants/products/code.fetchProducts.php");
 
@@ -28,28 +28,36 @@ include("./includes/restaurants/products/code.fetchProducts.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row">
-        <div class="col-lg-3 col-md-3">
-          <a href="./create.products" class="btn btn-primary mb-3">Add Product</a>
+      <div class="row text-center">
+        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+          <h1 class="">
+            <span style="border-bottom: 3px double;">
+              Products
+            </span>
+          </h1>
+        </div>
+        <div class=" ml-auto mt-3">
+          <a href="./create.products" class="btn btn-primary mb-3 mr-4">Create Products</a>
         </div>
       </div>
-      <table class="table" id="products">
-        <thead>
-          <tr class="text-center">
-            <th>#</th>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>category</th>
-            <th>Publish</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $count = 1;
-          while ($row = mysqli_fetch_assoc($results)) {
-            echo "<tr class='text-center'>
+      <div class="p-3">
+        <table class="table" id="products">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>category</th>
+              <th>Publish Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            while ($row = mysqli_fetch_assoc($results)) {
+              echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['productName'] . "</td>
               <td>" . $row['price'] . "</td>
@@ -57,23 +65,25 @@ include("./includes/restaurants/products/code.fetchProducts.php");
               <td>" . $row['categoryName'] . "</td>
               <td>" . $row['created_at'] . "</td>
               <td class='td-actions text-right'>
-               <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-single-02'></i>
-                </button> -->
-                <a href='update.products?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-settings'></i>
+                <a href='update.products?productID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                  <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-simple-remove'></i>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
                 </button>
               </td>
             </tr>";
-            $count++;
-          }
-          ?>
-        </tbody>
-      </table>
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
 
     </div>
     <!-- /.content-wrapper -->

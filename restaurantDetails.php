@@ -239,6 +239,9 @@ if (isset($_GET['id'])) {
             </span>
           </h1>
         </div>
+        <div class=" ml-auto mt-3">
+          <a href='./create.restaurantsCategory?branchId=<?php echo $id ?>' class="btn btn-primary mb-3 mr-4">Add Categories</a>
+        </div>
       </div>
       <div class="p-3">
 
@@ -292,6 +295,9 @@ if (isset($_GET['id'])) {
             </span>
           </h1>
         </div>
+        <div class=" ml-auto mt-3">
+          <a href="./create.products?branchId=<?php echo $id ?>" class="btn btn-primary mb-3 mr-4">Add Products</a>
+        </div>
       </div>
       <div class="p-3">
 
@@ -317,13 +323,13 @@ if (isset($_GET['id'])) {
               <td>" . $row['categoryName'] . "</td>
               <td>" . $row['description'] . "</td>
               <td class='td-actions text-right'>
-                <a href='update.restaurantCategories?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                <a href='update.products?productID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                  <span style='color:white;'>
                     <i class='far fa-edit'></i>
                   </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deleterestaurantCategory(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
@@ -428,6 +434,43 @@ if (isset($_GET['id'])) {
                 type: 'POST',
                 data: {
                   categoryID: id
+                },
+              })
+              .done(function(response) {
+                if (response == 1) {
+                  Swal.fire('Deleted!', "Records deleted", "success");
+                }
+                if (response == 0) {
+                  Swal.fire('INVALID ID!', "Something went wrong", "error");
+                }
+                location.reload();
+              })
+              .fail(function() {
+                swal('Oops...', 'Something went wrong!', 'error');
+              });
+          });
+        },
+        allowOutsideClick: false
+      });
+    }
+
+    function deleteproducts(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function() {
+          return new Promise(function(resolve) {
+            $.ajax({
+                url: 'code.deleteProduct',
+                type: 'POST',
+                data: {
+                  productID: id
                 },
               })
               .done(function(response) {
