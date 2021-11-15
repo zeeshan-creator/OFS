@@ -1,7 +1,6 @@
 <?php
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
-
 include("./includes/restaurants/products/code.fetchProducts.php");
 
 ?>
@@ -36,9 +35,13 @@ include("./includes/restaurants/products/code.fetchProducts.php");
             </span>
           </h1>
         </div>
-        <div class=" ml-auto mt-3">
-          <a href="./create.products" class="btn btn-primary mb-3 mr-4">Create Products</a>
-        </div>
+
+        <?php if ($_SESSION['role'] == 'main_branch') : ?>
+          <div class=" ml-auto mt-3">
+            <a href="./create.products" class="btn btn-primary mb-3 mr-4">Create Products</a>
+          </div>
+        <?php endif ?>
+
       </div>
       <div class="p-3">
         <table class="table" id="products">
@@ -49,35 +52,50 @@ include("./includes/restaurants/products/code.fetchProducts.php");
               <th>Price</th>
               <th>Description</th>
               <th>category</th>
-              <th>Publish Date</th>
-              <th>Actions</th>
+              <?php if ($_SESSION['role'] == 'main_branch') : ?>
+                <th>Active Status</th>
+              <?php endif ?>
+              <!-- <?php if ($_SESSION['role'] == 'sub_branch') : ?>
+                <th>Availability</th>
+              <?php endif ?> -->
+              <?php if ($_SESSION['role'] == 'main_branch') : ?>
+                <th>Actions</th>
+              <?php endif ?>
             </tr>
           </thead>
           <tbody>
             <?php
             $count = 1;
+            $feildName;
+            if ($_SESSION['role'] == 'main_branch') {
+              $feildName = 'active_status';
+            }
+
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['productName'] . "</td>
               <td>" . $row['price'] . "</td>
               <td>" . $row['description'] . "</td>
-              <td>" . $row['categoryName'] . "</td>
-              <td>" . $row['created_at'] . "</td>
-              <td class='td-actions text-right'>
-                <a href='update.products?productID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <span style='color:white;'>
-                    <i class='far fa-edit'></i>
-                  </span>
-                </a>
-                <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <span style='color:white;'>
-                    <i class='fas fa-trash-alt'></i>
-                  </span>
-                </button>
-              </td>
-            </tr>";
+              <td>" . $row['categoryName'] . "</td>";
+
+              if ($_SESSION['role'] == 'main_branch') {
+                echo "<td>" . $row[$feildName] . "</td>";
+                echo "<td class='td-actions text-right'>
+                          <a href='update.products?productID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                            <span style='color:white;'>
+                              <i class='far fa-edit'></i>
+                            </span>
+                          </a>
+                          <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                          s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                            <span style='color:white;'>
+                              <i class='fas fa-trash-alt'></i>
+                            </span>
+                          </button>
+                        </td>
+                      </tr>";
+              }
               $count++;
             }
             ?>
