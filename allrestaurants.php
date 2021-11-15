@@ -46,7 +46,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
       </div>
 
       <div class="p-3 pt-0">
-        <table class="table" id="DataTables">
+        <table class="table" id="allRestaurants">
           <thead>
             <tr class="text-center">
               <th>#</th>
@@ -100,6 +100,8 @@ include("./includes/restaurants/code.fetchRestaurants.php");
           </tbody>
         </table>
       </div>
+
+
     </div>
     <!-- /.content-wrapper -->
 
@@ -113,6 +115,20 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 
 
   <script>
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    $("#allRestaurants").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#allRestaurants_wrapper .col-md-6:eq(0)');
+
     function deleterestaurant(id) {
       Swal.fire({
         title: 'Are you sure?',

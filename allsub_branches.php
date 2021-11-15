@@ -75,15 +75,16 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
               <td>" . $row['phone'] . "</td>
               <td>" . $row[$feildName] . "</td>
               <td class='td-actions text-right'>
-               <!-- <button type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-single-02'></i>
-                </button> -->
                 <a href='update.sub_branch?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-settings'></i>
+                  <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleteSub_branch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
-                  <i class='tim-icons icon-simple-remove'></i>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
                 </button>
               </td>
             </tr>";

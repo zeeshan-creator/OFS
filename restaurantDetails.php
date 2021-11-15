@@ -137,8 +137,8 @@ if (isset($_GET['id'])) {
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary float-right" type="submit">Submit form</button>
-              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
+              <button class="btn btn-primary float-right" type="submit">Save</button>
+              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Discard</button>
           </div>
           </form>
 
@@ -266,7 +266,7 @@ if (isset($_GET['id'])) {
               <td>" . $row['category_desc'] . "</td>
               <td>" . $row['created_at'] . "</td>
               <td class='td-actions text-right'>
-                <a href='update.restaurantCategories?id=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                <a href='update.restaurantCategories?id=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                  <span style='color:white;'>
                     <i class='far fa-edit'></i>
                   </span>

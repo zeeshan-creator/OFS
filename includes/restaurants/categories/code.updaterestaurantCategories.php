@@ -52,7 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
-         // header('location: allrestaurants');
+         $id;
+         if (isset($_GET['branchId'])) {
+            $id = trim($_GET['branchId']);
+            if ($_SESSION['role'] == 'admin') {
+               header("location: restaurantDetails?id=$id");
+               exit();
+            }
+         }
          echo '<script>window.location.href = "restaurantCategories";</script>';
          exit();
       }

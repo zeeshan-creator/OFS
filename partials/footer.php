@@ -17,15 +17,6 @@
 <script src="dist/js/adminlte.min.js"></script>
 
 
-<script>
-  $(document).ready(function() {
-    $('#DataTables').DataTable({
-      "order": [
-        [0, "desc"]
-      ]
-    });
-  });
-</script>
 
 <!-- OPTIONAL SCRIPTS -->
 <script src="plugins/chart.js/Chart.min.js"></script>

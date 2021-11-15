@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OFS</title>
 
+
+  <link rel="shortcut icon" href="dist\img\AdminLTELogo.png" type="image/x-icon">
   <!-- Google Font: Source Sans Pro -->
-  <link rel="shortcut icon" href="docs/assets/img/AdminLTELogo.png" type="image/x-icon">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -20,23 +21,14 @@
 
   <!-- DataTables Script & CSS Links -->
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-  <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <!-- <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 
   <!-- Sweet Alert Script & CSS Links -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
+  <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
 
-  <style>
-    #DataTables_wrapper {
-      padding-top: 25px;
-      background-color: #f4f6f9;
-    }
-
-    #DataTables_wrapper tbody tr {
-      /* background-color: #f4f6f9 !important; */
-    }
-  </style>
 </head>
 
 <div class="preloader flex-column justify-content-center align-items-center">

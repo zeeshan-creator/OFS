@@ -160,8 +160,8 @@ $result = mysqli_query($conn, $restaurant_query);
                 <?php endif ?>
               </div>
 
-              <button class="btn btn-primary float-right" type="submit">Submit form</button>
-              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Cancel</button>
+              <button class="btn btn-primary float-right" type="submit">Save</button>
+              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Discard</button>
           </div>
 
           </form>
