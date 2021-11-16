@@ -62,7 +62,7 @@ include("./includes/restaurants/code.createrestaurants.php");
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary float-right" type="submit">Submit form</button>
+              <button class="btn btn-primary float-right" type="submit">save</button>
           </div>
 
           </form>

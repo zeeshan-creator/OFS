@@ -32,6 +32,9 @@ if (isset($_GET['id'])) {
     $category_query = "SELECT * FROM categories WHERE restaurant_id = '$id'";
     $categories = mysqli_query($conn, $category_query) or die(mysqli_error($conn));
 
+    $customer_query = "SELECT * FROM customers WHERE restaurant_id = '$id'";
+    $customers = mysqli_query($conn, $customer_query) or die(mysqli_error($conn));
+
     $product_query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = '$id'";
     $products = mysqli_query($conn, $product_query) or die(mysqli_error($conn));
   } else {
@@ -62,7 +65,7 @@ if (isset($_GET['id'])) {
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row m-1">
+      <div class="row mx-3 mb-2 pt-2">
         <div class="card card-info w-100 p-2">
           <div class="card-header">
             <h3 class="card-title">Edit Restaurant</h3>
@@ -171,18 +174,19 @@ if (isset($_GET['id'])) {
       </div>
 
       <!-- SUB BRANCHES -->
-      <div class="row mt-5 text-center">
-        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
           <h1 class="">
-            <span style="border-bottom: 3px double;">
+            <span style="border-bottom: 3px double black;">
               SUB-BRANCHES
             </span>
           </h1>
         </div>
-        <div class=" ml-auto mt-3">
-          <a href="./create.sub_branch" class="btn btn-primary mb-3 mr-4">Create Sub Branch</a>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.sub_branch" class="btn btn-primary float-right">Create Sub Branch</a>
         </div>
       </div>
+
       <div class="p-3">
         <table class="table" id="sub_branches">
           <thead>
@@ -231,16 +235,16 @@ if (isset($_GET['id'])) {
       </div>
 
       <!-- CATEGORIES -->
-      <div class="row mt-5  text-center">
-        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
           <h1 class="">
-            <span style="border-bottom: 3px double;">
+            <span style="border-bottom: 3px double black;">
               CATEGORIES
             </span>
           </h1>
         </div>
-        <div class=" ml-auto mt-3">
-          <a href='./create.restaurantsCategory?branchId=<?php echo $id ?>' class="btn btn-primary mb-3 mr-4">Add Categories</a>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href='./create.restaurantsCategory?branchId=<?php echo $id ?>' class="btn btn-primary float-right">Add Categories</a>
         </div>
       </div>
       <div class="p-3">
@@ -287,20 +291,20 @@ if (isset($_GET['id'])) {
       </div>
 
       <!-- products -->
-      <div class="row mt-5  text-center">
-        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
           <h1 class="">
-            <span style="border-bottom: 3px double;">
+            <span style="border-bottom: 3px double black;">
               PRODUCTS
             </span>
           </h1>
         </div>
-        <div class=" ml-auto mt-3">
-          <a href="./create.products?branchId=<?php echo $id ?>" class="btn btn-primary mb-3 mr-4">Add Products</a>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.products?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Products</a>
         </div>
       </div>
-      <div class="p-3">
 
+      <div class="p-3">
         <table class="table" id="products">
           <thead>
             <tr class="text-center">
@@ -330,6 +334,66 @@ if (isset($_GET['id'])) {
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
+                </button>
+              </td>
+            </tr>";
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
+
+      <!-- CUSTOMERS -->
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
+          <h1 class="">
+            <span style="border-bottom: 3px double black;">
+              CUSTOMERS
+            </span>
+          </h1>
+        </div>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.customers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Create Sub Branch</a>
+        </div>
+      </div>
+      <div class="p-3">
+
+        <table class="table" id="customers">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Phone</th>
+              <th>status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            while ($row = mysqli_fetch_assoc($customers)) {
+              echo "<tr class='text-center'>
+              <td class='text-center'>" . $count . " </td>
+              <td>" . $row['first_name'] . " " . $row['last_name'] . "</td>
+              <td>" . $row['email'] . "</td>
+              <td>" . $row['password'] . "</td>
+              <td>" . $row['phone'] . "</td>
+              <td>" . $row['status'] . "</td>
+              <td class='td-actions text-right'>
+                <!-- <a href='update.products?productID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                 <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
+                </a> -->
+                <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                s onclick='deletecustomer(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
@@ -380,6 +444,14 @@ if (isset($_GET['id'])) {
       });
     });
 
+    $(document).ready(function() {
+      $('#customers').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+    });
+
     function deleteSub_branch(id) {
       Swal.fire({
         title: 'Are you sure?',
@@ -401,7 +473,7 @@ if (isset($_GET['id'])) {
               })
               .done(function(response) {
                 if (response == 1) {
-                  Swal.fire('Deleted!', "Records deleted", "success");
+                  Swal.fire('Deleted!', "Record deleted", "success");
                 }
                 if (response == 0) {
                   Swal.fire('INVALID ID!', "Something went wrong", "error");
@@ -438,7 +510,7 @@ if (isset($_GET['id'])) {
               })
               .done(function(response) {
                 if (response == 1) {
-                  Swal.fire('Deleted!', "Records deleted", "success");
+                  Swal.fire('Deleted!', "Record deleted", "success");
                 }
                 if (response == 0) {
                   Swal.fire('INVALID ID!', "Something went wrong", "error");
@@ -475,7 +547,44 @@ if (isset($_GET['id'])) {
               })
               .done(function(response) {
                 if (response == 1) {
-                  Swal.fire('Deleted!', "Records deleted", "success");
+                  Swal.fire('Deleted!', "Record deleted", "success");
+                }
+                if (response == 0) {
+                  Swal.fire('INVALID ID!', "Something went wrong", "error");
+                }
+                location.reload();
+              })
+              .fail(function() {
+                swal('Oops...', 'Something went wrong!', 'error');
+              });
+          });
+        },
+        allowOutsideClick: false
+      });
+    }
+
+    function deletecustomer(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function() {
+          return new Promise(function(resolve) {
+            $.ajax({
+                url: 'code.deleteCustomer',
+                type: 'POST',
+                data: {
+                  customerID: id
+                },
+              })
+              .done(function(response) {
+                if (response == 1) {
+                  Swal.fire('Deleted!', "Record deleted", "success");
                 }
                 if (response == 0) {
                   Swal.fire('INVALID ID!', "Something went wrong", "error");

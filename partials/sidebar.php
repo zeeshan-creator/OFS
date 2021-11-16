@@ -13,11 +13,11 @@
         <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block"><?php
-                                    if (isset($_SESSION['name'])) {
-                                      echo $_SESSION['name'];
-                                    }
-                                    ?></a>
+        <a href="index" class="d-block"><?php
+                                        if (isset($_SESSION['name'])) {
+                                          echo $_SESSION['name'];
+                                        }
+                                        ?></a>
       </div>
     </div>
 
@@ -61,8 +61,27 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="customers" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Customers </p>
+            </a>
+          </li>
+
         <?php endif ?>
 
+
+        <!-- If the user is (sub_branch) show him/her these links -->
+        <?php if ($_SESSION['role'] == 'sub_branch') : ?>
+
+          <li class="nav-item">
+            <a href="products" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Products </p>
+            </a>
+          </li>
+
+        <?php endif ?>
 
       </ul>
     </nav>

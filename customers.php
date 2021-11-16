@@ -1,7 +1,7 @@
 <?php
 include './auth/login_auth.php';
-include './auth/==admin_auth.php';
-include("./includes/restaurants/products/code.fetchProducts.php");
+include './auth/!=main_branch_auth.php';
+include("./includes/restaurants/customers/code.fetchCustomers.php");
 
 ?>
 
@@ -27,69 +27,54 @@ include("./includes/restaurants/products/code.fetchProducts.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-
       <div class="row">
         <div class="col-lg-5 ml-3 mt-4 mb-2">
           <h1 class="">
-            <span style="border-bottom: 3px double black;">
-              Products
+            <span style="border-bottom: 3px double;">
+              Customers
             </span>
           </h1>
         </div>
-
-        <?php if ($_SESSION['role'] == 'main_branch') : ?>
-          <div class="col-lg-6 ml-auto mt-4 p-4">
-            <a href="./create.products" class="btn btn-primary float-right">Add Products</a>
-          </div>
-        <?php endif ?>
-
       </div>
+
       <div class="p-3">
-        <table class="table" id="products">
+        <table class="table" id="customers">
           <thead>
             <tr class="text-center">
               <th>#</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Description</th>
-              <th>category</th>
-              <?php if ($_SESSION['role'] == 'main_branch') : ?>
-                <th>Active Status</th>
-              <?php endif ?>
-              <!-- <?php if ($_SESSION['role'] == 'sub_branch') : ?>
-                <th>Availability</th>
-              <?php endif ?> -->
-              <?php if ($_SESSION['role'] == 'main_branch') : ?>
-                <th>Actions</th>
-              <?php endif ?>
+              <th>First Name</th>
+              <th>last Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Address</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <?php
             $count = 1;
-            $feildName;
-            if ($_SESSION['role'] == 'main_branch') {
-              $feildName = 'active_status';
-            }
+
 
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
-              <td>" . $row['productName'] . "</td>
-              <td>" . $row['price'] . "</td>
-              <td>" . $row['description'] . "</td>
-              <td>" . $row['categoryName'] . "</td>";
+              <td>" . $row['first_name'] . "</td>
+              <td>" . $row['last_name'] . "</td>
+              <td>" . $row['email'] . "</td>
+              <td>" . $row['password'] . "</td>
+              <td>" . $row['address'] . "</td>
+              <td>" . $row['status'] . "</td>";
 
               if ($_SESSION['role'] == 'main_branch') {
-                echo "<td>" . $row[$feildName] . "</td>";
                 echo "<td class='td-actions text-right'>
-                          <a href='update.products?productID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                          <a href='update.customers?productID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                             <span style='color:white;'>
                               <i class='far fa-edit'></i>
                             </span>
                           </a>
                           <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                          s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                          s onclick='deletecustomers(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                             <span style='color:white;'>
                               <i class='fas fa-trash-alt'></i>
                             </span>
@@ -118,14 +103,14 @@ include("./includes/restaurants/products/code.fetchProducts.php");
 
   <script>
     $(document).ready(function() {
-      $('#products').DataTable({
+      $('#customers').DataTable({
         "order": [
           [0, "desc"]
         ]
       });
     });
 
-    function deleteproducts(id) {
+    function deletecustomers(id) {
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",

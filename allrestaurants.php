@@ -26,24 +26,20 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row text-center ">
-        <div class="col-lg-12 col-md-12 ml-3 mt-4">
+      <div class="row">
+        <div class="col-lg-5 ml-4 mt-4 mb-2">
           <h1 class="">
-            <span style="border-bottom: 3px double;">
+            <span style="border-bottom: 3px double black;">
               RESTAURANTS
             </span>
           </h1>
         </div>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.restaurants" class="btn btn-primary float-right">Create Restaurant</a>
+          <a href="./create.sub_branch" class="btn btn-primary mr-2 float-right">Create Sub Branch</a>
+        </div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-3 col-md-3 ml-3">
-          <a href="./create.restaurants" class="btn btn-primary">Create Restaurant</a>
-        </div>
-        <div class="ml-auto">
-          <a href="./create.sub_branch" class="btn btn-primary mr-4">Create Sub Branch</a>
-        </div>
-      </div>
 
       <div class="p-3 pt-0">
         <table class="table" id="allRestaurants">

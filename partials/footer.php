@@ -5,7 +5,7 @@
     Anything you want
   </div>
   <!-- Default to the left -->
-  <strong>Copyright &copy; 2014-2021 <a href="#">OFS Ltd</a>.</strong> All rights reserved.
+  <strong>Powered By <a href="https://octopusdigitalnetwork.com">Octopus Digital Network</a>.</strong> All rights reserved.
 </footer>
 
 <!-- REQUIRED SCRIPTS -->

@@ -28,7 +28,7 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 
-      <div class="row text-center ">
+      <div class="row  ">
         <div class="col-lg-12 col-md-12 ml-3 mt-3">
           <h1 class="">
             <span style="border-bottom: 3px double;">

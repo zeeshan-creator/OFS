@@ -27,16 +27,16 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <div class="row text-center">
-        <div class="col-lg-12 col-md-12 ml-3 mt-3">
+      <div class="row">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
           <h1 class="">
-            <span style="border-bottom: 3px double;">
+            <span style="border-bottom: 3px double black;">
               Categories
             </span>
           </h1>
         </div>
-        <div class=" ml-auto mt-3">
-          <a href="./create.restaurantsCategory" class="btn btn-primary mb-3 mr-4">Create Category</a>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.restaurantsCategory" class="btn btn-primary float-right">Add Categories</a>
         </div>
       </div>
 
