@@ -49,6 +49,7 @@ include("./includes/restaurants/products/code.fetchProducts.php");
           <thead>
             <tr class="text-center">
               <th>#</th>
+              <th>Image</th>
               <th>Product</th>
               <th>Price</th>
               <th>Description</th>
@@ -64,7 +65,7 @@ include("./includes/restaurants/products/code.fetchProducts.php");
               <?php endif ?>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="w">
             <?php
             $count = 1;
             $feildName;
@@ -74,7 +75,8 @@ include("./includes/restaurants/products/code.fetchProducts.php");
 
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
-              <td class='text-center'>" . $count . " </td>
+              <td>" . $count . " </td>
+              <td style='width:10%;'><img src='includes/restaurants/products/product_imgs/" . $row['photo'] . "' class='img-fluid img-thumbnail' alt='error'></td>
               <td>" . $row['productName'] . "</td>
               <td>" . $row['price'] . "</td>
               <td>" . $row['description'] . "</td>

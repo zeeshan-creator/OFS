@@ -35,8 +35,8 @@ include("./includes/restaurants/code.fetchRestaurants.php");
           </h1>
         </div>
         <div class="col-lg-6 ml-auto mt-4 p-4">
-          <a href="./create.restaurants" class="btn btn-primary float-right">Create Restaurant</a>
-          <a href="./create.sub_branch" class="btn btn-primary mr-2 float-right">Create Sub Branch</a>
+          <a href="./create.sub_branch" class="btn btn-primary float-right">Create Sub Branch</a>
+          <a href="./create.restaurants" class="btn btn-primary mr-2  float-right">Create Restaurant</a>
         </div>
       </div>
 
@@ -51,19 +51,17 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               <th>Password</th>
               <th>Phone</th>
               <th>Role</th>
-              <!-- <th>Last login</th>
-              <th>Login Status</th> -->
               <th>Active Status</th>
-              <!-- <th>created_at</th>
-              <th>updated_at</th> -->
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             <?php
             $count = 1;
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
+              
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['email'] . "</td>
@@ -89,6 +87,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
                   </span>
                 </button>
               </td>
+              
             </tr>";
               $count++;
             }
@@ -111,19 +110,13 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 
 
   <script>
-    $("#example1").DataTable({
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-    $("#allRestaurants").DataTable({
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#allRestaurants_wrapper .col-md-6:eq(0)');
+    $(document).ready(function() {
+      $('#allrestaurants').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+    });
 
     function deleterestaurant(id) {
       Swal.fire({

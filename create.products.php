@@ -47,7 +47,7 @@ $result = mysqli_query($conn, $category_query);
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
+            <form method="POST" class="dropzone" enctype="multipart/form-data" class="needs-validation" novalidate>
               <div class="form-row">
                 <div class=" col-md-6 mb-3">
                   <label for="productname">Product name</label>
@@ -71,11 +71,15 @@ $result = mysqli_query($conn, $category_query);
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="photo">Products photo</label>
-                  <input type="text" class="form-control" name="photo" placeholder="Enter photo" id="photo" required>
+                  <label for="photo">Product Image</label>
+                  <input type="file" class="form-control-file  border rounded py-1" name="photo" placeholder="Select a photo" id="photo" required>
                   <div class="invalid-feedback">
                     Please enter a product photo
                   </div>
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlFile1">Example file input</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                  </div> -->
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="categoriesSelect">Category</label>
@@ -130,6 +134,10 @@ $result = mysqli_query($conn, $category_query);
 
   </div>
   <!-- ./wrapper -->
+
+  <script>
+    Dropzone.discover();
+  </script>
 
 </body>
 

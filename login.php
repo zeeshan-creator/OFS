@@ -3,21 +3,9 @@ include("./includes/code.login.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in (v2)</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-</head>
+  
+<!-- Including Header -->
+<?php include './partials/head.php' ?>
 
 <body class="hold-transition login-page">
   <div class="login-box w-50">
@@ -28,7 +16,9 @@ include("./includes/code.login.php");
       </div>
       <div class="card-body">
         <p class="login-box-msg h5 my-2">Sign in to start your session</p>
-        <?php include('./errors.php'); ?>
+        <div class="er">
+          <?php include('./errors.php'); ?>
+        </div>
         <form method="post">
           <div class="input-group mb-4">
             <input type="email" class="form-control py-4" placeholder="Email" name="email" required>
