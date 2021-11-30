@@ -75,6 +75,12 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="POS" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> POS </p>
+            </a>
+          </li>
 
         <?php endif ?>
 

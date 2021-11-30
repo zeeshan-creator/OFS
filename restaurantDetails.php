@@ -309,6 +309,7 @@ if (isset($_GET['id'])) {
           <thead>
             <tr class="text-center">
               <th>#</th>
+              <th>Image</th>
               <th>Product</th>
               <th>price</th>
               <th>Category</th>
@@ -322,6 +323,7 @@ if (isset($_GET['id'])) {
             while ($row = mysqli_fetch_assoc($products)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
+              <td style='width:10%;'><img src='includes/restaurants/products/product_imgs/" . $row['photo'] . "' class='img-fluid img-thumbnail' alt='error'></td>
               <td>" . $row['productName'] . "</td>
               <td>" . $row['price'] . "</td>
               <td>" . $row['categoryName'] . "</td>
@@ -358,7 +360,7 @@ if (isset($_GET['id'])) {
           </h1>
         </div>
         <div class="col-lg-6 ml-auto mt-4 p-4">
-          <a href="./create.customers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Create Sub Branch</a>
+          <a href="./create.customers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Create Customer</a>
         </div>
       </div>
       <div class="p-3">

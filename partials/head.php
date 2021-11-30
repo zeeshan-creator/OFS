@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
   <!-- jQuery -->
   <script src="plugins/jquery/jquery.min.js"></script>
@@ -28,9 +30,13 @@
   <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
   <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
+  <!-- Ekko Lightbox -->
+  <link rel="stylesheet" href="plugins/ekko-lightbox/ekko-lightbox.css">
+  <!-- <script src="plugins/ekko-lightbox/ekko-lightbox.min.js"></script> -->
+
 
 </head>
 
 <div class="preloader flex-column justify-content-center align-items-center">
-  <img class="animation__shake" src="docs/assets/img/AdminLTELogo.png" alt=" AdminLTELogo" height="60" width="60">
+  <img class="animation__shake" src="docs/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
 </div>

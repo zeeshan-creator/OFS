@@ -1,7 +1,6 @@
 <?php
 include './auth/login_auth.php';
 include './auth/!=main_branch_auth.php';
-
 include("./includes/restaurants/categories/code.fetchCategories.php");
 
 ?>

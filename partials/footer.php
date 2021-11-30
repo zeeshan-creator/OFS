@@ -16,7 +16,8 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 
-
+<!-- Filterizr-->
+<script src="plugins/filterizr/jquery.filterizr.min.js"></script>
 
 <!-- OPTIONAL SCRIPTS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
