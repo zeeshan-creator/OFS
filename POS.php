@@ -3,6 +3,32 @@ include './auth/login_auth.php';
 include './auth/==admin_auth.php';
 include("./includes/restaurants/categories/code.fetchCategories.php");
 
+// unset($_SESSION["shopping_cart"]["burger1"]);
+
+
+if (isset($_POST['action']) && $_POST['action'] == "remove") {
+  if (!empty($_SESSION["shopping_cart"])) {
+    foreach ($_SESSION["shopping_cart"] as $id => $value) {
+      if ($_POST["key"] == $id) {
+        unset($_SESSION["shopping_cart"][$id]);
+        $status = "Product is removed from your cart";
+        // echo 2;
+      }
+      if (empty($_SESSION["shopping_cart"]))
+        unset($_SESSION["shopping_cart"]);
+    }
+  }
+}
+
+
+if (isset($_POST['action']) && $_POST['action'] == "change") {
+  foreach ($_SESSION["shopping_cart"] as &$value) {
+    if ($value['id'] === $_POST["id"]) {
+      $value['quantity'] = $_POST["quantity"];
+      break; // Stop the loop after we've found the product
+    }
+  }
+}
 
 ?>
 
@@ -89,7 +115,7 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
               <div class="card-body">
                 <div class="row">
 
-                  <div class="col-lg-9">
+                  <div class="col-lg-8">
                     <form action="">
 
                       <div class="row">
@@ -152,41 +178,120 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
 
                       </div>
                       <div class="row ml-1 mt-1">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                           <div class="form-group">
                             <label for="customername">Customer's Name</label>
                             <input type="text" class="form-control" name="customerName" id="customername" placeholder="Name">
                           </div>
                         </div>
+                      </div>
 
-                        <div class="col-lg-4">
+                      <div class="row ml-1 mt-1">
+                        <div class="col-lg-6">
                           <div class="form-group">
                             <label for="customerPhone">Customer's Phone</label>
                             <input type="number" name="customerPhone" class="form-control" id="customerPhone" placeholder="Phone">
                           </div>
                         </div>
+                      </div>
 
-                        <div class="col-lg-4">
+                      <div class="row ml-1 mt-1">
+                        <div class="col-lg-6">
                           <div class="form-group">
                             <label for="customerEmail">Customer's Email</label>
                             <input type="email" name="customerEmail" class="form-control" id="customerEmail" placeholder="Email">
                           </div>
                         </div>
-
                       </div>
                     </form>
 
                   </div>
 
-                  <div class="col-lg-3 mb-4">
-                    <h2 class="">Cart</h2>
+                  <div class="col-lg-4 mb-4">
+                    <h2 class="">Cart
+                      <?php
+                      if (!empty($_SESSION["shopping_cart"])) {
+                        $cart_count = count(array_keys($_SESSION["shopping_cart"]));
+                      ?>
+                        : <span><?php echo $cart_count; ?></span>
+                      <?php
+                      }
+                      ?>
+                    </h2>
 
-                    <div class=" text-center my-4">
-                      <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
-                      <p>
-                        Your cart is empty <br>
-                        Add product to get started </p>
-                    </div>
+                    <?php if (empty($_SESSION["shopping_cart"])) : ?>
+                      <div class="text-center my-4">
+                        <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
+                        <p>
+                          Your cart is empty <br>
+                          Add product to get started </p>
+                      </div>
+                    <?php endif ?>
+
+                    <?php $subtotal = 0; ?>
+                    <?php if (!empty($_SESSION["shopping_cart"])) : ?>
+                      <div class="">
+                        <table>
+                          <thead>
+                            <tr class="text-bold">
+                              <td></td>
+                              <td class="pl-2">ITEM</td>
+                              <td class="">QTY</td>
+                              <td class="pl-4">PKR</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($_SESSION["shopping_cart"] as $product) {
+                            ?>
+                              <tr>
+                                <td style='width:60px;height:50px' class="">
+                                  <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
+                                </td>
+                                <td class="pl-2">
+                                  <div class="float-left mr-4">
+                                    <?php echo $product["name"]; ?><br />
+                                  </div>
+                                </td>
+                                <td>
+                                  <form method='post' action=''>
+                                    <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                    <input type='hidden' name='action' value="change" />
+                                    <select name='quantity' class='quantity' onchange="this.form.submit()">
+                                      <option <?php if ($product["quantity"] == 1) echo "selected"; ?> value="1">1</option>
+                                      <option <?php if ($product["quantity"] == 2) echo "selected"; ?> value="2">2</option>
+                                      <option <?php if ($product["quantity"] == 3) echo "selected"; ?> value="3">3</option>
+                                      <option <?php if ($product["quantity"] == 4) echo "selected"; ?> value="4">4</option>
+                                      <option <?php if ($product["quantity"] == 5) echo "selected"; ?> value="5">5</option>
+                                      <?php if ($product["quantity"] > 5) : ?>
+                                        <option <?php if ($product["quantity"]) echo "selected"; ?> value="<?php echo $product["quantity"]; ?>"><?php echo $product["quantity"]; ?></option>
+                                      <?php endif ?>
+                                    </select>
+                                  </form>
+                                </td>
+                                <td>
+                                  <div class="float-left mx-4">
+                                    <?php echo "PKR. " . $product["price"]; ?>
+                                  </div>
+                                  <div class="pl-2 float-right">
+                                    <form method='post' action=''>
+                                      <input type='hidden' name='key' value="<?php echo $product["name"]; ?>" />
+                                      <input type='hidden' name='action' value="remove" />
+                                      <button type='submit' class='remove btn btn-danger'>
+                                        <span style='color:white;'>
+                                          <i class='fas fa-trash-alt'></i>
+                                        </span></button>
+                                    </form>
+                                  </div>
+                                </td>
+                              </tr>
+                            <?php
+                              $subtotal += ($product["price"] * $product["quantity"]);
+                            }
+                            ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    <?php endif ?>
 
                     <br>
                     <p class="lead">Amount</p>
@@ -195,7 +300,7 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
                       <table class="table">
                         <tr>
                           <th style="width:50%">Subtotal:</th>
-                          <td>PKR --.--</td>
+                          <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
                         </tr>
                         <tr>
                           <th>Tax (13%)</th>
@@ -203,11 +308,11 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
                         </tr>
                         <tr>
                           <th>Shipping:</th>
-                          <td>PKR --.--</td>
+                          <td>PKR 150</td>
                         </tr>
                         <tr>
                           <th>Total:</th>
-                          <td>PKR --.--</td>
+                          <td>PKR <?php echo $subtotal ?  $subtotal + 150 : "--.--" ?></td>
                         </tr>
                       </table>
                       <div class="col-12">
@@ -223,7 +328,7 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
 
 
                 <div class="row">
-                  <div class="col-lg-9">
+                  <div class="col-lg-12">
 
                     <div class="">
                       <div class="btn-group w-100 mb-2">
@@ -236,9 +341,10 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
                       </div>
                       <div class="mb-2">
                         <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
+
                       </div>
                     </div>
-                    <div class="">
+                    <div class="col-lg-11">
                       <div class="filter-container p-0 mt-3 row">
 
                         <?php
@@ -253,12 +359,13 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
                           <div class="text-center" style="">
                             <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
                           </div>
-                          <p class="card-text text-bold mt-3 text-sm">PKR. ' . $row['price'] . '</p>
+                          <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                        <button class="mt-1 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
+                          
                         </div>
                       </div>
                     </div>';
                         } ?>
-
                       </div>
                     </div>
 
@@ -291,6 +398,28 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
           $(this).addClass('active');
         });
       })
+
+      function addToCart(id) {
+        $.ajax({
+            url: 'addToCart',
+            type: 'POST',
+            data: {
+              productID: id
+            },
+          })
+          .done(function(response) {
+            if (response == 1) {
+              Swal.fire('Added!', "Product Added", "success");
+              location.reload();
+            }
+            if (response == 0) {
+              Swal.fire('Alreay Exist!', "Product already in cart", "error");
+            }
+          })
+          .fail(function() {
+            swal('Oops...', 'Something went wrong!', 'error');
+          });
+      }
     </script>
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>
