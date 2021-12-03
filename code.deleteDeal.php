@@ -3,8 +3,6 @@ ob_start();
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
 
-
-
 require('./config/db.php');
 
 $id = 0;

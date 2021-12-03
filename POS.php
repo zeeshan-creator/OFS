@@ -8,10 +8,13 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
       if ($_POST["key"] == $id) {
         unset($_SESSION["shopping_cart"][$id]);
         $status = "Product is removed from your cart";
+        echo "<script>window.location.href = 'pos';</script>";
         // echo 2;
       }
-      if (empty($_SESSION["shopping_cart"]))
+      if (empty($_SESSION["shopping_cart"])) {
         unset($_SESSION["shopping_cart"]);
+        echo "<script>window.location.href = 'pos';</script>";
+      }
     }
   }
 }

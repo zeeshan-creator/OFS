@@ -186,7 +186,7 @@ if (isset($_GET['id'])) {
           </h1>
         </div>
         <div class="col-lg-6 ml-auto mt-4 p-4">
-          <a href="./create.sub_branch" class="btn btn-primary float-right">Create Sub Branch</a>
+          <a href="./create.sub_branch?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Create Sub Branch</a>
         </div>
       </div>
 
@@ -396,7 +396,7 @@ if (isset($_GET['id'])) {
               <td>" . $row['deal_desc'] . "</td>
               <td>" . $row["active_status"] . "</td>
               <td class='td-actions text-right'>
-                  <a href='update.deals?dealID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                  <a href='update.deals?dealID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                     <span style='color:white;'>
                       <i class='far fa-edit'></i>
                     </span>
@@ -426,9 +426,9 @@ if (isset($_GET['id'])) {
             </span>
           </h1>
         </div>
-        <div class="col-lg-6 ml-auto mt-4 p-4">
+        <!-- <div class="col-lg-6 ml-auto mt-4 p-4">
           <a href="./create.customers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Create Customer</a>
-        </div>
+        </div> -->
       </div>
       <div class="p-3">
 

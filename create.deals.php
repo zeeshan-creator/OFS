@@ -33,31 +33,41 @@ include("./includes/restaurants/deals/code.Deal.php");
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
-              <div class="form-row">
-                <div class=" col-md-6 mb-3">
-                  <label for="dealName">Deal name</label>
-                  <input type="text" class="form-control" name="dealName" min="3" max="15" placeholder="Enter deal Name" id="dealName" required>
-                  <div class="invalid-feedback">
-                    Please enter a deal name
+            <div class="row">
+              <div class="col-lg-12">
+
+                <form method="POST" class="needs-validation" novalidate>
+                  <div class="form-row">
+                    <div class=" col-lg-6 mb-3">
+                      <label for="dealName">Deal name</label>
+                      <input type="text" class="form-control" name="dealName" min="3" max="15" placeholder="Enter deal Name" id="dealName" required>
+                      <div class="invalid-feedback">
+                        Please enter a deal name
+                      </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <label for="price">price</label>
+                      <input type="number" class="form-control" name="dealPrice" placeholder="Enter deal price" id="price" required>
+                      <div class="invalid-feedback">
+                        Please enter a deal price
+                      </div>
+                    </div>
+                    <div class="col-lg-12 mb-3">
+                      <label for="description">Deal description</label>
+                      <textarea type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required></textarea>
+                      <div class="invalid-feedback">
+                        Please enter a deal description
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="price">price</label>
-                  <input type="number" class="form-control" name="dealPrice" placeholder="Enter deal price" id="price" required>
-                  <div class="invalid-feedback">
-                    Please enter a deal price
-                  </div>
-                </div>
-                <div class="col-md-12 mb-3">
-                  <label for="description">Deal description</label>
-                  <textarea type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required></textarea>
-                  <div class="invalid-feedback">
-                    Please enter a deal description
-                  </div>
-                </div>
+                  <button class="btn btn-primary float-right mb-4" type="submit">ADD</button>
+
+
+
               </div>
-              <button class="btn btn-primary float-right" type="submit">ADD</button>
+            </div>
+
+
           </div>
 
           </form>
