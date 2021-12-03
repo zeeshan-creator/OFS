@@ -9,8 +9,8 @@ require('./config/db.php');
 
 $id = 0;
 
-if (isset($_POST['customerID'])) {
-   $id = mysqli_real_escape_string($conn, $_POST['customerID']);
+if (isset($_POST['id'])) {
+   $id = mysqli_real_escape_string($conn, $_POST['id']);
 }
 if ($id > 0) {
    // Check record exists

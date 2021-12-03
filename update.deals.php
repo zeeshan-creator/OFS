@@ -2,36 +2,34 @@
 
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
+include("./includes/restaurants/deals/code.updateDeal.php");
 
-include("./includes/restaurants/categories/code.updaterestaurantCategories.php");
-
-if (!isset($_GET['id'])) {
-  echo '<script>window.location.href = "restaurantCategories";</script>';
+if (!isset($_GET['dealID'])) {
+  echo '<script>window.location.href = "deals";</script>';
   exit();
 }
 
-if (isset($_GET['id'])) {
-  $id = trim($_GET['id']);
+if (isset($_GET['dealID'])) {
+  $dealID = trim($_GET['dealID']);
 
-  $restaurantCategory_query = "SELECT * FROM categories WHERE id='$id' LIMIT 1";
-  $result = mysqli_query($conn, $restaurantCategory_query);
+  $deal_query = "SELECT * FROM deals WHERE id='$dealID' LIMIT 1";
+  $result = mysqli_query($conn, $deal_query);
   $row = mysqli_fetch_assoc($result);
 
   if ($row) {
     // Retrieve individual field value
-    $id = $row["id"];
-    $category_name = $row["category_name"];
-    $category_desc = $row["category_desc"];
+    $name = $row["deal_name"];
+    $price = $row["deal_price"];
+    $description = $row["deal_desc"];
     $active_status = $row["active_status"];
   } else {
-    // URL doesn't contain valid id. Redirect to restaurantCategories
-    echo '<script>window.location.href = "restaurantCategories";</script>';
+    echo '<script>window.location.href = "deals";</script>';
     exit();
   }
 }
 ob_end_flush();
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,24 +51,39 @@ ob_end_flush();
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+
       <div class="row m-1">
         <div class="card card-info w-100 p-2">
           <div class="card-header">
-            <h3 class="card-title">Edit Category</h3>
+            <h3 class="card-title">Edit Deal</h3>
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" novalidate>
               <div class="form-row">
-                <input type="hidden" name="categoryId" value="<?php echo $id; ?>">
-                <div class=" col-md-12 mb-4">
-                  <label for="category_name">Category name</label>
-                  <input type="text" class="form-control" value="<?php echo $category_name; ?>" name="category_name" placeholder="Enter Category Name" id="category_name" required>
+                <input type="hidden" name="dealID" value="<?php echo $dealID; ?>">
+                <div class=" col-md-6 mb-3">
+                  <label for="dealName">Deal name</label>
+                  <input type="text" class="form-control" value="<?php echo $name; ?>" name="dealName" min="3" max="15" placeholder="Enter deal Name" id="dealName" required>
                   <div class="invalid-feedback">
-                    Please enter a category name
+                    Please enter a deal name
                   </div>
                 </div>
-                <div class="col-md-12 mb-4">
+                <div class="col-md-6 mb-3">
+                  <label for="price">price</label>
+                  <input type="number" class="form-control" value="<?php echo $price; ?>" name="dealPrice" placeholder="Enter deal price" id="price" required>
+                  <div class="invalid-feedback">
+                    Please enter a deal price
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="description">Deal description</label>
+                  <textarea type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required><?php echo $description; ?></textarea>
+                  <div class="invalid-feedback">
+                    Please enter a deal description
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
                   <label for="activeStatus">Active Status</label>
                   <select class="form-control" id="activeStatus" name="active_status" required>
                     <?php
@@ -86,13 +99,6 @@ ob_end_flush();
                   </select>
                   <div class="invalid-feedback">
                     Please enter a active status
-                  </div>
-                </div>
-                <div class="col-md-12 mb-4">
-                  <label for="category_desc">Category description</label>
-                  <textarea type="text" class="form-control" value="" name="category_desc" placeholder="Enter category description" id="category_desc" required><?php echo $category_desc; ?></textarea>
-                  <div class="invalid-feedback">
-                    Please enter category description
                   </div>
                 </div>
               </div>

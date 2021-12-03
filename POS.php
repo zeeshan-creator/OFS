@@ -1,10 +1,6 @@
 <?php
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
-include("./includes/restaurants/categories/code.fetchCategories.php");
-
-// unset($_SESSION["shopping_cart"]["burger1"]);
-
 
 if (isset($_POST['action']) && $_POST['action'] == "remove") {
   if (!empty($_SESSION["shopping_cart"])) {
@@ -334,7 +330,19 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       <div class="btn-group w-100 mb-2">
                         <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
                         <?php
-                        while ($row = mysqli_fetch_assoc($results)) {
+                        if ($_SESSION['role'] == 'main_branch') {
+                          $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $_SESSION['id'] . " AND categories.active_status = 'active'";
+                        }
+
+                        if ($_SESSION['role'] == 'sub_branch') {
+                          $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
+                          $results = mysqli_query($conn, $query);
+                          $row = mysqli_fetch_assoc($results);
+
+                          $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $row['main_branch'] . " AND categories.active_status = 'active'";
+                        }
+                        $categories = mysqli_query($conn, $query);
+                        while ($row = mysqli_fetch_assoc($categories)) {
                           echo '<a class="btn btn-info" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
                         }
                         ?>
@@ -348,8 +356,19 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       <div class="filter-container p-0 mt-3 row">
 
                         <?php
-                        include("./includes/restaurants/products/code.fetchProducts.php");
-                        while ($row = mysqli_fetch_assoc($results)) {
+                        if ($_SESSION['role'] == 'main_branch') {
+                          $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $_SESSION['id'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
+                        }
+
+                        if ($_SESSION['role'] == 'sub_branch') {
+                          $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
+                          $results = mysqli_query($conn, $query);
+                          $row = mysqli_fetch_assoc($results);
+
+                          $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $row['main_branch'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
+                        }
+                        $products = mysqli_query($conn, $query);
+                        while ($row = mysqli_fetch_assoc($products)) {
                           echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
                       <div class="card card-outline card-info">
                         <div class="card-header">
@@ -361,7 +380,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                           </div>
                           <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
                         <button class="mt-1 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
-                          
                         </div>
                       </div>
                     </div>';

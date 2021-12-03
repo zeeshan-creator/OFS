@@ -143,7 +143,7 @@ include("./includes/restaurants/products/code.fetchProducts.php");
                 url: 'code.deleteProduct',
                 type: 'POST',
                 data: {
-                  productID: id
+                  id: id
                 },
               })
               .done(function(response) {
