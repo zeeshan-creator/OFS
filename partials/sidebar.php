@@ -55,6 +55,13 @@
           </li>
 
           <li class="nav-item">
+            <a href="deals" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Deals </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="products" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Products </p>
@@ -92,6 +99,24 @@
             <a href="products" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Products </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="deals" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Deals </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="POS" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> POS </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="Orders" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Orders </p>
             </a>
           </li>
 

@@ -56,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $date = date('Y-m-d H:i:s');
       $query = "INSERT INTO `categories` 
-      (`category_name`, `category_desc`, `created_at`, `restaurant_id`) 
-      VALUES ('$categoryName', '$categoryDesc','$date', $restaurantID)";
+      (`category_name`, `category_desc`, `created_at`, `restaurant_id`,`active_status`) 
+      VALUES ('$categoryName', '$categoryDesc','$date', $restaurantID, 'active')";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 

@@ -35,6 +35,9 @@ if (isset($_GET['id'])) {
     $customer_query = "SELECT * FROM customers WHERE restaurant_id = '$id'";
     $customers = mysqli_query($conn, $customer_query) or die(mysqli_error($conn));
 
+    $deal_query = "SELECT * FROM deals WHERE restaurant_id = '$id'";
+    $deals = mysqli_query($conn, $deal_query) or die(mysqli_error($conn));
+
     $product_query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = '$id'";
     $products = mysqli_query($conn, $product_query) or die(mysqli_error($conn));
   } else {
@@ -122,7 +125,7 @@ if (isset($_GET['id'])) {
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="roleSelect">Active Status</label>
+                  <label for="roleSelect">Status</label>
                   <select class="form-control" id="roleSelect" name="active_status" required>
                     <?php
                     if ($active_status == "active") {
@@ -197,13 +200,14 @@ if (isset($_GET['id'])) {
               <th>Password</th>
               <th>Phone</th>
               <th>Role</th>
-              <th>Active Status</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <?php
             $count = 1;
+            $url = 'code.deleteSub_branch';
             while ($row = mysqli_fetch_assoc($sub_branches)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
@@ -220,7 +224,7 @@ if (isset($_GET['id'])) {
                   </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deleteSub_branch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                 onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
@@ -256,6 +260,7 @@ if (isset($_GET['id'])) {
               <th>category name</th>
               <th>Description</th>
               <th>Published</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -263,12 +268,14 @@ if (isset($_GET['id'])) {
             <?php
             $count = 1;
             $productsIndex = 0;
+            $url = 'code.deleteRestaurantCategory';
             while ($row = mysqli_fetch_assoc($categories)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['category_name'] . "</td>
               <td>" . $row['category_desc'] . "</td>
               <td>" . $row['created_at'] . "</td>
+              <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                 <a href='update.restaurantCategories?id=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                  <span style='color:white;'>
@@ -276,7 +283,7 @@ if (isset($_GET['id'])) {
                   </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deleterestaurantCategory(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
@@ -314,12 +321,14 @@ if (isset($_GET['id'])) {
               <th>price</th>
               <th>Category</th>
               <th>Description</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <?php
             $count = 1;
+            $url = 'code.deleteProduct';
             while ($row = mysqli_fetch_assoc($products)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
@@ -328,6 +337,7 @@ if (isset($_GET['id'])) {
               <td>" . $row['price'] . "</td>
               <td>" . $row['categoryName'] . "</td>
               <td>" . $row['description'] . "</td>
+              <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                 <a href='update.products?productID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                  <span style='color:white;'>
@@ -335,13 +345,70 @@ if (isset($_GET['id'])) {
                   </span>
                 </a>
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deleteproducts(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
                 </button>
               </td>
             </tr>";
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Deals -->
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
+          <h1 class="">
+            <span style="border-bottom: 3px double black;">
+              Deals
+            </span>
+          </h1>
+        </div>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.deals?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Deals</a>
+        </div>
+      </div>
+      <div class="p-3">
+        <table class="table" id="deals">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Deal Name</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="w">
+            <?php
+            $count = 1;
+            $url = 'code.deleteDeal';
+            while ($row = mysqli_fetch_assoc($deals)) {
+              echo "<tr class='text-center'>
+              <td>" . $count . " </td>
+              <td>" . $row['deal_name'] . "</td>
+              <td>" . $row['deal_price'] . "</td>
+              <td>" . $row['deal_desc'] . "</td>
+              <td>" . $row["active_status"] . "</td>
+              <td class='td-actions text-right'>
+                  <a href='update.deals?dealID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='far fa-edit'></i>
+                    </span>
+                  </a>
+                  <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                  s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='fas fa-trash-alt'></i>
+                    </span>
+                  </button>
+                </td>
+              </tr>";
               $count++;
             }
             ?>
@@ -380,6 +447,7 @@ if (isset($_GET['id'])) {
           <tbody>
             <?php
             $count = 1;
+            $url = 'code.deleteCustomer';
             while ($row = mysqli_fetch_assoc($customers)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
@@ -395,7 +463,7 @@ if (isset($_GET['id'])) {
                   </span>
                 </a> -->
                 <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                s onclick='deletecustomer(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
@@ -428,25 +496,21 @@ if (isset($_GET['id'])) {
           [0, "desc"]
         ]
       });
-    });
-
-    $(document).ready(function() {
       $('#categories').DataTable({
         "order": [
           [0, "desc"]
         ]
       });
-    });
-
-    $(document).ready(function() {
       $('#products').DataTable({
         "order": [
           [0, "desc"]
         ]
       });
-    });
-
-    $(document).ready(function() {
+      $('#deals').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
       $('#customers').DataTable({
         "order": [
           [0, "desc"]
@@ -454,7 +518,7 @@ if (isset($_GET['id'])) {
       });
     });
 
-    function deleteSub_branch(id) {
+    function deleteRecord(id, url) {
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -467,121 +531,10 @@ if (isset($_GET['id'])) {
         preConfirm: function() {
           return new Promise(function(resolve) {
             $.ajax({
-                url: 'code.deleteSub_branch',
+                url: url,
                 type: 'POST',
                 data: {
-                  subRestaurantId: id
-                },
-              })
-              .done(function(response) {
-                if (response == 1) {
-                  Swal.fire('Deleted!', "Record deleted", "success");
-                }
-                if (response == 0) {
-                  Swal.fire('INVALID ID!', "Something went wrong", "error");
-                }
-                location.reload();
-              })
-              .fail(function() {
-                swal('Oops...', 'Something went wrong!', 'error');
-              });
-          });
-        },
-        allowOutsideClick: false
-      });
-    }
-
-    function deleterestaurantCategory(id) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        showLoaderOnConfirm: true,
-        preConfirm: function() {
-          return new Promise(function(resolve) {
-            $.ajax({
-                url: 'code.deleteRestaurantCategory',
-                type: 'POST',
-                data: {
-                  categoryID: id
-                },
-              })
-              .done(function(response) {
-                if (response == 1) {
-                  Swal.fire('Deleted!', "Record deleted", "success");
-                }
-                if (response == 0) {
-                  Swal.fire('INVALID ID!', "Something went wrong", "error");
-                }
-                location.reload();
-              })
-              .fail(function() {
-                swal('Oops...', 'Something went wrong!', 'error');
-              });
-          });
-        },
-        allowOutsideClick: false
-      });
-    }
-
-    function deleteproducts(id) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        showLoaderOnConfirm: true,
-        preConfirm: function() {
-          return new Promise(function(resolve) {
-            $.ajax({
-                url: 'code.deleteProduct',
-                type: 'POST',
-                data: {
-                  productID: id
-                },
-              })
-              .done(function(response) {
-                if (response == 1) {
-                  Swal.fire('Deleted!', "Record deleted", "success");
-                }
-                if (response == 0) {
-                  Swal.fire('INVALID ID!', "Something went wrong", "error");
-                }
-                location.reload();
-              })
-              .fail(function() {
-                swal('Oops...', 'Something went wrong!', 'error');
-              });
-          });
-        },
-        allowOutsideClick: false
-      });
-    }
-
-    function deletecustomer(id) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        showLoaderOnConfirm: true,
-        preConfirm: function() {
-          return new Promise(function(resolve) {
-            $.ajax({
-                url: 'code.deleteCustomer',
-                type: 'POST',
-                data: {
-                  customerID: id
+                  id: id
                 },
               })
               .done(function(response) {

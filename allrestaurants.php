@@ -61,7 +61,6 @@ include("./includes/restaurants/code.fetchRestaurants.php");
             $count = 1;
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
-              
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['email'] . "</td>
@@ -111,7 +110,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
 
   <script>
     $(document).ready(function() {
-      $('#allrestaurants').DataTable({
+      $('#allRestaurants').DataTable({
         "order": [
           [0, "desc"]
         ]

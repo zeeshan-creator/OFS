@@ -4,6 +4,7 @@ ob_start();
 // initializing variables
 $category_name;
 $category_desc;
+$active_status;
 $categoryId;
 $errors   = array();
 
@@ -11,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    // receive all input values from the form
    $category_name = mysqli_real_escape_string($conn, trim($_POST['category_name']));
    $category_desc = mysqli_real_escape_string($conn, trim($_POST['category_desc']));
+   $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
    $categoryId = mysqli_real_escape_string($conn, trim($_POST['categoryId']));
 
    if (!empty($category_name)) {
@@ -42,6 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       array_push($errors, "category description is required");
    }
 
+   if (empty($active_status)) {
+      array_push($errors, "active status is required");
+   }
+
    // Finally, register user if there are no errors in the form
    if (count($errors) == 0) {
 
@@ -49,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $query = "UPDATE `categories` SET 
          `category_name` = '$category_name', 
          `category_desc` = '$category_desc',
+         `active_status` = '$active_status',
          `updated_at` = '$date'
          WHERE `categories`.`id` = $categoryId";
 
