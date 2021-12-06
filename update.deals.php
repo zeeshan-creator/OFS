@@ -538,7 +538,6 @@ ob_end_flush();
 
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>
-    <?php ob_end_flush(); ?>
 
   </div>
   <!-- ./wrapper -->
