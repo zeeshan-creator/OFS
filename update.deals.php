@@ -1,5 +1,4 @@
 <?php
-
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
 include("./includes/restaurants/deals/code.updateDeal.php");
@@ -9,13 +8,53 @@ if (!isset($_GET['dealID'])) {
   exit();
 }
 
+$_SESSION['deal_products'] = array();
+
+if (isset($_POST['action']) && $_POST['action'] == "remove") {
+  $product_id = trim($_POST['id']);
+  $products_query  = 'DELETE FROM `deal_products` WHERE `product_id` =' . $product_id;
+  mysqli_query($conn, $products_query);
+}
+
+if (isset($_POST['action']) && $_POST['action'] == "change") {
+  $product_qty = trim($_POST['qty']);
+  $product_id = trim($_POST['id']);
+  $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `product_id` =' . $product_id;
+  mysqli_query($conn, $products_query);
+}
+
 if (isset($_GET['dealID'])) {
   $dealID = trim($_GET['dealID']);
 
-  $deal_products_query = "SELECT * FROM `deal_products` WHERE deal_id = $dealID";
+  $deal_products_query = "SELECT `product_id` FROM `deal_products` WHERE `deal_id` = $dealID";
   $deal_products_result = mysqli_query($conn, $deal_products_query);
-  $rows = mysqli_fetch_assoc($deal_products_result);
-  $numOfRows = mysqli_num_rows($deal_products_result);
+
+  while ($rows = mysqli_fetch_assoc($deal_products_result)) {
+    $products_query  = 'SELECT `id`, `name`, `price`, `photo` FROM `products` where `id` =' . $rows['product_id'];
+    $products_result = mysqli_query($conn, $products_query);
+    $row = mysqli_fetch_assoc($products_result);
+
+    $products_qty_query  = 'SELECT `qty` FROM `deal_products` where `product_id` =' . $rows['product_id'];
+    $products_qty_result = mysqli_query($conn, $products_qty_query);
+    $qty = mysqli_fetch_assoc($products_qty_result);
+
+    $id = $row['id'];
+    $name = $row['name'];
+    $price = $row['price'];
+    $qty = $qty['qty'];
+    $image = $row['photo'];
+
+    $dealProducts = array(
+      $name => array(
+        'id' => $id,
+        'name' => $name,
+        'price' => $price,
+        'qty' => $qty,
+        'image' => $image
+      )
+    );
+    $_SESSION['deal_products'] = array_merge($_SESSION['deal_products'], $dealProducts);
+  }
 
 
   $deal_query = "SELECT * FROM deals WHERE id='$dealID' LIMIT 1";
@@ -45,6 +84,91 @@ ob_end_flush();
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
 
+<style>
+  .quantity {
+    position: relative;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  .quantity input {
+    width: 75px;
+    height: 42px;
+    line-height: 1.65;
+    float: left;
+    display: block;
+    padding: 0;
+    margin: 0;
+    padding-left: 20px;
+    border: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
+  .quantity input:focus {
+    outline: 0;
+  }
+
+  .quantity-nav {
+    float: left;
+    position: relative;
+    height: 42px;
+  }
+
+  .quantity-button {
+    position: relative;
+    cursor: pointer;
+    border: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+    width: 21px;
+    text-align: center;
+    color: #333;
+    font-size: 13px;
+    font-family: "FontAwesome" !important;
+    line-height: 1.5;
+    padding: 0;
+    background: #FAFAFA;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+
+  .quantity-button:active {
+    background: #EAEAEA;
+  }
+
+  .quantity-button.quantity-up {
+    position: absolute;
+    height: 50%;
+    top: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-family: "FontAwesome";
+    border-radius: 0 4px 0 0;
+    line-height: 1.6
+  }
+
+  .quantity-button.quantity-down {
+    position: absolute;
+    bottom: 0;
+    height: 50%;
+    font-family: "FontAwesome";
+    border-radius: 0 0 4px 0;
+  }
+</style>
+
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
   <div class="wrapper">
@@ -67,18 +191,18 @@ ob_end_flush();
             <h3 class="card-title">Create Deal</h3>
           </div>
 
-          <form method="POST" class="needs-validation" novalidate>
-            <div class="card-body">
-              <?php include('./errors.php'); ?>
+          <div class="card-body">
+            <?php include('./errors.php'); ?>
 
-              <div class="row">
-                <div class="col-lg-8">
-                  <div class="row">
-                    <div class="col-lg-12">
-
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <form method="POST" class="needs-validation" novalidate>
                       <div class="form-row">
                         <div class=" col-lg-6 mb-3">
                           <input type="hidden" name="dealID" value="<?Php echo $dealID   ?>">
+                          <input type="hidden" name="action" value="update">
                           <label for="dealName">Deal name</label>
                           <input type="text" class="form-control" value="<?Php echo $name ?>" name="dealName" min="3" max="15" placeholder="Enter deal Name" id="dealName" required>
                           <div class="invalid-feedback">
@@ -118,106 +242,116 @@ ob_end_flush();
                             Please enter a active status
                           </div>
                         </div>
+                        <div class="col-lg-12 mt-4">
+                          <button type="submit" class="mt-4 btn btn-primary float-right" style="margin-right: 5px;">
+                            <i class="fas fa-downloa"></i> Save Changes
+                          </button>
+                          <button class="mt-4 btn btn-danger mr-3 float-right" type="button" onclick="window.history.back()">Discard</button>
+                        </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
-                <div class="col-lg-4">
-                  <h2 class="">Item/s
-                    <?php
-                    if (!empty($_SESSION["shopping_cart"])) {
-                      $cart_count = count(array_keys($_SESSION["shopping_cart"]));
-                    ?>
-                      : <span><?php echo $cart_count; ?></span>
-                    <?php
-                    }
-                    ?>
-                  </h2>
-
-                  <?php if (empty($_SESSION["shopping_cart"])) : ?>
-                    <div class="text-center my-4">
-                      <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
-                      <p>
-                        Your Deal is empty <br>
-                        Add products to make a happy meal </p>
-                    </div>
-                  <?php endif ?>
-
-                  <?php $subtotal = 0; ?>
-                  <?php if (!empty($_SESSION["shopping_cart"])) : ?>
-                    <div class="">
-                      <table>
-                        <thead>
-                          <tr class="text-bold">
-                            <td></td>
-                            <td class="pl-2">ITEM</td>
-                            <td class="pl-4">PKR</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                          <?php foreach ($_SESSION["Deal_items"] as $product) {
-                          ?>
-                            <tr>
-                              <td style='width:60px;height:50px' class="">
-                                <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
-                              </td>
-                              <td class="pl-2">
-                                <div class="float-left mr-4">
-                                  <?php echo $product["name"]; ?><br />
-                                </div>
-                              </td>
-                              <td>
-                                <div class="float-left mx-4">
-                                  <?php echo "PKR. " . $product["price"]; ?>
-                                </div>
-                                <div class="pl-2 float-right">
-                                  <form method='post' action=''>
-                                    <input type='hidden' name='key' value="<?php echo $product["name"]; ?>" />
-                                    <input type='hidden' name='action' value="remove" />
-                                    <button type='submit' class='remove btn btn-danger'>
-                                      <span style='color:white;'>
-                                        <i class='fas fa-trash-alt'></i>
-                                      </span></button>
-                                  </form>
-                                </div>
-                              </td>
-                            </tr>
-                          <?php
-                            $subtotal += ($product["price"] * $product["quantity"]);
-                          }
-                          ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  <?php endif ?>
-
-                  <br>
-                  <p class="lead">Amount</p>
-
-                  <div class="table-responsive">
-                    <table class="table">
-                      <tr>
-                        <th style="width:50%">Products total:</th>
-                        <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
-                      </tr>
-                      <tr>
-                        <th>Deal Price:</th>
-                        <td>PKR <span id="dealPrice"></span></td>
-                      </tr>
-                    </table>
-                    <div class="col-12">
-                      <button class="btn btn-danger mr-3" type="button" onclick="window.history.back()">Discard</button>
-                      <button type="submit" class="btn btn-primary float-right" style="margin-right: 5px;">
-                        <i class="fas fa-downloa"></i> Save Changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
               </div>
+              <div class="col-lg-4">
+                <h2 class="">Item/s
+                  <?php
+                  if (!empty($_SESSION['deal_products'])) {
+                    $product_count = count(array_keys($_SESSION['deal_products']));
+                  ?>
+                    : <span><?php echo $product_count; ?></span>
+                  <?php
+                  }
+                  ?>
+                </h2>
+
+                <?php if (empty($_SESSION['deal_products'])) : ?>
+                  <div class="text-center my-4">
+                    <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
+                    <p>
+                      Your Deal is empty <br>
+                      Add products to make a happy meal </p>
+                  </div>
+                <?php endif ?>
+
+                <?php $subtotal = 0; ?>
+                <?php if (!empty($_SESSION['deal_products'])) : ?>
+                  <div class="">
+                    <table>
+                      <thead>
+                        <tr class="text-bold">
+                          <td></td>
+                          <td class="pl-3">ITEM</td>
+                          <td class="pl-4">QTY</td>
+                          <td class="pl-5">PKR</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <?php foreach ($_SESSION['deal_products'] as $product) {
+                        ?>
+                          <tr>
+                            <td style='width:60px;height:50px' class="">
+                              <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
+                            </td>
+                            <td class="pl-2">
+                              <div class="float-left mr-4">
+                                <?php echo $product["name"]; ?><br />
+                              </div>
+                            </td>
+                            <td>
+                              <form action="" method="post">
+                                <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                <input type='hidden' name='action' value="change" />
+                                <div class="quantity">
+                                  <input type="number" name="qty" min="1" step="1" value="<?php echo $product["qty"] ?>" onchange="this.form.submit()">
+                                </div>
+                              </form>
+                            </td>
+                            <td>
+                              <div class="float-left mx-4">
+                                <?php echo "PKR. " . $product["price"]; ?>
+                              </div>
+                              <div class="pl-2 float-right">
+                                <form method='post' action=''>
+                                  <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                  <input type='hidden' name='action' value="remove" />
+                                  <button type='submit' class='remove btn btn-danger'>
+                                    <span style='color:white;'>
+                                      <i class='fas fa-trash-alt'></i>
+                                    </span></button>
+                                </form>
+                              </div>
+                            </td>
+                          </tr>
+                        <?php
+                          $subtotal += ($product["price"] * $product["qty"]);
+                        }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                <?php endif ?>
+
+                <br>
+                <p class="lead">Amount</p>
+
+                <div class="table-responsive">
+                  <table class="table">
+                    <tr>
+                      <th style="width:50%">Products total:</th>
+                      <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
+                    </tr>
+                    <tr>
+                      <th>Deal Price:</th>
+                      <td>PKR <span id="dealPrice"></span></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
             </div>
-          </form>
+          </div>
 
           <div class="row">
             <div class="col-lg-12">
@@ -351,7 +485,6 @@ ob_end_flush();
               })
               .done(function(response) {
                 if (response == 1) {
-                  Swal.fire('Added!', "Product Added", "success");
                   location.reload();
                 }
                 if (response == 0) {
@@ -362,6 +495,40 @@ ob_end_flush();
                 swal('Oops...', 'Something went wrong!', 'error');
               });
           }
+          $(document).ready(function() {
+            jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
+            jQuery('.quantity').each(function() {
+              var spinner = jQuery(this),
+                input = spinner.find('input[type="number"]'),
+                btnUp = spinner.find('.quantity-up'),
+                btnDown = spinner.find('.quantity-down'),
+                min = input.attr('min'),
+                max = input.attr('max');
+
+              btnUp.click(function() {
+                var oldValue = parseFloat(input.val());
+                if (oldValue >= max) {
+                  var newVal = oldValue;
+                } else {
+                  var newVal = oldValue + 1;
+                }
+                spinner.find("input").val(newVal);
+                spinner.find("input").trigger("change");
+              });
+
+              btnDown.click(function() {
+                var oldValue = parseFloat(input.val());
+                if (oldValue <= min) {
+                  var newVal = oldValue;
+                } else {
+                  var newVal = oldValue - 1;
+                }
+                spinner.find("input").val(newVal);
+                spinner.find("input").trigger("change");
+              });
+
+            });
+          });
         </script>
       </div>
 

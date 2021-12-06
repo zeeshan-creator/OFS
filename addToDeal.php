@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       echo 0;
       exit;
    } else {
-      $query = "INSERT INTO `deal_products` (`deal_id`, `product_id`) VALUES ('$dealID', '$productID')";
+      $query = "INSERT INTO `deal_products` (`deal_id`, `product_id`, `qty`) VALUES ('$dealID', '$productID', 1)";
       $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
       if ($result) {
          echo 1;

@@ -9,7 +9,7 @@ $dealDesc;
 $active_status;
 $errors   = array();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (isset($_POST['action']) && $_POST['action'] == "update") {
    // receive all input values from the form
    $dealID = mysqli_real_escape_string($conn, trim($_POST['dealID']));
    $dealName = mysqli_real_escape_string($conn, trim($_POST['dealName']));
