@@ -87,6 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
+         if (isset($_GET['id'])) {
+            $id = trim($_GET['id']);
+            $query = 'SELECT main_branch FROM `sub_restaurants` WHERE id= 13';
+            $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+            $row = mysqli_fetch_assoc($result);
+            if ($_SESSION['role'] == 'admin') {
+               header("location: restaurantDetails?id=" . $row['main_branch']);
+               exit();
+            }
+         }
          // header('location: allrestaurants');
          echo '<script>window.location.href = "allsub_branches";</script>';
          exit();

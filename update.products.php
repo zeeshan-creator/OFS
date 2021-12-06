@@ -165,7 +165,7 @@ $result = mysqli_query($conn, $category_query);
               </div>
 
               <button class="btn btn-primary float-right" type="submit">Save</button>
-              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Discard</button>
+              <button class="btn btn-danger mr-3 float-right" type="button" onclick="window.history.back()">Discard</button>
           </div>
 
           </form>

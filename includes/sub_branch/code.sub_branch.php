@@ -4,6 +4,18 @@ ob_start();
 // require('./config/db.php');
 
 // initializing variables
+
+$branchId;
+if (isset($_GET['branchId'])) {
+   $branchId = trim($_GET['branchId']);
+   if ($_SESSION['role'] != 'admin') {
+      header("location: restaurantDetails?id=$branchId");
+      exit();
+   }
+} else {
+   $branchId = $_SESSION['id'];
+}
+
 $restaurantName;
 $restaurantPhone;
 $restaurantEmail;
@@ -65,6 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
+         if (isset($_GET['branchId'])) {
+            $id = trim($_GET['branchId']);
+            if ($_SESSION['role'] == 'admin') {
+               header("location: restaurantDetails?id=$id");
+               exit();
+            }
+         }
          header('location: allrestaurants');
          exit();
       }
