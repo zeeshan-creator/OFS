@@ -1,6 +1,8 @@
 <?php
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
+include("./includes/code.saveOrders.php");
+
 
 if (isset($_POST['action']) && $_POST['action'] == "remove") {
   if (!empty($_SESSION["shopping_cart"])) {
@@ -198,7 +200,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                 <div class="row">
 
                   <div class="col-lg-8">
-                    <form action="">
+                    <form method="POST" action="" id="ordersForm" class="needs-validation" novalidate>
 
                       <div class="row">
                         <div class="col-lg-12 mb-4">
@@ -208,19 +210,10 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                           <div class="col-lg-6">
                             <div class="container parent">
                               <div class="row">
-                                <div class='col text-center'>
-                                  <input type="radio" name="imgbackground" id="img1" class="d-none imgbgchk" value="">
-                                  <label for="img1">
-                                    <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-vector/20200417/ourlarge/pngtree-delivery-boy-with-mask-riding-bike-vector-png-image_2187935.jpg" alt="Image 1">
-                                    <div class="tick_container">
-                                      <div class="tick"><i class="fa fa-check"></i></div>
-                                    </div>
-                                    Delivery
-                                  </label>
-                                </div>
-                                <div class='col text-center'>
-                                  <input type="radio" name="imgbackground" id="img2" class="d-none imgbgchk" value="">
-                                  <label for="img2">
+                                <div class='col form-check text-center'>
+                                  <input type="hidden" name="action" value="saveOrder">
+                                  <input type="radio" name="orderType" value="Pick_Up" id="img2" class="d-none imgbgchk form-check-input" required checked="checked">
+                                  <label for="img2" class="form-check-label" for="img2">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-catering-takeaway-icon-image_2245469.jpg" alt="Image 2">
                                     <div class="tick_container">
                                       <div class="tick"><i class="fa fa-check"></i></div>
@@ -228,9 +221,19 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                     Pick Up
                                   </label>
                                 </div>
-                                <div class='col text-center'>
-                                  <input type="radio" name="imgbackground" id="img3" class="d-none imgbgchk" value="">
-                                  <label for="img3">
+                                <div class='col form-check text-center '>
+                                  <input type="radio" name="orderType" value="Delivery" id="img1" class="d-none imgbgchk form-check-input" required>
+                                  <label for="img1" class="form-check-label" for="img1">
+                                    <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-vector/20200417/ourlarge/pngtree-delivery-boy-with-mask-riding-bike-vector-png-image_2187935.jpg" alt="Image 1">
+                                    <div class="tick_container">
+                                      <div class="tick"><i class="fa fa-check"></i></div>
+                                    </div>
+                                    Delivery
+                                  </label>
+                                </div>
+                                <div class='col form-check text-center'>
+                                  <input type="radio" name="orderType" value="Dine_In" id="img3" class="d-none imgbgchk form-check-input" required>
+                                  <label for="img3" class="form-check-label" for="img3">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-vector/20190116/ourlarge/pngtree-vegetable-salad-food-vegetables-vegetable-salad-food-pattern-png-image_388734.jpg" alt="Image 3">
                                     <div class="tick_container">
                                       <div class="tick"><i class="fa fa-check"></i></div>
@@ -238,15 +241,18 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                     Dine In
                                   </label>
                                 </div>
-                                <div class='col text-center'>
-                                  <input type="radio" name="imgbackground" id="img4" class="d-none imgbgchk" value="">
-                                  <label for="img4">
+                                <div class='col form-check text-center'>
+                                  <input type="radio" name="orderType" value="Drive_Thru" id="img4" class="d-none imgbgchk form-check-input" required>
+                                  <label for="img4" class="form-check-label" for="img4">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-clipart/20191119/ourlarge/pngtree-drive-in-movie-signage-png-image_1993590.jpg" alt="Image 4">
                                     <div class="tick_container">
                                       <div class="tick"><i class="fa fa-check"></i></div>
                                     </div>
                                     Drive Thru
                                   </label>
+                                  <div class="invalid-feedback">
+                                    Please select an order name
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -260,28 +266,37 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
 
                       </div>
                       <div class="row ml-1 mt-1">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-md-12">
                           <div class="form-group">
-                            <label for="customername">Customer's Name</label>
+                            <label for="customername">Customer's Name <span style="font-weight: lighter;">(Optional)</span> </label>
                             <input type="text" class="form-control" name="customerName" id="customername" placeholder="Name">
                           </div>
                         </div>
                       </div>
 
                       <div class="row ml-1 mt-1">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-md-12">
                           <div class="form-group">
-                            <label for="customerPhone">Customer's Phone</label>
+                            <label for="customerPhone">Customer's Phone <span style="font-weight: lighter;">(Optional)</span> </label>
                             <input type="number" name="customerPhone" class="form-control" id="customerPhone" placeholder="Phone">
                           </div>
                         </div>
                       </div>
 
                       <div class="row ml-1 mt-1">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-md-12">
                           <div class="form-group">
-                            <label for="customerEmail">Customer's Email</label>
+                            <label for="customerEmail">Customer's Email <span style="font-weight: lighter;">(Optional)</span> </label>
                             <input type="email" name="customerEmail" class="form-control" id="customerEmail" placeholder="Email">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row ml-1 mt-1">
+                        <div class="col-lg-6 col-md-12">
+                          <div class="form-group">
+                            <label for="orderNote">Special instructions <span style="font-weight: lighter;">(Optional)</span> </label>
+                            <input type="text" name="orderNote" class="form-control" id="orderNote" placeholder="Order Note">
                           </div>
                         </div>
                       </div>
@@ -326,8 +341,13 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                             <?php foreach ($_SESSION["shopping_cart"] as $product) {
                             ?>
                               <tr>
-                                <td style='width:60px;height:50px' class="">
-                                  <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
+                                <td style='width:60px;height:50px' class="text-center">
+                                  <?php if ($product['type'] == 'product') : ?>
+                                    <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
+                                  <?php endif ?>
+                                  <?php if ($product['type'] == 'deal') : ?>
+                                    <h2 class="border">D<span style="font-size: 17px;font-weight: bold;">EAL</span></h2>
+                                  <?php endif ?>
                                 </td>
                                 <td class="pl-2">
                                   <div class="float-left mr-4">
@@ -392,7 +412,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       </table>
                       <div class="col-12">
                         <a href="#" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                        <button type="button" id="ordersFormButton" class="btn btn-primary float-right" style="margin-right: 5px;">
                           <i class="fas fa-downloa"></i> Confirm
                         </button>
                       </div>
@@ -465,32 +485,36 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         }
 
                         if ($_SESSION['role'] == 'main_branch') {
-                          $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $_SESSION['id'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
+                          $query = "SELECT `id`, `deal_name`, `deal_desc`, `deal_price`, `active_status` FROM `deals` WHERE restaurant_id = " . $_SESSION['id'] . " AND active_status = 'active'";
                         }
                         if ($_SESSION['role'] == 'sub_branch') {
                           $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
                           $results = mysqli_query($conn, $query);
                           $row = mysqli_fetch_assoc($results);
 
-                          $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $row['main_branch'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
+                          $query = "SELECT `id`, `deal_name`, `deal_desc`, `deal_price`, `active_status` FROM `deals` WHERE restaurant_id = " . $row['main_branch'] . " AND active_status = 'active'";
                         }
-                        $products = mysqli_query($conn, $query);
-                        while ($row = mysqli_fetch_assoc($products)) {
-                          echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
+
+                        $deals = mysqli_query($conn, $query);
+                        while ($row = mysqli_fetch_assoc($deals)) {
+
+
+                          echo '<div class="filtr-item col-lg-2 col-md-4" data-category="deals">
                                 <div class="card card-outline card-info">
                                   <div class="card-header">
-                                    <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
+                                    <h3 class="card-title text-bold text-sm">' . $row['deal_name'] . '</h3>
                                   </div>
                                   <div class="card-body">
-                                    <div class="text-center" style="">
-                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
+                                   <div class="div" style="height: 100px; overflow:hidden;">
+                                    <h5>' . $row['deal_desc'] . '</h5>
                                     </div>
-                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                  <button class="mt-1 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
+                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['deal_price'] . '</p>
+                                  <button class="mt-1 btn btn-info float-right" onclick="addDealToCart(' . $row['id'] . ')">Add</button>
                                   </div>
                                 </div>
                               </div>';
-                        } ?>
+                        }
+                        ?>
 
 
                       </div>
@@ -507,6 +531,11 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     <!-- /.content-wrapper -->
 
     <script>
+      $(document).ready(function() {
+        $("#ordersFormButton").click(function() {
+          $("#ordersForm").submit();
+        });
+      });
       $(function() {
         $(document).on('click', '[data-toggle="lightbox"]', function(event) {
           event.preventDefault();
@@ -530,6 +559,28 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
             type: 'POST',
             data: {
               productID: id
+            },
+          })
+          .done(function(response) {
+            if (response == 1) {
+              Swal.fire('Added!', "Product Added", "success");
+              location.reload();
+            }
+            if (response == 0) {
+              Swal.fire('Alreay Exist!', "Product already in cart", "error");
+            }
+          })
+          .fail(function() {
+            swal('Oops...', 'Something went wrong!', 'error');
+          });
+      }
+
+      function addDealToCart(id) {
+        $.ajax({
+            url: 'addToCart',
+            type: 'POST',
+            data: {
+              dealID: id
             },
           })
           .done(function(response) {
@@ -579,6 +630,24 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
 
         });
       });
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
     </script>
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>

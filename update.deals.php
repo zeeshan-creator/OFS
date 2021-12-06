@@ -18,8 +18,9 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
 
 if (isset($_POST['action']) && $_POST['action'] == "change") {
   $product_qty = trim($_POST['qty']);
-  $product_id = trim($_POST['id']);
-  $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `product_id` =' . $product_id;
+  $product_id = trim($_POST['products_id']);
+  $deal_products_id = trim($_POST['deal_products_id']);
+  $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `id` =' . $deal_products_id;
   mysqli_query($conn, $products_query);
 }
 
@@ -34,14 +35,15 @@ if (isset($_GET['dealID'])) {
     $products_result = mysqli_query($conn, $products_query);
     $row = mysqli_fetch_assoc($products_result);
 
-    $products_qty_query  = 'SELECT `qty` FROM `deal_products` where `product_id` =' . $rows['product_id'];
+    $products_qty_query  = 'SELECT `id`, `qty` FROM `deal_products` where `product_id` = ' . $rows['product_id'] . ' AND `deal_id` = ' . $dealID;
     $products_qty_result = mysqli_query($conn, $products_qty_query);
-    $qty = mysqli_fetch_assoc($products_qty_result);
+    $deal_products = mysqli_fetch_assoc($products_qty_result);
 
     $id = $row['id'];
     $name = $row['name'];
     $price = $row['price'];
-    $qty = $qty['qty'];
+    $qty = $deal_products['qty'];
+    $deal_products_id = $deal_products['id'];
     $image = $row['photo'];
 
     $dealProducts = array(
@@ -50,6 +52,7 @@ if (isset($_GET['dealID'])) {
         'name' => $name,
         'price' => $price,
         'qty' => $qty,
+        'deal_products_id' => $deal_products_id,
         'image' => $image
       )
     );
@@ -246,7 +249,6 @@ ob_end_flush();
                           <button type="submit" class="mt-4 btn btn-primary float-right" style="margin-right: 5px;">
                             <i class="fas fa-downloa"></i> Save Changes
                           </button>
-                          <button class="mt-4 btn btn-danger mr-3 float-right" type="button" onclick="window.history.back()">Discard</button>
                         </div>
                       </div>
                     </form>
@@ -301,7 +303,8 @@ ob_end_flush();
                             </td>
                             <td>
                               <form action="" method="post">
-                                <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                <input type='hidden' name='products_id' value="<?php echo $product["id"]; ?>" />
+                                <input type='hidden' name='deal_products_id' value="<?php echo $product["deal_products_id"]; ?>" />
                                 <input type='hidden' name='action' value="change" />
                                 <div class="quantity">
                                   <input type="number" name="qty" min="1" step="1" value="<?php echo $product["qty"] ?>" onchange="this.form.submit()">
