@@ -363,6 +363,12 @@ ob_end_flush();
                 <div class="btn-group w-100 mb-2">
                   <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
                   <?php
+                  if ($_SESSION['role'] == 'admin') {
+                    $branchID = trim($_GET['branchId']);
+
+                    $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $branchID . " AND categories.active_status = 'active'";
+                  }
+
                   if ($_SESSION['role'] == 'main_branch') {
                     $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $_SESSION['id'] . " AND categories.active_status = 'active'";
                   }
@@ -389,6 +395,11 @@ ob_end_flush();
                 <div class="filter-container p-0 mt-3 row">
 
                   <?php
+                  if ($_SESSION['role'] == 'admin') {
+                    $branchID = trim($_GET['branchId']);
+
+                    $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $branchID . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
+                  }
                   if ($_SESSION['role'] == 'main_branch') {
                     $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $_SESSION['id'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
                   }

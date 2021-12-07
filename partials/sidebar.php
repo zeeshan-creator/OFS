@@ -69,6 +69,13 @@
           </li>
 
           <li class="nav-item">
+            <a href="sizes" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Sizes </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="customers" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Customers </p>

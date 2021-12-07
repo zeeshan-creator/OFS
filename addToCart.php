@@ -5,12 +5,13 @@ require('./config/db.php');
 
 $status = "";
 if (isset($_POST['productID']) && $_POST['productID'] != "") {
-   $id = $_POST['productID'];
+   $id = trim($_POST['productID']);
    $result = mysqli_query($conn, "SELECT * FROM `products` WHERE `id`='$id'");
    $row = mysqli_fetch_assoc($result);
    // $id = $row['id'];
    $name = $row['name'];
    $price = $row['price'];
+   $size = $row['size'];
    $image = $row['photo'];
 
    $cartArray = array(
@@ -20,6 +21,7 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
          'price' => $price,
          'quantity' => 1,
          'type' => 'product',
+         'size' => $size,
          'image' => $image
       )
    );
@@ -51,6 +53,7 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
       }
    }
 }
+
 if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
    $id = $_POST['dealID'];
    $result = mysqli_query($conn, "SELECT * FROM `deals` WHERE `id`='$id'");

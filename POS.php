@@ -2,7 +2,9 @@
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
 include("./includes/code.saveOrders.php");
-
+$subtotal = 0;
+$deliverycharges = 150;
+$total = 0;
 
 if (isset($_POST['action']) && $_POST['action'] == "remove") {
   if (!empty($_SESSION["shopping_cart"])) {
@@ -264,6 +266,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       <h2>Customer Details</h2>
                       <div class="col-lg-12">
 
+                        <input type="hidden" name="total_price" id="totalPrice" value="">
+                        <input type="hidden" name="size" id="size" value="">
                       </div>
                       <div class="row ml-1 mt-1">
                         <div class="col-lg-6 col-md-12">
@@ -325,7 +329,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       </div>
                     <?php endif ?>
 
-                    <?php $subtotal = 0; ?>
                     <?php if (!empty($_SESSION["shopping_cart"])) : ?>
                       <div class="">
                         <table>
@@ -362,6 +365,30 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
                                   </form>
+                                  <div class="">
+                                    <select class="form-select w-100 border mt-1" aria-label="Default select example">
+                                      <option selected disabled>Sizes</option>
+                                      <?php
+                                      $query;
+                                      if ($_SESSION['role'] == 'main_branch') {
+                                        $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $_SESSION['id'] . " AND active_status = 'active'";
+                                      }
+
+                                      if ($_SESSION['role'] == 'sub_branch') {
+                                        $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
+                                        $results = mysqli_query($conn, $query);
+                                        $row = mysqli_fetch_assoc($results);
+
+                                        $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $row['main_branch'] . " AND active_status = 'active'";
+                                      }
+                                      $result = mysqli_query($conn, $query);
+                                      $sizes = mysqli_query($conn, $query);
+                                      while ($row = mysqli_fetch_assoc($sizes)) {
+                                        echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
+                                      }
+                                      ?>
+                                    </select>
+                                  </div>
                                 </td>
                                 <td>
                                   <div class="float-left mx-4">
@@ -381,6 +408,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                               </tr>
                             <?php
                               $subtotal += ($product["price"] * $product["quantity"]);
+                              echo '<script> document.getElementById("size").value =
+                                           "' . $product['size'] . '"; </script>';
                             }
                             ?>
                           </tbody>
@@ -403,11 +432,15 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         </tr>
                         <tr>
                           <th>Shipping:</th>
-                          <td>PKR 150</td>
+                          <td>PKR <?php echo $deliverycharges ? $deliverycharges : "--.--" ?></td>
                         </tr>
                         <tr>
                           <th>Total:</th>
-                          <td>PKR <?php echo $subtotal ?  $subtotal + 150 : "--.--" ?></td>
+                          <?php if ($subtotal) {
+                            $total = $subtotal + $deliverycharges;
+                            echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
+                          } ?>
+                          <td>PKR <?php echo $total ?  $total : "--.--" ?></td>
                         </tr>
                       </table>
                       <div class="col-12">
@@ -532,10 +565,12 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
 
     <script>
       $(document).ready(function() {
+
         $("#ordersFormButton").click(function() {
           $("#ordersForm").submit();
         });
       });
+
       $(function() {
         $(document).on('click', '[data-toggle="lightbox"]', function(event) {
           event.preventDefault();
@@ -596,6 +631,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
             swal('Oops...', 'Something went wrong!', 'error');
           });
       }
+
       $(document).ready(function() {
         jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
         jQuery('.quantity').each(function() {
@@ -630,24 +666,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
 
         });
       });
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-      (function() {
-        'use strict';
-        window.addEventListener('load', function() {
-          // Fetch all the forms we want to apply custom Bootstrap validation styles to
-          var forms = document.getElementsByClassName('needs-validation');
-          // Loop over them and prevent submission
-          var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-              if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-              form.classList.add('was-validated');
-            }, false);
-          });
-        }, false);
-      })();
     </script>
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>
