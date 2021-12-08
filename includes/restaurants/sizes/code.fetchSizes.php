@@ -14,4 +14,4 @@ if ($_SESSION['role'] == 'sub_branch') {
    $query = "SELECT * FROM `sizes` WHERE `restaurant_id` = " . $row['main_branch'];
 }
 
-$results = mysqli_query($conn, $query);
+$sizes = mysqli_query($conn, $query);

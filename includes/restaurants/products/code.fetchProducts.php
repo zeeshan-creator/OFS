@@ -14,4 +14,4 @@ if ($_SESSION['role'] == 'sub_branch') {
    $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $row['main_branch'];
 }
 
-$results = mysqli_query($conn, $query);
+$products = mysqli_query($conn, $query);

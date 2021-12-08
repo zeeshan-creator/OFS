@@ -3,15 +3,16 @@ ob_start();
 session_start();
 require('./config/db.php');
 
-$status = "";
 if (isset($_POST['productID']) && $_POST['productID'] != "") {
    $id = trim($_POST['productID']);
+   $product_size = trim($_POST['product_size']);
+
    $result = mysqli_query($conn, "SELECT * FROM `products` WHERE `id`='$id'");
    $row = mysqli_fetch_assoc($result);
-   // $id = $row['id'];
+
    $name = $row['name'];
    $price = $row['price'];
-   $size = $row['size'];
+   $size = $product_size;
    $image = $row['photo'];
 
    $cartArray = array(
@@ -28,36 +29,25 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
 
    if (empty($_SESSION["shopping_cart"])) {
       $_SESSION["shopping_cart"] = $cartArray;
-      $status = "Product is added to your cart";
       echo 1;
    } else {
-      $array_keys = array_keys($_SESSION["shopping_cart"]);
-      if (in_array($id, $array_keys)) {
-         foreach ($_SESSION["shopping_cart"] as &$value) {
-            if ($value['id'] == $id) {
-               $value['quantity'] = $value['quantity'] + 1;
-               break; // Stop the loop after we've found the product
-            }
+      foreach ($_SESSION["shopping_cart"] as &$value) {
+         if ($value['id'] == $id && $value['size'] == $size) {
+            echo 0;
+            exit; // Stop the loop after we've found the product
          }
-         $status = "Product is already added to your cart";
-         echo 0;
-      } else {
-         foreach ($_SESSION["shopping_cart"] as &$value) {
-            if ($value['id'] == $id) {
-               exit; // Stop the loop after we've found the product
-            }
-         }
-         $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
-         $status = "Product is added to your cart";
-         echo 1;
       }
+      $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
+      echo 1;
    }
 }
 
 if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
    $id = $_POST['dealID'];
+
    $result = mysqli_query($conn, "SELECT * FROM `deals` WHERE `id`='$id'");
    $row = mysqli_fetch_assoc($result);
+
    $name = $row['deal_name'];
    $price = $row['deal_price'];
 
@@ -73,28 +63,14 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
 
    if (empty($_SESSION["shopping_cart"])) {
       $_SESSION["shopping_cart"] = $cartArray;
-      $status = "Deal is added to your cart";
       echo 1;
    } else {
-      $array_keys = array_keys($_SESSION["shopping_cart"]);
-      if (in_array($id, $array_keys)) {
-         foreach ($_SESSION["shopping_cart"] as &$value) {
-            if ($value['id'] == $id) {
-               $value['quantity'] = $value['quantity'] + 1;
-               break; // Stop the loop after we've found the Deal
-            }
+      foreach ($_SESSION["shopping_cart"] as &$value) {
+         if ($value['id'] == $id) {
+            exit; // Stop the loop after we've found the Deal
          }
-         $status = "Deal is already added to your cart";
-         echo 0;
-      } else {
-         foreach ($_SESSION["shopping_cart"] as &$value) {
-            if ($value['id'] == $id) {
-               exit; // Stop the loop after we've found the Deal
-            }
-         }
-         $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
-         $status = "Deal is added to your cart";
-         echo 1;
       }
+      $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
+      echo 1;
    }
 }

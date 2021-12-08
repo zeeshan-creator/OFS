@@ -63,7 +63,7 @@ include("./includes/restaurants/sizes/code.fetchSizes.php");
               $feildName = 'active_status';
             }
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            while ($row = mysqli_fetch_assoc($sizes)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
               <td>" . $row['size'] . "</td>

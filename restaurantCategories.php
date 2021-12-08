@@ -54,7 +54,7 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
           <tbody>
             <?php
             $count = 1;
-            while ($row = mysqli_fetch_assoc($results)) {
+            while ($row = mysqli_fetch_assoc($categories)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['category_name'] . "</td>
