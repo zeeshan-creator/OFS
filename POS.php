@@ -2,18 +2,23 @@
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
 include("./includes/code.saveOrders.php");
+
+include("./includes/restaurants/POS/code.fetchCategoriesToPOS.php");
+include("./includes/restaurants/POS/code.fetchProductsToPOS.php");
+include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
+
+$query;
 $subtotal = 0;
 $deliverycharges = 150;
 $total = 0;
 
+// unset($_SESSION["shopping_cart"]);
 if (isset($_POST['action']) && $_POST['action'] == "remove") {
   if (!empty($_SESSION["shopping_cart"])) {
     foreach ($_SESSION["shopping_cart"] as $id => $value) {
       if ($_POST["key"] == $id) {
         unset($_SESSION["shopping_cart"][$id]);
-        $status = "Product is removed from your cart";
         echo "<script>window.location.href = 'pos';</script>";
-        // echo 2;
       }
       if (empty($_SESSION["shopping_cart"])) {
         unset($_SESSION["shopping_cart"]);
@@ -28,11 +33,13 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
   foreach ($_SESSION["shopping_cart"] as &$value) {
     if ($value['id'] === $_POST["id"]) {
       $value['quantity'] = $_POST["quantity"];
+      if (isset($_POST['product_size'])) {
+        $value['size'] = $_POST["product_size"];
+      }
       break; // Stop the loop after we've found the product
     }
   }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -45,9 +52,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     opacity: 1;
   }
 
-  /*         aNIMATION */
+  /* ANIMATION */
   .imgbgchk:checked+label>img {
-    transform: scale(1.25);
     opacity: 0.3;
   }
 
@@ -55,8 +61,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 35%;
+    left: 58%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     cursor: pointer;
@@ -267,7 +273,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       <div class="col-lg-12">
 
                         <input type="hidden" name="total_price" id="totalPrice" value="">
-                        <input type="hidden" name="size" id="size" value="">
                       </div>
                       <div class="row ml-1 mt-1">
                         <div class="col-lg-6 col-md-12">
@@ -361,34 +366,25 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                   <form action="" method="post">
                                     <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
                                     <input type='hidden' name='action' value="change" />
-                                    <div class="quantity">
+                                    <div class="quantity mt-2">
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
+                                    <?php if ($product['type'] != 'deal') : ?>
+                                      <div class="">
+                                        <select name="product_size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
+                                          <option selected disabled>Sizes</option>
+                                          <?php
+                                          include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
+                                          while ($row = mysqli_fetch_assoc($sizes)) {
+                                            echo '<option value="' . $row['size'] . '"';
+                                            echo ($row['size'] == $product["size"]) ? "Selected" : " Failed";
+                                            echo ' >' . $row['size'] . '</option>';
+                                          }
+                                          ?>
+                                        </select>
+                                      </div>
+                                    <?php endif ?>
                                   </form>
-                                  <div class="">
-                                    <select class="form-select w-100 border mt-1" aria-label="Default select example">
-                                      <option selected disabled>Sizes</option>
-                                      <?php
-                                      $query;
-                                      if ($_SESSION['role'] == 'main_branch') {
-                                        $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $_SESSION['id'] . " AND active_status = 'active'";
-                                      }
-
-                                      if ($_SESSION['role'] == 'sub_branch') {
-                                        $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-                                        $results = mysqli_query($conn, $query);
-                                        $row = mysqli_fetch_assoc($results);
-
-                                        $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $row['main_branch'] . " AND active_status = 'active'";
-                                      }
-                                      $result = mysqli_query($conn, $query);
-                                      $sizes = mysqli_query($conn, $query);
-                                      while ($row = mysqli_fetch_assoc($sizes)) {
-                                        echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
-                                      }
-                                      ?>
-                                    </select>
-                                  </div>
                                 </td>
                                 <td>
                                   <div class="float-left mx-4">
@@ -408,8 +404,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                               </tr>
                             <?php
                               $subtotal += ($product["price"] * $product["quantity"]);
-                              echo '<script> document.getElementById("size").value =
-                                           "' . $product['size'] . '"; </script>';
                             }
                             ?>
                           </tbody>
@@ -451,30 +445,16 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       </div>
                     </div>
                   </div>
-
                 </div>
 
 
                 <div class="row">
                   <div class="col-lg-12">
-
                     <div class="">
                       <div class="btn-group w-100 mb-2">
                         <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
                         <a class="btn btn-info " href="javascript:void(0)" data-filter="deals"> Deals </a>
                         <?php
-                        if ($_SESSION['role'] == 'main_branch') {
-                          $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $_SESSION['id'] . " AND categories.active_status = 'active'";
-                        }
-
-                        if ($_SESSION['role'] == 'sub_branch') {
-                          $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-                          $results = mysqli_query($conn, $query);
-                          $row = mysqli_fetch_assoc($results);
-
-                          $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $row['main_branch'] . " AND categories.active_status = 'active'";
-                        }
-                        $categories = mysqli_query($conn, $query);
                         while ($row = mysqli_fetch_assoc($categories)) {
                           echo '<a class="btn btn-info" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
                         }
@@ -482,25 +462,14 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       </div>
                       <div class="mb-2">
                         <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
-
                       </div>
                     </div>
                     <div class="col-lg-11">
                       <div class="filter-container p-0 mt-3 row">
 
                         <?php
-                        if ($_SESSION['role'] == 'main_branch') {
-                          $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $_SESSION['id'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
-                        }
-                        if ($_SESSION['role'] == 'sub_branch') {
-                          $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-                          $results = mysqli_query($conn, $query);
-                          $row = mysqli_fetch_assoc($results);
-
-                          $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $row['main_branch'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
-                        }
-                        $products = mysqli_query($conn, $query);
                         while ($row = mysqli_fetch_assoc($products)) {
+
                           echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
                                 <div class="card card-outline card-info">
                                   <div class="card-header">
@@ -511,34 +480,27 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                       <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                  <button class="mt-1 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
-                                  </div>
-                                </div>
-                              </div>';
+                                    <button class="mt-1 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
+                                    <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
+                                    <option selected disabled>Sizes</option>';
+                          include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
+                          while ($row = mysqli_fetch_assoc($sizes)) {
+                            echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
+                          }
+                          echo '
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>';
                         }
-
-                        if ($_SESSION['role'] == 'main_branch') {
-                          $query = "SELECT `id`, `deal_name`, `deal_desc`, `deal_price`, `active_status` FROM `deals` WHERE restaurant_id = " . $_SESSION['id'] . " AND active_status = 'active'";
-                        }
-                        if ($_SESSION['role'] == 'sub_branch') {
-                          $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-                          $results = mysqli_query($conn, $query);
-                          $row = mysqli_fetch_assoc($results);
-
-                          $query = "SELECT `id`, `deal_name`, `deal_desc`, `deal_price`, `active_status` FROM `deals` WHERE restaurant_id = " . $row['main_branch'] . " AND active_status = 'active'";
-                        }
-
-                        $deals = mysqli_query($conn, $query);
                         while ($row = mysqli_fetch_assoc($deals)) {
-
-
                           echo '<div class="filtr-item col-lg-2 col-md-4" data-category="deals">
                                 <div class="card card-outline card-info">
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['deal_name'] . '</h3>
                                   </div>
                                   <div class="card-body">
-                                   <div class="div" style="height: 100px; overflow:hidden;">
+                                   <div class="div" style="height: 128px; overflow:hidden;">
                                     <h5>' . $row['deal_desc'] . '</h5>
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['deal_price'] . '</p>
@@ -548,11 +510,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                               </div>';
                         }
                         ?>
-
-
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -564,6 +523,9 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     <!-- /.content-wrapper -->
 
     <script>
+      function setProductSize(sel) {
+        alert(sel.options[sel.selectedIndex].text);
+      }
       $(document).ready(function() {
 
         $("#ordersFormButton").click(function() {
@@ -588,26 +550,35 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
         });
       })
 
-      function addToCart(id) {
-        $.ajax({
-            url: 'addToCart',
-            type: 'POST',
-            data: {
-              productID: id
-            },
-          })
-          .done(function(response) {
-            if (response == 1) {
-              Swal.fire('Added!', "Product Added", "success");
-              location.reload();
-            }
-            if (response == 0) {
-              Swal.fire('Alreay Exist!', "Product already in cart", "error");
-            }
-          })
-          .fail(function() {
-            swal('Oops...', 'Something went wrong!', 'error');
-          });
+      function addToCart(id, product_size) {
+        var selectOption = document.getElementById(`product_size_${id}`);
+        var product_size = selectOption.options[selectOption.selectedIndex].text;
+        if (product_size != null && product_size != 'Sizes') {
+          $.ajax({
+              url: 'addToCart',
+              type: 'POST',
+              data: {
+                productID: id,
+                product_size: product_size
+              },
+            })
+            .done(function(response) {
+              if (response == 1) {
+                // Swal.fire('Added!', "Product Added", "success");
+                location.reload();
+              }
+              if (response == 0) {
+                Swal.fire('Alreay Exist!', "Product already in cart", "error");
+              }
+            })
+            .fail(function() {
+              swal('Oops...', 'Something went wrong!', 'error');
+            });
+        } else {
+          Swal.fire('Please Select Size!', "Product size is required", "error");
+          exit;
+        }
+
       }
 
       function addDealToCart(id) {
@@ -620,11 +591,11 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
           })
           .done(function(response) {
             if (response == 1) {
-              Swal.fire('Added!', "Product Added", "success");
+              // Swal.fire('Added!', "Deal Added", "success");
               location.reload();
             }
             if (response == 0) {
-              Swal.fire('Alreay Exist!', "Product already in cart", "error");
+              Swal.fire('Alreay Exist!', "Deal already in cart", "error");
             }
           })
           .fail(function() {

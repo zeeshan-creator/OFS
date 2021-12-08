@@ -11,6 +11,13 @@ $branch_id;
 $accepted_by = $_SESSION['id'];
 $acceptors_role = $_SESSION['role'];
 
+$product_id;
+$order_id;
+$type;
+$size;
+$qty;
+
+
 if (isset($_POST['action']) && $_POST['action'] == "saveOrder") {
    // receive all input values from the form
    $orderType = mysqli_real_escape_string($conn, trim($_POST['orderType']));
@@ -69,20 +76,24 @@ if (isset($_POST['action']) && $_POST['action'] == "saveOrder") {
          $product_id = $product['id'];
          $order_id = $row['LAST_INSERT_ID()'];
          $type = $product['type'];
+         ($product['type'] == 'product') ? $size = $product['size'] : $size = '';
          $qty = $product['quantity'];
          $query = "INSERT INTO `order_products`(
                      `product_id`,
                      `order_id`,
                      `type`,
-                     `qty`) 
+                     `qty`,
+                     `size`) 
                      values(
                      '$product_id',
                      '$order_id',
                      '$type',
-                     '$qty')";
+                     '$qty',
+                     '$size')";
          $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
          if ($results) {
             unset($_SESSION["shopping_cart"]);
+            echo '<script>window.location.href = "POS";</script>';
          }
       }
    }

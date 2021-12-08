@@ -73,7 +73,7 @@ include("./includes/restaurants/products/code.fetchProducts.php");
               $feildName = 'active_status';
             }
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            while ($row = mysqli_fetch_assoc($products)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
               <td style='width:10%;'><img src='includes/restaurants/products/product_imgs/" . $row['photo'] . "' class='img-fluid img-thumbnail' alt='error'></td>
