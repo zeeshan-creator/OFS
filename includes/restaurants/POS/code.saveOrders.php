@@ -7,7 +7,8 @@ $customerPhone;
 $orderNote;
 $customerEmail;
 $total_price;
-$branch_id;
+$restaurant_id;
+$branch_id = 0;
 $accepted_by = $_SESSION['id'];
 $acceptors_role = $_SESSION['role'];
 
@@ -29,7 +30,7 @@ if (isset($_POST['action']) && $_POST['action'] == "saveOrder") {
 
    if ($_SESSION['role'] == 'main_branch') {
       $restaurant_id = $_SESSION['id'];
-      $branch_id = null;
+      $branch_id = 0;
    }
    if ($_SESSION['role'] == 'sub_branch') {
       $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
