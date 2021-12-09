@@ -1,45 +1,12 @@
 <?php
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
-include("./includes/restaurants/POS/code.saveOrders.php");
 
 include("./includes/restaurants/POS/code.fetchCategoriesToPOS.php");
 include("./includes/restaurants/POS/code.fetchProductsToPOS.php");
 include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
+include("./includes/restaurants/POS/code.updateOrders.php");
 
-$query;
-$subtotal = 0;
-$deliverycharges = 150;
-$total = 0;
-
-// unset($_SESSION["shopping_cart"]);
-if (isset($_POST['action']) && $_POST['action'] == "remove") {
-  if (!empty($_SESSION["shopping_cart"])) {
-    foreach ($_SESSION["shopping_cart"] as $id => $value) {
-      if ($_POST["key"] == $id) {
-        unset($_SESSION["shopping_cart"][$id]);
-        echo "<script>window.location.href = 'POS';</script>";
-      }
-      if (empty($_SESSION["shopping_cart"])) {
-        unset($_SESSION["shopping_cart"]);
-        echo "<script>window.location.href = 'POS';</script>";
-      }
-    }
-  }
-}
-
-
-if (isset($_POST['action']) && $_POST['action'] == "change") {
-  foreach ($_SESSION["shopping_cart"] as &$value) {
-    if ($value['id'] === $_POST["id"]) {
-      $value['quantity'] = $_POST["quantity"];
-      if (isset($_POST['product_size'])) {
-        $value['size'] = $_POST["product_size"];
-      }
-      break; // Stop the loop after we've found the product
-    }
-  }
-}
 ?>
 
 <!DOCTYPE html>
@@ -202,7 +169,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
           <div class="col-lg-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h4 class="card-title">POS Orders</h4>
+                <h4 class="card-title">Order Details</h4>
               </div>
               <div class="card-body">
                 <div class="row">
@@ -220,7 +187,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                               <div class="row">
                                 <div class='col form-check text-center'>
                                   <input type="hidden" name="action" value="saveOrder">
-                                  <input type="radio" name="orderType" value="Pick_Up" id="img2" class="d-none imgbgchk form-check-input" required checked="checked">
+                                  <input type="radio" name="orderType" value="Pick_Up" id="img2" class="d-none imgbgchk form-check-input" required <?php echo ($order_type == 'Pick_Up') ?  'checked' : '' ?>>
                                   <label for="img2" class="form-check-label" for="img2">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-catering-takeaway-icon-image_2245469.jpg" alt="Image 2">
                                     <div class="tick_container">
@@ -230,7 +197,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                   </label>
                                 </div>
                                 <div class='col form-check text-center '>
-                                  <input type="radio" name="orderType" value="Delivery" id="img1" class="d-none imgbgchk form-check-input" required>
+                                  <input type="radio" name="orderType" value="Delivery" id="img1" class="d-none imgbgchk form-check-input" required <?php echo ($order_type == 'Delivery') ?  'checked' : '' ?>>
                                   <label for="img1" class="form-check-label" for="img1">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-vector/20200417/ourlarge/pngtree-delivery-boy-with-mask-riding-bike-vector-png-image_2187935.jpg" alt="Image 1">
                                     <div class="tick_container">
@@ -240,7 +207,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                   </label>
                                 </div>
                                 <div class='col form-check text-center'>
-                                  <input type="radio" name="orderType" value="Dine_In" id="img3" class="d-none imgbgchk form-check-input" required>
+                                  <input type="radio" name="orderType" value="Dine_In" id="img3" class="d-none imgbgchk form-check-input" required <?php echo ($order_type == 'Dine_In') ?  'checked' : '' ?>>
                                   <label for="img3" class="form-check-label" for="img3">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-vector/20190116/ourlarge/pngtree-vegetable-salad-food-vegetables-vegetable-salad-food-pattern-png-image_388734.jpg" alt="Image 3">
                                     <div class="tick_container">
@@ -250,7 +217,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                   </label>
                                 </div>
                                 <div class='col form-check text-center'>
-                                  <input type="radio" name="orderType" value="Drive_Thru" id="img4" class="d-none imgbgchk form-check-input" required>
+                                  <input type="radio" name="orderType" value="Drive_Thru" id="img4" class="d-none imgbgchk form-check-input" required <?php echo ($order_type == 'Drive_Thru') ?  'checked' : '' ?>>
                                   <label for="img4" class="form-check-label" for="img4">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/png-clipart/20191119/ourlarge/pngtree-drive-in-movie-signage-png-image_1993590.jpg" alt="Image 4">
                                     <div class="tick_container">
@@ -278,7 +245,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         <div class="col-lg-6 col-md-12">
                           <div class="form-group">
                             <label for="customername">Customer's Name <span style="font-weight: lighter;">(Optional)</span> </label>
-                            <input type="text" class="form-control" name="customerName" id="customername" placeholder="Name">
+                            <input type="text" class="form-control" value="<?php echo $customer_name ?>" name="customerName" id="customername" placeholder="Name">
                           </div>
                         </div>
                       </div>
@@ -287,7 +254,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         <div class="col-lg-6 col-md-12">
                           <div class="form-group">
                             <label for="customerPhone">Customer's Phone <span style="font-weight: lighter;">(Optional)</span> </label>
-                            <input type="number" name="customerPhone" class="form-control" id="customerPhone" placeholder="Phone">
+                            <input type="number" name="customerPhone" value="<?php echo $customer_phone ?>" class="form-control" id="customerPhone" placeholder="Phone">
                           </div>
                         </div>
                       </div>
@@ -296,7 +263,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         <div class="col-lg-6 col-md-12">
                           <div class="form-group">
                             <label for="customerEmail">Customer's Email <span style="font-weight: lighter;">(Optional)</span> </label>
-                            <input type="email" name="customerEmail" class="form-control" id="customerEmail" placeholder="Email">
+                            <input type="email" name="customerEmail" value="<?php echo $customer_email ?>" class="form-control" id="customerEmail" placeholder="Email">
                           </div>
                         </div>
                       </div>
@@ -305,7 +272,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         <div class="col-lg-6 col-md-12">
                           <div class="form-group">
                             <label for="orderNote">Special instructions <span style="font-weight: lighter;">(Optional)</span> </label>
-                            <input type="text" name="orderNote" class="form-control" id="orderNote" placeholder="Order Note">
+                            <input type="text" name="orderNote" value="<?php echo $order_note ?>" class="form-control" id="orderNote" placeholder="Order Note">
                           </div>
                         </div>
                       </div>
@@ -316,8 +283,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                   <div class="col-lg-4 mb-4">
                     <h2 class="">Cart
                       <?php
-                      if (!empty($_SESSION["shopping_cart"])) {
-                        $cart_count = count(array_keys($_SESSION["shopping_cart"]));
+                      if (!empty($_SESSION["order_products"])) {
+                        $cart_count = count(array_keys($_SESSION["order_products"]));
                       ?>
                         : <span><?php echo $cart_count; ?></span>
                       <?php
@@ -325,7 +292,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       ?>
                     </h2>
 
-                    <?php if (empty($_SESSION["shopping_cart"])) : ?>
+                    <?php if (empty($_SESSION["order_products"])) : ?>
                       <div class="text-center my-4">
                         <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
                         <p>
@@ -334,7 +301,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                       </div>
                     <?php endif ?>
 
-                    <?php if (!empty($_SESSION["shopping_cart"])) : ?>
+                    <?php if (!empty($_SESSION["order_products"])) : ?>
                       <div class="">
                         <table>
                           <thead>
@@ -346,7 +313,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                             </tr>
                           </thead>
                           <tbody>
-                            <?php foreach ($_SESSION["shopping_cart"] as $product) {
+                            <?php foreach ($_SESSION["order_products"] as $product) {
                             ?>
                               <tr>
                                 <td style='width:60px;height:50px' class="text-center">
@@ -365,19 +332,20 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                 <td>
                                   <form action="" method="post">
                                     <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                    <input type='hidden' name='type' value="<?php echo $product["type"]; ?>" />
                                     <input type='hidden' name='action' value="change" />
                                     <div class="quantity mt-2">
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
                                     <?php if ($product['type'] != 'deal') : ?>
                                       <div class="">
-                                        <select name="product_size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
+                                        <select name="size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
                                           <option selected disabled>Sizes</option>
                                           <?php
                                           include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
                                           while ($row = mysqli_fetch_assoc($sizes)) {
                                             echo '<option value="' . $row['size'] . '"';
-                                            echo ($row['size'] == $product["size"]) ? "Selected" : " Failed";
+                                            echo ($row['size'] == $product["size"]) ? "Selected" : "";
                                             echo ' >' . $row['size'] . '</option>';
                                           }
                                           ?>
@@ -392,7 +360,8 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                   </div>
                                   <div class="pl-2 float-right">
                                     <form method='post' action=''>
-                                      <input type='hidden' name='key' value="<?php echo $product["name"]; ?>" />
+                                      <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                      <input type='hidden' name='type' value="<?php echo $product["type"]; ?>" />
                                       <input type='hidden' name='action' value="remove" />
                                       <button type='submit' class='remove btn btn-danger'>
                                         <span style='color:white;'>
