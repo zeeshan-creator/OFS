@@ -523,11 +523,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     <!-- /.content-wrapper -->
 
     <script>
-      function setProductSize(sel) {
-        alert(sel.options[sel.selectedIndex].text);
-      }
       $(document).ready(function() {
-
         $("#ordersFormButton").click(function() {
           $("#ordersForm").submit();
         });
@@ -550,7 +546,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
         });
       })
 
-      function addToCart(id, product_size) {
+      function addToCart(id) {
         var selectOption = document.getElementById(`product_size_${id}`);
         var product_size = selectOption.options[selectOption.selectedIndex].text;
         if (product_size != null && product_size != 'Sizes') {

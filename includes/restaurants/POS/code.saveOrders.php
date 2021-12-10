@@ -9,8 +9,6 @@ $customerEmail;
 $total_price;
 $restaurant_id;
 $branch_id = 0;
-$accepted_by = $_SESSION['id'];
-$acceptors_role = $_SESSION['role'];
 
 $product_id;
 $order_id;
