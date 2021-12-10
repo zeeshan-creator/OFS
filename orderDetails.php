@@ -186,7 +186,8 @@ include("./includes/restaurants/POS/code.updateOrders.php");
                             <div class="container parent">
                               <div class="row">
                                 <div class='col form-check text-center'>
-                                  <input type="hidden" name="action" value="saveOrder">
+                                  <input type="hidden" name="id" value="<?php echo trim($_GET['orderID']) ?>">
+                                  <input type="hidden" name="action" value="updateOrder">
                                   <input type="radio" name="orderType" value="Pick_Up" id="img2" class="d-none imgbgchk form-check-input" required <?php echo ($order_type == 'Pick_Up') ?  'checked' : '' ?>>
                                   <label for="img2" class="form-check-label" for="img2">
                                     <img class="img-fluid mb-1 rounded" src="https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-catering-takeaway-icon-image_2245469.jpg" alt="Image 2">
@@ -492,11 +493,23 @@ include("./includes/restaurants/POS/code.updateOrders.php");
     <!-- /.content-wrapper -->
 
     <script>
-      function setProductSize(sel) {
-        alert(sel.options[sel.selectedIndex].text);
-      }
-      $(document).ready(function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderID = urlParams.get('orderID');
+      const total_price = document.getElementById("totalPrice").value;
 
+      $(function(total_price) {
+        $.ajax({
+          url: 'orderDetails',
+          type: 'POST',
+          data: {
+            order_product_id: orderID,
+            total_price: total_price,
+            action: 'updatePrice',
+          }
+        });
+      });
+
+      $(document).ready(function() {
         $("#ordersFormButton").click(function() {
           $("#ordersForm").submit();
         });
@@ -519,57 +532,41 @@ include("./includes/restaurants/POS/code.updateOrders.php");
         });
       })
 
-      function addToCart(id, product_size) {
+      function addToCart(id) {
         var selectOption = document.getElementById(`product_size_${id}`);
         var product_size = selectOption.options[selectOption.selectedIndex].text;
+
         if (product_size != null && product_size != 'Sizes') {
           $.ajax({
-              url: 'addToCart',
-              type: 'POST',
-              data: {
-                productID: id,
-                product_size: product_size
-              },
-            })
-            .done(function(response) {
-              if (response == 1) {
-                // Swal.fire('Added!', "Product Added", "success");
-                location.reload();
-              }
-              if (response == 0) {
-                Swal.fire('Alreay Exist!', "Product already in cart", "error");
-              }
-            })
-            .fail(function() {
-              swal('Oops...', 'Something went wrong!', 'error');
-            });
+            url: 'orderDetails',
+            type: 'POST',
+            data: {
+              order_product_id: orderID,
+              id: id,
+              type: 'product',
+              product_size: product_size,
+              action: 'addProduct',
+            },
+          })
         } else {
           Swal.fire('Please Select Size!', "Product size is required", "error");
           exit;
         }
-
+        location.reload();
       }
 
       function addDealToCart(id) {
         $.ajax({
-            url: 'addToCart',
-            type: 'POST',
-            data: {
-              dealID: id
-            },
-          })
-          .done(function(response) {
-            if (response == 1) {
-              // Swal.fire('Added!', "Deal Added", "success");
-              location.reload();
-            }
-            if (response == 0) {
-              Swal.fire('Alreay Exist!', "Deal already in cart", "error");
-            }
-          })
-          .fail(function() {
-            swal('Oops...', 'Something went wrong!', 'error');
-          });
+          url: 'orderDetails',
+          type: 'POST',
+          data: {
+            order_product_id: orderID,
+            id: id,
+            type: 'deal',
+            action: 'addProduct',
+          },
+        })
+        location.reload();
       }
 
       $(document).ready(function() {
