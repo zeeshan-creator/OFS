@@ -96,8 +96,14 @@
             </a>
           </li>
 
-        <?php endif ?>
+          <li class="nav-item">
+            <a href="Offers" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Offer </p>
+            </a>
+          </li>
 
+        <?php endif ?>
 
         <!-- If the user is (sub_branch) show him/her these links -->
         <?php if ($_SESSION['role'] == 'sub_branch') : ?>

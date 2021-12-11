@@ -98,7 +98,6 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
 
 if (isset($_POST['action']) && $_POST['action'] == "change") {
    $product_qty = trim($_POST['qty']);
-   $product_id = trim($_POST['products_id']);
    $deal_products_id = trim($_POST['deal_products_id']);
    $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `id` =' . $deal_products_id;
    mysqli_query($conn, $products_query);

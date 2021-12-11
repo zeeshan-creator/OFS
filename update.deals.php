@@ -226,7 +226,6 @@ include("./includes/restaurants/deals/code.updateDeal.php");
                             </td>
                             <td>
                               <form action="" method="post">
-                                <input type='hidden' name='products_id' value="<?php echo $product["id"]; ?>" />
                                 <input type='hidden' name='deal_products_id' value="<?php echo $product["deal_products_id"]; ?>" />
                                 <input type='hidden' name='action' value="change" />
                                 <div class="quantity">
@@ -371,11 +370,6 @@ include("./includes/restaurants/deals/code.updateDeal.php");
             var dealPrice = document.getElementById("dealPrice");
             dealPrice.innerHTML = input.value;
           }
-          // $(document).ready(function() {
-          //   $("button").click(function() {
-          //     $("p").html("Hello <b>world!</b>");
-          //   });
-          // });
           // Example starter JavaScript for disabling form submissions if there are invalid fields
           (function() {
             'use strict';

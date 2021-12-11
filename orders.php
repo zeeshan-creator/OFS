@@ -42,6 +42,7 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
           <thead>
             <tr class="text-center">
               <th>#</th>
+              <th>Order ID</th>
               <th>Order Type</th>
               <th>Customer Name</th>
               <th>Customer Phone</th>
@@ -65,14 +66,11 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
           <tbody class="w">
             <?php
             $count = 1;
-            // $feildName;
-            // if ($_SESSION['role'] == 'main_branch') {
-            //   $feildName = 'active_status';
-            // }
 
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
+              <td>" . $row['id'] . "</td>
               <td>" . $row['order_type'] . "</td>
               <td>" . $row['customer_name'] . "</td>
               <td>" . $row['customer_phone'] . "</td>

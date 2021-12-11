@@ -23,7 +23,6 @@
 
   <!-- DataTables Script & CSS Links -->
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-  <!-- <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
   <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 
   <!-- Sweet Alert Script & CSS Links -->
@@ -32,10 +31,13 @@
 
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="plugins/ekko-lightbox/ekko-lightbox.css">
-  <!-- <script src="plugins/ekko-lightbox/ekko-lightbox.min.js"></script> -->
+
+
+
 
 
 </head>
+
 <!-- 
 <div class="preloader flex-column justify-content-center align-items-center">
   <img class="animation__shake" src="docs/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
