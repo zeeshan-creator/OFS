@@ -5,7 +5,7 @@ include './auth/==admin_auth.php';
 include("./includes/restaurants/POS/code.fetchCategoriesToPOS.php");
 include("./includes/restaurants/POS/code.fetchProductsToPOS.php");
 include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
-include("./includes/restaurants/POS/code.updateOrders.php");
+include("./includes/restaurants/orders/code.updateOrders.php");
 
 ?>
 
@@ -402,6 +402,7 @@ include("./includes/restaurants/POS/code.updateOrders.php");
                           <th>Total:</th>
                           <?php if ($subtotal) {
                             $total = $subtotal + $deliverycharges;
+                            $total2 = $total;
                             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
                           } ?>
                           <td>PKR <?php echo $total ?  $total : "--.--" ?></td>
@@ -497,7 +498,8 @@ include("./includes/restaurants/POS/code.updateOrders.php");
       const orderID = urlParams.get('orderID');
       const total_price = document.getElementById("totalPrice").value;
 
-      $(function(total_price) {
+      $(document).ready(function() {
+        // update the new total_price in the database.
         $.ajax({
           url: 'orderDetails',
           type: 'POST',
@@ -507,9 +509,6 @@ include("./includes/restaurants/POS/code.updateOrders.php");
             action: 'updatePrice',
           }
         });
-      });
-
-      $(document).ready(function() {
         $("#ordersFormButton").click(function() {
           $("#ordersForm").submit();
         });

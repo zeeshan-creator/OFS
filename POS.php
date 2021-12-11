@@ -1,7 +1,7 @@
 <?php
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
-include("./includes/restaurants/POS/code.saveOrders.php");
+include("./includes/restaurants/orders/code.saveOrders.php");
 
 include("./includes/restaurants/POS/code.fetchCategoriesToPOS.php");
 include("./includes/restaurants/POS/code.fetchProductsToPOS.php");
@@ -419,10 +419,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                         <tr>
                           <th style="width:50%">Subtotal:</th>
                           <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
-                        </tr>
-                        <tr>
-                          <th>Tax (13%)</th>
-                          <td>PKR --.--</td>
                         </tr>
                         <tr>
                           <th>Shipping:</th>

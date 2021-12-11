@@ -22,11 +22,9 @@ $type;
 $size = null;
 
 if (isset($_POST['action']) && $_POST['action'] == "updatePrice") {
-   echo '<script>alert(123478)</script>';
-
    $order_product_id = trim($_POST['order_product_id']);
    $total_price = trim($_POST['total_price']);
-   $query = "UPDATE `orders` SET `total_price` =  '$total_price' WHERE `id` = " . $id;
+   $query = "UPDATE `orders` SET `total_price` =  '$total_price' WHERE `id` = " . $order_product_id;
 
    mysqli_query($conn, $query) or die(mysqli_error($conn));
 }
