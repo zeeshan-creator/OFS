@@ -151,6 +151,7 @@ if (isset($_GET['offerID'])) {
                   <div class="form-row">
                     <div class=" col-lg-6 mb-3">
                       <label for="offer_name">Offer Name</label>
+                      <input type="hidden" name="offerID" value="<?php echo $offerID; ?>">
                       <input type="text" class="form-control" value="<?php echo $offer_name; ?>" name="offer_name" min="3" max="15" placeholder="Enter offer name" id="offer_name" required>
                       <div class="invalid-feedback">
                         Please enter a offer name
@@ -186,7 +187,7 @@ if (isset($_GET['offerID'])) {
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="valid_till">Offer Till</label>
-                      <input type="date" class="form-control" value="<?php echo $valid_till; ?>" name="valid_till" placeholder="Enter offer end date" id="valid_till" required>
+                      <input type="date" class="form-control" value="<?php echo $valid_till; ?>" name="valid_till" placeholder="Enter offer end date" id="valid_till" required disabled>
                       <div class="invalid-feedback">
                         Please enter a offer end date
                       </div>
@@ -223,6 +224,41 @@ if (isset($_GET['offerID'])) {
           </form>
 
           <script>
+            $(function() {
+              var date = new Date($('#valid_from').val());
+              var newDate = date.toString('yyyy-MM-dd');
+              $("#valid_till").prop("disabled", false);
+              $('#valid_till').attr('min', convert(newDate));
+
+              var dtToday = new Date();
+              var month = dtToday.getMonth() + 1;
+              var day = dtToday.getDate();
+              var year = dtToday.getFullYear();
+              if (month < 10)
+                month = '0' + month.toString();
+              if (day < 10)
+                day = '0' + day.toString();
+
+              var minDate = year + '-' + month + '-' + day;
+              $('#valid_from').attr('min', minDate);
+              $("#valid_from").change(function() {
+                var date = new Date($('#valid_from').val());
+                var newDate = date.toString('yyyy-MM-dd');
+
+                $("#valid_till").prop("disabled", false);
+                $('#valid_till').attr('min', convert(newDate));
+
+
+              });
+            });
+
+            function convert(newDate) {
+              var date = new Date(newDate),
+                mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                day = ("0" + date.getDate()).slice(-2);
+              return [date.getFullYear(), mnth, day].join("-");
+            }
+
             // Example starter JavaScript for disabling form submissions if there are invalid fields
             (function() {
               'use strict';

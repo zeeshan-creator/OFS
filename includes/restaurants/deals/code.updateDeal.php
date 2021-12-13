@@ -17,21 +17,21 @@ if (isset($_POST['action']) && $_POST['action'] == "update") {
    $dealDesc = mysqli_real_escape_string($conn, trim($_POST['dealDesc']));
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
 
-   if (!empty($dealName)) {
-      // first check the database to make sure 
-      // a deal does not already exist with the same name 
-      $deal_name_check_query = "SELECT id,deal_name FROM deals WHERE deal_name = '$dealName' LIMIT 1";
-      $result = mysqli_query($conn, $deal_name_check_query);
-      $deal = mysqli_fetch_assoc($result);
+   // if (!empty($dealName)) {
+   //    // first check the database to make sure 
+   //    // a deal does not already exist with the same name 
+   //    $deal_name_check_query = "SELECT id,deal_name FROM deals WHERE deal_name = '$dealName' LIMIT 1";
+   //    $result = mysqli_query($conn, $deal_name_check_query);
+   //    $deal = mysqli_fetch_assoc($result);
 
-      if ($deal) { // if deal exists
-         if ($deal['id'] != $dealID) {
-            if ($deal['deal_name'] == $dealName) {
-               array_push($errors, "deal name already exists try something else");
-            }
-         }
-      }
-   }
+   //    if ($deal) { // if deal exists
+   //       if ($deal['id'] != $dealID) {
+   //          if ($deal['deal_name'] == $dealName) {
+   //             array_push($errors, "deal name already exists try something else");
+   //          }
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array

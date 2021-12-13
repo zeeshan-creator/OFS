@@ -47,35 +47,35 @@ include("./includes/restaurants/offers/code.offer.php");
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="offer_percentage">Offer Percentage</label>
-                      <input type="number" class="form-control" name="offer_percentage" placeholder="Enter offer offer percentage" id="offer_percentage" required>
+                      <input type="number" class="form-control" name="offer_percentage" placeholder="Enter offer percentage" id="offer_percentage" required>
                       <div class="invalid-feedback">
                         Please enter a offer percentage
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="offer_message">Offer Message</label>
-                      <textarea type="text" class="form-control" name="offer_message" placeholder="Enter offer offer message" id="offer_message" required></textarea>
+                      <textarea type="text" class="form-control" name="offer_message" placeholder="Enter offer message" id="offer_message" required></textarea>
                       <div class="invalid-feedback">
                         Please enter a offer message
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="order_over">On Orders Over (<span style="font-weight: lighter;"> optional, default is 0</span>)</label>
-                      <input type="number" class="form-control" name="order_over" placeholder="Enter offer price" id="order_over">
+                      <input type="number" class="form-control" name="order_over" placeholder="Enter minimum order price" id="order_over">
                       <div class="invalid-feedback">
                         Please enter a price
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="valid_from">Offer From</label>
-                      <input type="date" class="form-control" name="valid_from" placeholder="Enter offer start date" id="valid_from datepicker" required>
+                      <input type="date" class="form-control" name="valid_from" placeholder="Enter offer start date" id="valid_from" required>
                       <div class="invalid-feedback">
                         Please enter a offer start date
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="valid_till">Offer Till</label>
-                      <input type="date" class="form-control" name="valid_till" placeholder="Enter offer end date" id="valid_till datepicker" required>
+                      <input type="date" class="form-control" name="valid_till" placeholder="Enter offer end date" id="valid_till" required disabled>
                       <div class="invalid-feedback">
                         Please enter a offer end date
                       </div>
@@ -94,6 +94,34 @@ include("./includes/restaurants/offers/code.offer.php");
           </form>
 
           <script>
+            $(function() {
+              var dtToday = new Date();
+              var month = dtToday.getMonth() + 1;
+              var day = dtToday.getDate();
+              var year = dtToday.getFullYear();
+              if (month < 10)
+                month = '0' + month.toString();
+              if (day < 10)
+                day = '0' + day.toString();
+
+              var minDate = year + '-' + month + '-' + day;
+              $('#valid_from').attr('min', minDate);
+              $("#valid_from").change(function() {
+                var date = new Date($('#valid_from').val());
+                var newDate = date.toString('yyyy-MM-dd');
+
+                $("#valid_till").prop("disabled", false);
+                $('#valid_till').attr('min', convert(newDate));
+
+                function convert(newDate) {
+                  var date = new Date(newDate),
+                    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+                    day = ("0" + date.getDate()).slice(-2);
+                  return [date.getFullYear(), mnth, day].join("-");
+                }
+              });
+            });
+
             // Example starter JavaScript for disabling form submissions if there are invalid fields
             (function() {
               'use strict';

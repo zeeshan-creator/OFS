@@ -26,20 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $categoryName = mysqli_real_escape_string($conn, trim($_POST['categoryName']));
    $categoryDesc = mysqli_real_escape_string($conn, trim($_POST['categoryDesc']));
 
-   if (!empty($categoryName)) {
-      // first check the database to make sure 
-      // a category does not already exist with the same email 
-      $Category_check_query = "SELECT category_name FROM categories 
-      WHERE category_name='$categoryName' LIMIT 1";
-      $result = mysqli_query($conn, $Category_check_query);
-      $category = mysqli_fetch_assoc($result);
+   // if (!empty($categoryName)) {
+   //    // first check the database to make sure 
+   //    // a category does not already exist with the same email 
+   //    $Category_check_query = "SELECT category_name FROM categories 
+   //    WHERE category_name='$categoryName' LIMIT 1";
+   //    $result = mysqli_query($conn, $Category_check_query);
+   //    $category = mysqli_fetch_assoc($result);
 
-      if ($category) { // if category exists
-         if ($category['restaurant_id'] == $branchId) {
-            array_push($errors, "category already exists try something else");
-         }
-      }
-   }
+   //    if ($category) { // if category exists
+   //       if ($category['restaurant_id'] == $branchId) {
+   //          array_push($errors, "category already exists try something else");
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array

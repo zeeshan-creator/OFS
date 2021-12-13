@@ -3,6 +3,10 @@ include './auth/login_auth.php';
 include './auth/==admin_auth.php';
 include("./includes/restaurants/offers/code.fetchOffers.php");
 
+
+$query = "SELECT * FROM `offers` WHERE `restaurant_id` = " . $_SESSION['id'] . " LIMIT 1";
+$offer_results = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$offer = mysqli_fetch_assoc($offer_results);
 ?>
 
 
@@ -37,10 +41,12 @@ include("./includes/restaurants/offers/code.fetchOffers.php");
           </h1>
         </div>
 
-        <?php if ($_SESSION['role'] == 'main_branch') : ?>
-          <div class="col-lg-6 ml-auto mt-4 p-4">
-            <a href="./create.offers" class="btn btn-primary float-right">Add offers</a>
-          </div>
+        <?php if (!$offer) : ?>
+          <?php if ($_SESSION['role'] == 'main_branch') : ?>
+            <div class="col-lg-6 ml-auto mt-4 p-4">
+              <a href="./create.offers" class="btn btn-primary float-right">Add offers</a>
+            </div>
+          <?php endif ?>
         <?php endif ?>
 
       </div>

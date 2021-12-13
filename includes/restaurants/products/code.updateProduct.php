@@ -23,21 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $item_availability = mysqli_real_escape_string($conn, trim($_POST['item_availability']));
    $category = mysqli_real_escape_string($conn, trim($_POST['category']));
 
-   if (!empty($productName)) {
-      // first check the database to make sure 
-      // a user does not already exist with the same email 
-      $product_name_check_query = "SELECT name,id FROM products WHERE name = '$productName' LIMIT 1";
-      $result = mysqli_query($conn, $product_name_check_query);
-      $product = mysqli_fetch_assoc($result);
+   // if (!empty($productName)) {
+   //    // first check the database to make sure 
+   //    // a user does not already exist with the same email 
+   //    $product_name_check_query = "SELECT name,id FROM products WHERE name = '$productName' LIMIT 1";
+   //    $result = mysqli_query($conn, $product_name_check_query);
+   //    $product = mysqli_fetch_assoc($result);
 
-      if ($product) { // if product exists
-         if ($product['id'] != $productID) {
-            if ($product['name'] == $productName) {
-               array_push($errors, "product name already exists try something else");
-            }
-         }
-      }
-   }
+   //    if ($product) { // if product exists
+   //       if ($product['id'] != $productID) {
+   //          if ($product['name'] == $productName) {
+   //             array_push($errors, "product name already exists try something else");
+   //          }
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array

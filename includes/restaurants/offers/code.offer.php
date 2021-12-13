@@ -33,19 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $valid_from = mysqli_real_escape_string($conn, trim($_POST['valid_from']));
    $valid_till = mysqli_real_escape_string($conn, trim($_POST['valid_till']));
 
-   if (!empty($offer_name)) {
-      // first check the database to make sure 
-      // a offer does not already exist with the same offer 
-      $offer_check_query = "SELECT offer_name FROM offers WHERE offer_name='$offer_name' LIMIT 1";
-      $result = mysqli_query($conn, $offer_check_query);
-      $offer = mysqli_fetch_assoc($result);
+   // if (!empty($offer_name)) {
+   //    // first check the database to make sure 
+   //    // a offer does not already exist with the same offer 
+   //    $offer_check_query = "SELECT offer_name FROM offers WHERE offer_name='$offer_name' LIMIT 1";
+   //    $result = mysqli_query($conn, $offer_check_query);
+   //    $offer = mysqli_fetch_assoc($result);
 
-      if ($offer) { // if offer exists
-         if ($offer['name'] == $offer_name) {
-            array_push($errors, "offer name already exists try something else");
-         }
-      }
-   }
+   //    if ($offer) { // if offer exists
+   //       if ($offer['name'] == $offer_name) {
+   //          array_push($errors, "offer name already exists try something else");
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array

@@ -19,19 +19,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $target_file = $target_dir . basename($_FILES["photo"]["name"]);
    $filename = $_FILES["photo"]["name"];
 
-   if (!empty($productName)) {
-      // first check the database to make sure 
-      // a product does not already exist with the same email 
-      $product_check_query = "SELECT name FROM products WHERE name='$productName' LIMIT 1";
-      $result = mysqli_query($conn, $product_check_query);
-      $product = mysqli_fetch_assoc($result);
+   // if (!empty($productName)) {
+   //    // first check the database to make sure 
+   //    // a product does not already exist with the same email 
+   //    $product_check_query = "SELECT name, id FROM products WHERE name='$productName' LIMIT 1";
+   //    $result = mysqli_query($conn, $product_check_query);
+   //    $product = mysqli_fetch_assoc($result);
 
-      if ($product) { // if product exists
-         if ($product['name'] == $productName) {
-            array_push($errors, "product name already exists try something else");
-         }
-      }
-   }
+   //    if ($product) { // if product exists
+   //       if ($product['id'] != $productID) {
+   //          if ($product['name'] == $productName) {
+   //             array_push($errors, "product name already exists try something else");
+   //          }
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
@@ -41,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    }
 
    // Check if file already exists
-   if (file_exists($target_file)) {
-      array_push($errors, "Sorry, file already exists");
-   }
+   // if (file_exists($target_file)) {
+   //    array_push($errors, "Sorry, file already exists");
+   // }
 
    // Check file size
    if ($_FILES["photo"]["size"] > 500000) {

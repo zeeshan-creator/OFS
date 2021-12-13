@@ -15,24 +15,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
    $categoryId = mysqli_real_escape_string($conn, trim($_POST['categoryId']));
 
-   if (!empty($category_name)) {
-      // first check the database to make sure 
-      // a user does not already exist with the same email 
-      $category_name_check_query = "SELECT category_name, id, restaurant_id FROM categories WHERE category_name='$category_name' LIMIT 1";
-      $result = mysqli_query($conn, $category_name_check_query);
-      $category = mysqli_fetch_assoc($result);
+   // if (!empty($category_name)) {
+   //    // first check the database to make sure 
+   //    // a user does not already exist with the same email 
+   //    $category_name_check_query = "SELECT category_name, id, restaurant_id FROM categories WHERE category_name='$category_name' LIMIT 1";
+   //    $result = mysqli_query($conn, $category_name_check_query);
+   //    $category = mysqli_fetch_assoc($result);
 
-      // if ($category) { // if category exists
-      //    if ($category['restaurant_id']) {
-      //       # code...
-      //       if ($category['id'] != $categoryId) {
-      //          if ($category['category_name'] == $category_name) {
-      //             array_push($errors, "category name already exists try something else");
-      //          }
-      //       }
-      //    }
-      // }
-   }
+   //    if ($category) { // if category exists
+   //       if ($category['restaurant_id']) {
+   //          # code...
+   //          if ($category['id'] != $categoryId) {
+   //             if ($category['category_name'] == $category_name) {
+   //                array_push($errors, "category name already exists try something else");
+   //             }
+   //          }
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       if ($row["password"] == $password) {
          if ($row["active_status"] !== "active") {
-            array_push($errors, "Your Account is Not Inactive Please Contact the Administration");
+            array_push($errors, "Your Account is Not Inactive, Please Contact the Administration");
          }
       }
 

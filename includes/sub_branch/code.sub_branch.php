@@ -32,20 +32,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $restaurantPassword = mysqli_real_escape_string($conn, trim($_POST['restaurantPassword']));
    $restaurantMain_branch = mysqli_real_escape_string($conn, trim($_POST['main_branch']));
 
-   if (!empty($restaurantName)) {
-      // first check the database to make sure 
-      // a user does not already exist with the same email 
-      $restaurant_check_query = "SELECT email FROM restaurants WHERE email='$restaurantEmail' LIMIT 1";
-      $result = mysqli_query($conn, $restaurant_check_query);
-      $restaurant = mysqli_fetch_assoc($result);
+   // if (!empty($restaurantName)) {
+   //    // first check the database to make sure 
+   //    // a user does not already exist with the same email 
+   //    $restaurant_check_query = "SELECT email FROM restaurants WHERE email='$restaurantEmail' LIMIT 1";
+   //    $result = mysqli_query($conn, $restaurant_check_query);
+   //    $restaurant = mysqli_fetch_assoc($result);
 
 
-      if ($restaurant) { // if restaurant exists
-         if ($restaurant['email'] == $restaurantEmail) {
-            array_push($errors, "email already exists try something else");
-         }
-      }
-   }
+   //    if ($restaurant) { // if restaurant exists
+   //       if ($restaurant['email'] == $restaurantEmail) {
+   //          array_push($errors, "email already exists try something else");
+   //       }
+   //    }
+   // }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array

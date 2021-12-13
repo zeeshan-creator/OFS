@@ -10,7 +10,41 @@ include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
 $query;
 $subtotal = 0;
 $deliverycharges = 150;
+$offerDiscount = null;
+$offerPercentage = null;
+$ordersOver = null;
 $total = 0;
+
+$query = "SELECT 
+          `id`,
+          `offer_name`,
+          `offer_percentage`,
+          `offer_message`,
+          `order_over`,
+          `valid_from`,
+          `valid_till`
+          FROM `offers` WHERE
+          `restaurant_id` = " . $_SESSION['id'] . " AND `active_status` = 'active'  LIMIT 1 ";
+
+$offer_results = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$offer = mysqli_fetch_assoc($offer_results);
+if ($offer) {
+  // Offer Date Calculation
+  $current_date = date_create(Date('Y-m-d')); // current 
+  $valid_from = date_create($offer['valid_from']); // valid from
+  $valid_till = date_create($offer['valid_till']); // valid till
+  $start = date_diff($valid_from, $current_date);
+
+  if ($start->format("%R%a") >= 0) {
+    $end = date_diff($valid_till, $current_date);
+    if ($end->format("%R%a") > 0) {
+      $offerPercentage = null;
+    } else {
+      $offerPercentage = $offer['offer_percentage'];
+      $ordersOver = $offer['order_over'];
+    }
+  }
+}
 
 // unset($_SESSION["shopping_cart"]);
 if (isset($_POST['action']) && $_POST['action'] == "remove") {
@@ -27,7 +61,6 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
     }
   }
 }
-
 
 if (isset($_POST['action']) && $_POST['action'] == "change") {
   foreach ($_SESSION["shopping_cart"] as &$value) {
@@ -192,7 +225,6 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
     <!-- Main Sidebar Container -->
     <?php include './partials/sidebar.php' ?>
     <!-- END Sidebar Container -->
-
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper p-2">
@@ -425,11 +457,27 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                           <td>PKR <?php echo $deliverycharges ? $deliverycharges : "--.--" ?></td>
                         </tr>
                         <tr>
+                          <th>Discount:</th>
+                          <?php if ($subtotal >= $ordersOver) {
+                            $offerDiscount = round($subtotal / 100 * $offerPercentage);
+                          }
+                          ?>
+                          <td>PKR <?php echo $offerDiscount ? $offerDiscount : "--.--" ?></td>
+                        </tr>
+
+                        <?php if ($offerDiscount != null) : ?>
+                          <h4><?php echo $offer['offer_name'] ?></h4>
+                          <p><?php echo $offer['offer_percentage'] ?>% discount on orders over <?php echo $offer['order_over'] ?> </p>
+                        <?php endif ?>
+
+                        <tr>
                           <th>Total:</th>
                           <?php if ($subtotal) {
                             $total = $subtotal + $deliverycharges;
                             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
-                          } ?>
+                          }
+                          $total = $total - $offerDiscount;
+                          ?>
                           <td>PKR <?php echo $total ?  $total : "--.--" ?></td>
                         </tr>
                       </table>

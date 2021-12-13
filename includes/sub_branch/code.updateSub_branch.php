@@ -31,24 +31,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $result = mysqli_query($conn, $restaurant_check_query);
       $restaurant = mysqli_fetch_assoc($result);
 
-      if ($restaurant) { // if restaurant exists
-         if ($restaurant['id'] != $restaurantId) {
-            if ($restaurant['email'] == $restaurantEmail) {
-               array_push($errors, "email already exists try something else");
-            }
-         }
-         $restaurant_check_query = "SELECT email,id FROM restaurants WHERE email='$restaurantEmail' LIMIT 1";
-         $result = mysqli_query($conn, $restaurant_check_query);
-         $restaurant = mysqli_fetch_assoc($result);
+      // if ($restaurant) { // if restaurant exists
+      //    if ($restaurant['id'] != $restaurantId) {
+      //       if ($restaurant['email'] == $restaurantEmail) {
+      //          array_push($errors, "email already exists try something else");
+      //       }
+      //    }
+      //    $restaurant_check_query = "SELECT email,id FROM restaurants WHERE email='$restaurantEmail' LIMIT 1";
+      //    $result = mysqli_query($conn, $restaurant_check_query);
+      //    $restaurant = mysqli_fetch_assoc($result);
 
-         if ($restaurant) { // if restaurant exists
-            if ($restaurant['id'] != $restaurantId) {
-               if ($restaurant['email'] == $restaurantEmail) {
-                  array_push($errors, "email already exists try else");
-               }
-            }
-         }
-      }
+      //    if ($restaurant) { // if restaurant exists
+      //       if ($restaurant['id'] != $restaurantId) {
+      //          if ($restaurant['email'] == $restaurantEmail) {
+      //             array_push($errors, "email already exists try else");
+      //          }
+      //       }
+      //    }
+      // }
    }
 
    // form validation: ensure that the form is correctly filled ...
