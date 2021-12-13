@@ -97,7 +97,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="Offers" class="nav-link">
+            <a href="offers" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Offer </p>
             </a>
