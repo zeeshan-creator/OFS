@@ -50,7 +50,6 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               <th>Email</th>
               <th>Password</th>
               <th>Phone</th>
-              <th>Role</th>
               <th>Active Status</th>
               <th>Actions</th>
             </tr>
@@ -66,7 +65,6 @@ include("./includes/restaurants/code.fetchRestaurants.php");
               <td>" . $row['email'] . "</td>
               <td>" . $row['password'] . "</td>
               <td>" . $row['phone'] . "</td>
-              <td>" . $row['role'] . "</td>
               <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                 <a href='restaurantDetails?id=" . $row['id'] . "' type='button' rel='tooltip' title='Details' class='btn btn-info btn-link btn-icon btn-sm'>

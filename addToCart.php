@@ -16,9 +16,9 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
    $image = $row['photo'];
 
    $cartArray = array(
-      $name => array(
+      ($id . "_" . $size) => array(
          'name' => $name,
-         'id' => $id,
+         'id' => ($id . "_" . $size),
          'price' => $price,
          'quantity' => 1,
          'type' => 'product',
@@ -32,7 +32,7 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
       echo 1;
    } else {
       foreach ($_SESSION["shopping_cart"] as &$value) {
-         if ($value['id'] == $id && $value['size'] == $size) {
+         if ($value['id'] == $id) {
             echo 0;
             exit; // Stop the loop after we've found the product
          }

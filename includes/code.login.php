@@ -98,12 +98,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 function userLogin($db, $email, $conn)
 {
-   $query = "SELECT * FROM $db WHERE email='$email'";
+   $query = "SELECT * FROM $db WHERE email='$email' LIMIT 1";
    $results = mysqli_query($conn, $query);
 
    if (mysqli_num_rows($results) == 1) {
       $row = mysqli_fetch_assoc($results);
       $_SESSION['name'] = $row["name"];
+      $_SESSION['email'] = $row["email"];
+      if ($row["logo"]) {
+         $_SESSION['logo'] = $row["logo"];
+      }
       $_SESSION['role'] = $row["role"];
       $_SESSION['id'] = $row["id"];
       $_SESSION['active_status'] = $row["active_status"];

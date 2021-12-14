@@ -50,6 +50,7 @@ if ($offer) {
 if (isset($_POST['action']) && $_POST['action'] == "remove") {
   if (!empty($_SESSION["shopping_cart"])) {
     foreach ($_SESSION["shopping_cart"] as $id => $value) {
+      echo $id;
       if ($_POST["key"] == $id) {
         unset($_SESSION["shopping_cart"][$id]);
         echo "<script>window.location.href = 'POS';</script>";
@@ -424,7 +425,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
                                   </div>
                                   <div class="pl-2 float-right">
                                     <form method='post' action=''>
-                                      <input type='hidden' name='key' value="<?php echo $product["name"]; ?>" />
+                                      <input type='hidden' name='key' value="<?php echo $product["id"]; ?>" />
                                       <input type='hidden' name='action' value="remove" />
                                       <button type='submit' class='remove btn btn-danger'>
                                         <span style='color:white;'>

@@ -10,7 +10,12 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <?php if (!isset($_SESSION['logo'])) : ?>
+          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <?php endif ?>
+        <?php if (isset($_SESSION['logo'])) : ?>
+          <img src="includes/restaurants/logos/<?php echo $_SESSION['logo'] ?>" class="img-circle elevation-2" alt="User Image">
+        <?php endif ?>
       </div>
       <div class="info">
         <a href="index" class="d-block"><?php
@@ -100,6 +105,13 @@
             <a href="offers" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Offer </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="settings" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Settings </p>
             </a>
           </li>
 
