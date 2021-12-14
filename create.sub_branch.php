@@ -61,7 +61,7 @@ $result = mysqli_query($conn, $restaurant_query);
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="restaurantPassword">restaurant Password</label>
-                  <input type="text" class="form-control" name="restaurantPassword" min="6" max="16" placeholder="Enter restaurant password" id="phone" required>
+                  <input type="text" class="form-control" name="restaurantPassword" placeholder="Enter restaurant password" id="phone" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant password
                   </div>

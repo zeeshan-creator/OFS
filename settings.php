@@ -1,44 +1,35 @@
 <?php
-
 include './auth/login_auth.php';
-include './auth/!=admin_auth.php';
+include './auth/!=main_branch_auth.php';
 include("./includes/restaurants/code.updateRestaurants.php");
 
-if (!isset($_GET['id'])) {
+
+$id = $_SESSION['id'];
+
+$restaurant_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
+$result = mysqli_query($conn, $restaurant_query);
+$row = mysqli_fetch_assoc($result);
+
+if ($row) {
+  // Retrieve individual field value
+  $name = $row["name"];
+  $phone = $row["phone"];
+  $email = $row["email"];
+  $password = $row["password"];
+  $contact_name = $row['contact_name'];
+  $contact_phone = $row['contact_phone'];
+  $contact_email = $row['contact_email'];
+  $country = $row['country'];
+  $city = $row['city'];
+  $street_address = $row['street_address'];
+  $cuisine = $row['cuisine'];
+  $active_status = $row["active_status"];
+} else {
+  // URL doesn't contain valid id. Redirect to allrestaurants
+  // header("location: allrestaurants");
   echo '<script>window.location.href = "allrestaurants";</script>';
   exit();
 }
-
-if (isset($_GET['id'])) {
-  $id = trim($_GET['id']);
-
-  $restaurant_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
-  $result = mysqli_query($conn, $restaurant_query);
-  $row = mysqli_fetch_assoc($result);
-
-  if ($row) {
-    // Retrieve individual field value
-    $name = $row["name"];
-    $phone = $row["phone"];
-    $email = $row["email"];
-    $password = $row["password"];
-    $contact_name = $row['contact_name'];
-    $contact_phone = $row['contact_phone'];
-    $contact_email = $row['contact_email'];
-    $country = $row['country'];
-    $city = $row['city'];
-    $street_address = $row['street_address'];
-    $cuisine = $row['cuisine'];
-    $active_status = $row["active_status"];
-  } else {
-    // URL doesn't contain valid id. Redirect to allrestaurants
-    // header("location: allrestaurants");
-    echo '<script>window.location.href = "allrestaurants";</script>';
-    exit();
-  }
-}
-ob_end_flush();
-
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +56,7 @@ ob_end_flush();
       <div class="row m-1">
         <div class="card card-info w-100 p-2">
           <div class="card-header">
-            <h3 class="card-title">Edit Restaurant</h3>
+            <h3 class="card-title">Restaurant Details</h3>
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
@@ -88,7 +79,8 @@ ob_end_flush();
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="restaurantEmail">restaurant E-Mail</label>
-                  <input type="email" class="form-control" value="<?php echo $email; ?>" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required>
+                  <input type="hidden" name="restaurantEmail" value="<?php echo $email; ?>">
+                  <input type="email" class="form-control" value="<?php echo $email; ?>" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required disabled>
                   <div class="invalid-feedback">
                     Please enter a restaurant Email
                   </div>
@@ -164,8 +156,9 @@ ob_end_flush();
                     ?>
                   </select>
                   <div class="invalid-feedback">
-                    Please enter a restaurant password
+                    Please select any status
                   </div>
+                  <small class="ml-1 mt-1 d-block font-weight-bold">Beware of account blocking. You will not be able to log in again and will need to contact the administration.</small>
                 </div>
               </div>
               <button class="btn btn-primary float-right" type="submit">Save</button>

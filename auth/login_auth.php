@@ -5,9 +5,7 @@ require('./config/db.php');
 
 $db;
 
-
 if (!isset($_SESSION['name'])) {
-   // header("Location: login");
    echo '<script>window.location.href = "login";</script>';
    exit();
 }
@@ -33,6 +31,9 @@ if (isset($_SESSION['name'])) {
       if ($row['name'] != $_SESSION['name']) {
          $_SESSION['name'] = $row['name'];
       }
+      if ($row['email'] != $_SESSION['email']) {
+         $_SESSION['email'] = $row['email'];
+      }
       if ($row['role'] != $_SESSION['role']) {
          $_SESSION['role'] = $row['role'];
       }
@@ -50,6 +51,9 @@ if (isset($_SESSION['name'])) {
          if ($row['name'] != $_SESSION['name']) {
             $_SESSION['name'] = $row['name'];
          }
+         if ($row['email'] != $_SESSION['email']) {
+            $_SESSION['email'] = $row['email'];
+         }
          if ($row['role'] != $_SESSION['role']) {
             $_SESSION['role'] = $row['role'];
          }
@@ -61,10 +65,4 @@ if (isset($_SESSION['name'])) {
    }
 }
 
-
-
-
-function sessionalteration()
-{
-}
 ob_end_flush();

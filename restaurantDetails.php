@@ -23,7 +23,6 @@ if (isset($_GET['id'])) {
     $phone = $row["phone"];
     $email = $row["email"];
     $password = $row["password"];
-    $role = $row["role"];
     $active_status = $row["active_status"];
 
     $sub_branch_query = "SELECT * FROM sub_restaurants WHERE main_branch = '$id'";
@@ -101,25 +100,7 @@ if (isset($_GET['id'])) {
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="restaurantPassword">restaurant Password</label>
-                  <input type="text" class="form-control" value="<?php echo $password; ?>" name="restaurantPassword" min="6" max="16" placeholder="Enter restaurant password" id="phone" required>
-                  <div class="invalid-feedback">
-                    Please enter a restaurant password
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="roleSelect">Role</label>
-                  <select class="form-control" id="roleSelect" name="role" required>
-                    <?php
-                    if ($role == "main_branch") {
-                      echo '<option value="main_branch" selected>Main branch</option>
-                                    <option value="sub_branch" >Sub branch</option>';
-                    }
-                    if ($role == "sub_branch") {
-                      echo '<option value="sub_branch" selected>Sub branch</option>
-                                    <option value="main_branch">Main branch</option>';
-                    }
-                    ?>
-                  </select>
+                  <input type="text" class="form-control" value="<?php echo $password; ?>" name="restaurantPassword" placeholder="Enter restaurant password" id="phone" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant password
                   </div>

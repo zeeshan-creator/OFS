@@ -1,13 +1,18 @@
 <?php
 ob_start();
 
-// require('./config/db.php');
-
 // initializing variables
 $restaurantName;
 $restaurantPhone;
 $restaurantEmail;
 $restaurantPassword;
+$contact_name;
+$contact_phone;
+$contact_email;
+$country;
+$city;
+$street_address;
+$cuisine;
 $errors   = array();
 // array_push($errors, "JUST CHECKING");
 
@@ -17,6 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $restaurantPhone = mysqli_real_escape_string($conn, trim($_POST['restaurantPhone']));
    $restaurantEmail = mysqli_real_escape_string($conn, trim($_POST['restaurantEmail']));
    $restaurantPassword = mysqli_real_escape_string($conn, trim($_POST['restaurantPassword']));
+   $contact_name = mysqli_real_escape_string($conn, trim($_POST['contact_name']));
+   $contact_phone = mysqli_real_escape_string($conn, trim($_POST['contact_phone']));
+   $contact_email = mysqli_real_escape_string($conn, trim($_POST['contact_email']));
+   $country = mysqli_real_escape_string($conn, trim($_POST['country']));
+   $city = mysqli_real_escape_string($conn, trim($_POST['city']));
+   $street_address = mysqli_real_escape_string($conn, trim($_POST['street_address']));
+   $cuisine = mysqli_real_escape_string($conn, trim($_POST['cuisine']));
+   $target_dir = "includes/restaurants/logos/";
+   $target_file = $target_dir . basename($_FILES["logo"]["name"]);
+   $filename = $_FILES["logo"]["name"];
 
 
    if (!empty($restaurantName)) {
@@ -36,6 +51,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
+   $check = getimagesize($_FILES["logo"]["tmp_name"]);
+   if ($check == false) {
+      array_push($errors, "File is not an image");
+   }
+
+   // Check if file already exists
+   // if (file_exists($target_file)) {
+   //    array_push($errors, "Sorry, file already exists");
+   // }
+
+   // Check file size
+   if ($_FILES["logo"]["size"] > 500000) {
+      array_push($errors, "Sorry, your file is too large");
+   }
+
+   // Allow certain file formats
+   $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+   if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+      array_push($errors, "Sorry, only JPG, JPEG & PNG files are allowed");
+   }
+
+   if (!move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file)) {
+      array_push($errors, "Sorry, there was an error uploading your file");
+   }
    if (empty($restaurantName)) {
       array_push($errors, "restaurant Name is required");
    }
@@ -52,13 +91,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       array_push($errors, "restaurant Password is required");
    }
 
+   if (empty($contact_name)) {
+      array_push($errors, "contact name is required");
+   }
+
+   if (empty($contact_phone)) {
+      array_push($errors, "contact phone is required");
+   }
+
+   if (empty($contact_email)) {
+      array_push($errors, "contact email is required");
+   }
+
+   if (empty($country)) {
+      array_push($errors, "country is required");
+   }
+
+   if (empty($city)) {
+      array_push($errors, "city is required");
+   }
+
+   if (empty($street_address)) {
+      array_push($errors, "street address is required");
+   }
+
+   if (empty($cuisine)) {
+      array_push($errors, "cuisine is required");
+   }
+
    // Finally, register user if there are no errors in the form
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "INSERT INTO `restaurants` (`name`, `email`, `password`, `phone`, `role`, `login_status`, `active_status`, `created_at`) VALUES ('$restaurantName', '$restaurantEmail', '$restaurantPassword', '$restaurantPhone', 'main_branch', 'offline', 'active', '$date')";
+      $query = "INSERT INTO `restaurants` (`name`, `email`, `logo`, `password`, `phone`, `contact_name`, `contact_phone`, `contact_email`, `country`, `city`, `street_address`, `cuisine`, `role`, `login_status`, `active_status`, `created_at`) VALUES ('$restaurantName', '$restaurantEmail', '$filename', '$restaurantPassword', '$restaurantPhone', '$contact_name', '$contact_phone',  '$contact_email', '$country', '$city', '$street_address', '$cuisine', 'main_branch', 'offline', 'active', '$date')";
 
-      $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
+      $results = mysqli_query($conn, $query)  or die(mysqli_error($conn));
 
       if ($results) {
          echo '<script>window.location.href = "allrestaurants";</script>';
