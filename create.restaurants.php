@@ -51,7 +51,7 @@ include("./includes/restaurants/code.createrestaurants.php");
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="logo">Restaurant Logo</label>
-                  <input type="file" class="form-control-file  border rounded py-1" name="logo" placeholder="Enter restaurant logo number" id="logo" required>
+                  <input type="file" class="form-control-file border rounded py-1" name="logo" placeholder="Enter restaurant logo number" accept='image/*' id="logo" required>
                   <div class="invalid-feedback">
                     Please select a restaurant logo
                   </div>

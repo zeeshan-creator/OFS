@@ -3,7 +3,6 @@ include './auth/login_auth.php';
 include './auth/!=main_branch_auth.php';
 include("./includes/restaurants/code.updateRestaurants.php");
 
-
 $id = $_SESSION['id'];
 
 $restaurant_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
@@ -16,6 +15,7 @@ if ($row) {
   $phone = $row["phone"];
   $email = $row["email"];
   $password = $row["password"];
+  $logo = $row["logo"];
   $contact_name = $row['contact_name'];
   $contact_phone = $row['contact_phone'];
   $contact_email = $row['contact_email'];
@@ -26,7 +26,6 @@ if ($row) {
   $active_status = $row["active_status"];
 } else {
   // URL doesn't contain valid id. Redirect to allrestaurants
-  // header("location: allrestaurants");
   echo '<script>window.location.href = "allrestaurants";</script>';
   exit();
 }
@@ -60,11 +59,25 @@ if ($row) {
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
+            <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+              <div class="col-md-6 mb-3 w-25">
+                <label for="restaurantname" class="d-block">Restaurant Logo</label>
+                <input type="hidden" name="oldLogo" value="<?php echo $logo ?>">
+                <div class="d-flex">
+                  <img src="includes/restaurants/logos/<?php echo $logo ?>" style="width: 100px;" class="img-circle elevation-2" id="logo" alt="User Image">
+                  <div class="col-md-12 mb-3">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newLogo" placeholder="Select restaurant logo" accept='image/*' onchange="readURL(this)" id="newLogo">
+                    <div class="invalid-feedback">
+                      Please select a restaurant logo
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="form-row">
                 <input type="hidden" name="restaurantId" value="<?php echo $id; ?>">
                 <div class=" col-md-6 mb-3">
-                  <label for="restaurantname">restaurant name</label>
+                  <label for="restaurantname">Restaurant name</label>
                   <input type="text" class="form-control" value="<?php echo $name; ?>" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant name
@@ -78,7 +91,7 @@ if ($row) {
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantEmail">restaurant E-Mail</label>
+                  <label for="restaurantEmail">Restaurant E-Mail</label>
                   <input type="hidden" name="restaurantEmail" value="<?php echo $email; ?>">
                   <input type="email" class="form-control" value="<?php echo $email; ?>" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required disabled>
                   <div class="invalid-feedback">
@@ -86,7 +99,7 @@ if ($row) {
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantPassword">restaurant Password</label>
+                  <label for="restaurantPassword">Restaurant Password</label>
                   <input type="text" class="form-control" value="<?php echo $password; ?>" name="restaurantPassword" placeholder="Enter restaurant password" id="phone" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant password
@@ -168,6 +181,18 @@ if ($row) {
           </form>
 
           <script>
+            function readURL(input) {
+              if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                  document.querySelector("#logo").setAttribute("src", e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+              }
+            }
+
             // Example starter JavaScript for disabling form submissions if there are invalid fields
             (function() {
               'use strict';
@@ -187,7 +212,7 @@ if ($row) {
               }, false);
             })();
 
-            // GO BACK 
+            // GO BACK
             function goBack() {
               window.history.back();
             }
