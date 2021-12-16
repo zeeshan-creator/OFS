@@ -21,6 +21,7 @@ if (isset($_GET['id'])) {
     $name = $row["name"];
     $phone = $row["phone"];
     $email = $row["email"];
+    $logo = $row["logo"];
     $password = $row["password"];
     $contact_name = $row['contact_name'];
     $contact_phone = $row['contact_phone'];
@@ -69,7 +70,20 @@ ob_end_flush();
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
+            <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+              <div class="col-md-6 mb-3 w-25">
+                <label for="restaurantname" class="d-block">Restaurant Logo</label>
+                <input type="hidden" name="oldLogo" value="<?php echo $_SESSION['logo'] ?>">
+                <div class="d-flex">
+                  <img src="includes/restaurants/logos/<?php echo $_SESSION['logo'] ?>" style="width: 100px;" class="img-circle elevation-2" id="logo" alt="User Image">
+                  <div class="col-md-12 mb-3">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newLogo" placeholder="Select restaurant logo" accept='image/*' onchange="readURL(this)" id="newLogo">
+                    <div class="invalid-feedback">
+                      Please select a restaurant logo
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-row">
                 <input type="hidden" name="restaurantId" value="<?php echo $id; ?>">
                 <div class=" col-md-6 mb-3">

@@ -105,9 +105,6 @@ function userLogin($db, $email, $conn)
       $row = mysqli_fetch_assoc($results);
       $_SESSION['name'] = $row["name"];
       $_SESSION['email'] = $row["email"];
-      if ($row["logo"]) {
-         $_SESSION['logo'] = $row["logo"];
-      }
       $_SESSION['role'] = $row["role"];
       $_SESSION['id'] = $row["id"];
       $_SESSION['active_status'] = $row["active_status"];

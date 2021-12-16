@@ -10,19 +10,27 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <?php if (!isset($_SESSION['logo'])) : ?>
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <?php
+        $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $_SESSION['id'];
+        $result = mysqli_query($conn, $query);
+        $row = mysqli_fetch_assoc($result);
+        ?>
+        <?php if ($row['logo'] == '' && $row['logo'] == null) : ?>
+          <img src="docs/assets/img/AdminLTELogo.png" class="img-circle elevation-2" alt="User Image">
         <?php endif ?>
-        <?php if (isset($_SESSION['logo'])) : ?>
-          <img src="includes/restaurants/logos/<?php echo $_SESSION['logo'] ?>" class="img-circle elevation-2" alt="User Image">
+        <?php if ($row['logo'] != '' && $row['logo'] != null) : ?>
+          <img src="includes/restaurants/logos/<?php echo $row['logo'] ?>" class="img-circle elevation-2" alt="User Image">
         <?php endif ?>
       </div>
       <div class="info">
-        <a href="index" class="d-block"><?php
-                                        if (isset($_SESSION['name'])) {
-                                          echo $_SESSION['name'];
-                                        }
-                                        ?></a>
+        <a href="index" class="d-block">
+          <?php
+          if ($row['name'] != '' && $row['name'] != null) {
+            echo $row['name'];
+          } else {
+            echo 'NO NAME';
+          }
+          ?></a>
       </div>
     </div>
 

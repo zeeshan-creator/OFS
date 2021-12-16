@@ -131,7 +131,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
                 url: 'code.deleteRestaurants',
                 type: 'POST',
                 data: {
-                  restaurantId: id
+                  id: id
                 },
               })
               .done(function(response) {

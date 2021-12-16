@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $street_address = mysqli_real_escape_string($conn, trim($_POST['street_address']));
    $cuisine = mysqli_real_escape_string($conn, trim($_POST['cuisine']));
    $target_dir = "includes/restaurants/logos/";
-   $target_file = $target_dir . basename($_FILES["logo"]["name"]);
+   $target_file = $target_dir;
    $filename = $_FILES["logo"]["name"];
 
 
@@ -67,14 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    }
 
    // Allow certain file formats
-   $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+   $imageFileType = strtolower(pathinfo(basename($_FILES["logo"]["name"]), PATHINFO_EXTENSION));
    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
       array_push($errors, "Sorry, only JPG, JPEG & PNG files are allowed");
    }
 
-   if (!move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file)) {
+   if (!move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file . $restaurantEmail . "." . $imageFileType)) {
       array_push($errors, "Sorry, there was an error uploading your file");
    }
+
    if (empty($restaurantName)) {
       array_push($errors, "restaurant Name is required");
    }
@@ -123,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
-      $query = "INSERT INTO `restaurants` (`name`, `email`, `logo`, `password`, `phone`, `contact_name`, `contact_phone`, `contact_email`, `country`, `city`, `street_address`, `cuisine`, `role`, `login_status`, `active_status`, `created_at`) VALUES ('$restaurantName', '$restaurantEmail', '$filename', '$restaurantPassword', '$restaurantPhone', '$contact_name', '$contact_phone',  '$contact_email', '$country', '$city', '$street_address', '$cuisine', 'main_branch', 'offline', 'active', '$date')";
+      $query = "INSERT INTO `restaurants` (`name`, `email`, `logo`, `password`, `phone`, `contact_name`, `contact_phone`, `contact_email`, `country`, `city`, `street_address`, `cuisine`, `role`, `login_status`, `active_status`, `created_at`) VALUES ('$restaurantName', '$restaurantEmail', '$restaurantEmail.$imageFileType', '$restaurantPassword', '$restaurantPhone', '$contact_name', '$contact_phone',  '$contact_email', '$country', '$city', '$street_address', '$cuisine', 'main_branch', 'offline', 'active', '$date')";
 
       $results = mysqli_query($conn, $query)  or die(mysqli_error($conn));
 

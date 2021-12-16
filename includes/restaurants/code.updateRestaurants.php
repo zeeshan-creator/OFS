@@ -13,6 +13,9 @@ $contact_name;
 $contact_phone;
 $contact_email;
 $country;
+$logo;
+$oldLogo;
+$newLogo;
 $city;
 $street_address;
 $cuisine;
@@ -31,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $contact_email = mysqli_real_escape_string($conn, trim($_POST['contact_email']));
    $country = mysqli_real_escape_string($conn, trim($_POST['country']));
    $city = mysqli_real_escape_string($conn, trim($_POST['city']));
+   $oldLogo = mysqli_real_escape_string($conn, trim($_POST['oldLogo']));
    $street_address = mysqli_real_escape_string($conn, trim($_POST['street_address']));
    $cuisine = mysqli_real_escape_string($conn, trim($_POST['cuisine']));
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
@@ -53,6 +57,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
+   if (basename($_FILES["newLogo"]["name"]) != '' && basename($_FILES["newLogo"]["name"]) != null) {
+      $target_dir = "includes/restaurants/logos/";
+
+      $check = getimagesize($_FILES["newLogo"]["tmp_name"]);
+      if ($check == false) {
+         array_push($errors, "File is not an image");
+      }
+
+      // Check file size
+      if ($_FILES["newLogo"]["size"] > 1000000) { // 1000KB is 1MB
+         array_push($errors, "Sorry, your file is too large");
+      }
+
+      // Allow certain file formats
+      $imageFileType = strtolower(pathinfo(basename($_FILES["newLogo"]["name"]), PATHINFO_EXTENSION));
+      if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+         array_push($errors, "Sorry, only JPG, JPEG & PNG files are allowed");
+      }
+
+      if (!move_uploaded_file($_FILES["newLogo"]["tmp_name"], $target_dir . ($restaurantEmail . "." . $imageFileType))) {
+         array_push($errors, "Sorry, there was an error uploading your file");
+      }
+
+      $logo = $restaurantEmail . "." . $imageFileType;
+   }
+
+   if (basename($_FILES["newLogo"]["name"]) == '' && basename($_FILES["newLogo"]["name"]) == null) {
+      $logo = $oldLogo;
+   }
+
    if (empty($restaurantName)) {
       array_push($errors, "restaurant Name is required");
    }
@@ -105,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             `phone` = '$restaurantPhone',
             `email` = '$restaurantEmail',
             `password` = '$restaurantPassword',
+            `logo` = '$logo',
             `contact_name` = '$contact_name',
             `contact_phone` = '$contact_phone',
             `contact_email` = '$contact_email',
