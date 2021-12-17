@@ -166,7 +166,7 @@ if (isset($_GET['offerID'])) {
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="offer_message">Offer Message</label>
-                      <textarea type="text" class="form-control" name="offer_message" placeholder="Enter offer offer message" id="offer_message" required><?php echo $offer_message; ?></textarea>
+                      <textarea rows="1" type="text" class="form-control" name="offer_message" placeholder="Enter offer offer message" id="offer_message" required><?php echo $offer_message; ?></textarea>
                       <div class="invalid-feedback">
                         Please enter a offer message
                       </div>

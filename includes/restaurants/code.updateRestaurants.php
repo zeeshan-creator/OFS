@@ -15,7 +15,6 @@ $contact_email;
 $country;
 $logo;
 $oldLogo;
-$newLogo;
 $city;
 $street_address;
 $cuisine;
@@ -154,7 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
       if ($results) {
-         // header('location: allrestaurants');
          echo '<script>window.location.href = "allrestaurants";</script>';
          exit();
       }

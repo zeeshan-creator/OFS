@@ -46,6 +46,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
           <thead>
             <tr class="text-center">
               <th>#</th>
+              <th></th>
               <th>Name</th>
               <th>Email</th>
               <th>Password</th>
@@ -61,6 +62,7 @@ include("./includes/restaurants/code.fetchRestaurants.php");
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
+               <td style='width:5%'><img src='includes/restaurants/logos/" . $row['logo'] . "' class='img-fluid ' alt='error'></td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['email'] . "</td>
               <td>" . $row['password'] . "</td>

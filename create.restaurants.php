@@ -34,6 +34,18 @@ include("./includes/restaurants/code.createrestaurants.php");
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+              <div class="col-md-5 mb-3 ">
+                <label for="restaurantname" class="d-block">Restaurant Logo</label>
+                <div class="d-flex">
+                  <img style="width: 100px;" class="img-circle elevation-2 d-none" id="logo" alt="logo">
+                  <div class="col-md-12 mb-3">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="logo" accept='image/*' onchange="readURL(this)" id="logo">
+                    <div class="invalid-feedback">
+                      Please select a restaurant's logo
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-row">
                 <div class="col-md-6 mb-3">
                   <label for="restaurantname">Restaurant Name</label>
@@ -49,13 +61,7 @@ include("./includes/restaurants/code.createrestaurants.php");
                     Please enter a restaurant phone number
                   </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="logo">Restaurant Logo</label>
-                  <input type="file" class="form-control-file border rounded py-1" name="logo" placeholder="Enter restaurant logo number" accept='image/*' id="logo" required>
-                  <div class="invalid-feedback">
-                    Please select a restaurant logo
-                  </div>
-                </div>
+
                 <div class="col-md-6 mb-3">
                   <label for="restaurantEmail">Restaurant E-Mail</label>
                   <input type="email" class="form-control" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantEmail" required>
@@ -125,6 +131,18 @@ include("./includes/restaurants/code.createrestaurants.php");
           </div>
 
           <script>
+            function readURL(input) {
+              if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                  var logo = document.getElementById("logo");
+                  logo.setAttribute("src", e.target.result);
+                  logo.classList.remove("d-none");
+                };
+                reader.readAsDataURL(input.files[0]);
+              }
+            }
             // Example starter JavaScript for disabling form submissions if there are invalid fields
             (function() {
               'use strict';

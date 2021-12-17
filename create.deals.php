@@ -54,7 +54,7 @@ include("./includes/restaurants/deals/code.Deal.php");
                     </div>
                     <div class="col-lg-12 mb-3">
                       <label for="description">Deal description</label>
-                      <textarea type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required></textarea>
+                      <textarea rows="1" type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required></textarea>
                       <div class="invalid-feedback">
                         Please enter a deal description
                       </div>

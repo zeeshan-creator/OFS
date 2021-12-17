@@ -11,26 +11,57 @@
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
         <?php
-        $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $_SESSION['id'];
-        $result = mysqli_query($conn, $query);
+        if ($_SESSION['role'] == 'admin') {
+          echo '<img src="docs/assets/img/AdminLTELogo.png" class="img-circle elevation-2" alt="User Image">';
+          goto exiit;
+        }
+
+        if ($_SESSION['role'] == 'main_branch') {
+          $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $_SESSION['id'];
+        }
+
+        if ($_SESSION['role'] == 'sub_branch') {
+          $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
+          $results = mysqli_query($conn, $query);
+          $row = mysqli_fetch_assoc($results);
+          $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $row['main_branch'];
+        }
+
+        $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
         $row = mysqli_fetch_assoc($result);
+
+        if ($row['logo'] == '' && $row['logo'] == null) {
+          echo '<img src="docs/assets/img/AdminLTELogo.png" class="img-circle elevation-2" alt="User Image">';
+        }
+        if ($row['logo'] != '' && $row['logo'] != null) {
+          echo ' <img src="includes/restaurants/logos/' . $row['logo'] . '" class="img-circle elevation-2" alt="User Image">';
+        }
+        exiit:
         ?>
-        <?php if ($row['logo'] == '' && $row['logo'] == null) : ?>
-          <img src="docs/assets/img/AdminLTELogo.png" class="img-circle elevation-2" alt="User Image">
-        <?php endif ?>
-        <?php if ($row['logo'] != '' && $row['logo'] != null) : ?>
-          <img src="includes/restaurants/logos/<?php echo $row['logo'] ?>" class="img-circle elevation-2" alt="User Image">
-        <?php endif ?>
       </div>
       <div class="info">
         <a href="index" class="d-block">
           <?php
+          if ($_SESSION['role'] == 'admin') {
+            $query = "SELECT name FROM `admin` WHERE `id`= " . $_SESSION['id'];
+          }
+          if ($_SESSION['role'] == 'main_branch') {
+            $query = "SELECT name FROM `restaurants` WHERE `id`= " . $_SESSION['id'];
+          }
+          if ($_SESSION['role'] == 'sub_branch') {
+            $query = "SELECT name FROM `sub_restaurants` WHERE `id`= " . $_SESSION['id'];
+          }
+
+          $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+          $row = mysqli_fetch_assoc($result);
+
           if ($row['name'] != '' && $row['name'] != null) {
             echo $row['name'];
           } else {
             echo 'NO NAME';
           }
-          ?></a>
+          ?>
+        </a>
       </div>
     </div>
 

@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    // }
 
    // Check file size
-   if ($_FILES["logo"]["size"] > 500000) {
+   if ($_FILES["logo"]["size"] > 1000000) {
       array_push($errors, "Sorry, your file is too large");
    }
 

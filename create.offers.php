@@ -54,7 +54,7 @@ include("./includes/restaurants/offers/code.offer.php");
                     </div>
                     <div class="col-lg-6 mb-3">
                       <label for="offer_message">Offer Message</label>
-                      <textarea type="text" class="form-control" name="offer_message" placeholder="Enter offer message" id="offer_message" required></textarea>
+                      <textarea rows="1" type="text" class="form-control" name="offer_message" placeholder="Enter offer message" id="offer_message" required></textarea>
                       <div class="invalid-feedback">
                         Please enter a offer message
                       </div>

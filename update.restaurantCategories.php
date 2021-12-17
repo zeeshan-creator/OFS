@@ -90,7 +90,7 @@ ob_end_flush();
                 </div>
                 <div class="col-md-12 mb-4">
                   <label for="category_desc">Category description</label>
-                  <textarea type="text" class="form-control" value="" name="category_desc" placeholder="Enter category description" id="category_desc" required><?php echo $category_desc; ?></textarea>
+                  <textarea rows="1" type="text" class="form-control" value="" name="category_desc" placeholder="Enter category description" id="category_desc" required><?php echo $category_desc; ?></textarea>
                   <div class="invalid-feedback">
                     Please enter category description
                   </div>

@@ -47,7 +47,7 @@ include("./includes/restaurants/categories/code.restaurantCategories.php");
 
                 <div class="col-md-12 mb-3">
                   <label for="description">Description</label>
-                  <textarea rows="5" cols="10" class="form-control" name="categoryDesc" placeholder="Enter description" id="description" required></textarea>
+                  <textarea rows="1" rows="5" cols="10" class="form-control" name="categoryDesc" placeholder="Enter description" id="description" required></textarea>
                   <div class="invalid-feedback">
                     Please enter a description
                   </div>
