@@ -145,7 +145,7 @@ include("./includes/restaurants/deals/code.updateDeal.php");
 
                         <div class="col-lg-6 mb-3">
                           <label for="description">Deal description</label>
-                          <textarea type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required><?Php echo $description ?></textarea>
+                          <textarea rows="1" type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required><?Php echo $description ?></textarea>
                           <div class="invalid-feedback">
                             Please enter a deal description
                           </div>

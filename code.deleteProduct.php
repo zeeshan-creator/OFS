@@ -19,6 +19,12 @@ if ($id > 0) {
 
    if ($totalrows > 0) {
       // Delete record
+      $query = "SELECT `photo` FROM products WHERE id = " . $id;
+      $result = mysqli_query($conn, $query);
+      $row = mysqli_fetch_assoc($result);
+      $file = "includes/restaurants/products/product_imgs/" . $row['photo'];
+      unlink($file);
+
       $query = "DELETE FROM products WHERE id=" . $id;
       $result = mysqli_query($conn, $query);
       if ($result) {

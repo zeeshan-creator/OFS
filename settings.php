@@ -60,13 +60,13 @@ if ($row) {
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
-              <div class="col-md-6 mb-3 w-25">
+              <div class="col-md-5 mb-3 ">
                 <label for="restaurantname" class="d-block">Restaurant Logo</label>
                 <input type="hidden" name="oldLogo" value="<?php echo $logo ?>">
                 <div class="d-flex">
                   <img src="includes/restaurants/logos/<?php echo $logo ?>" style="width: 100px;" class="img-circle elevation-2" id="logo" alt="User Image">
                   <div class="col-md-12 mb-3">
-                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newLogo" placeholder="Select restaurant logo" accept='image/*' onchange="readURL(this)" id="newLogo">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newLogo" accept='image/*' onchange="readURL(this)" id="newLogo">
                     <div class="invalid-feedback">
                       Please select a restaurant logo
                     </div>

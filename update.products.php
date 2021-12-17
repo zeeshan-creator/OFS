@@ -45,7 +45,7 @@ if (isset($_GET['branchId'])) {
 }
 
 $category_query = "SELECT id,category_name FROM categories WHERE restaurant_id = " . $id;
-$result = mysqli_query($conn, $category_query);
+$categories = mysqli_query($conn, $category_query);
 
 ?>
 <!DOCTYPE html>
@@ -77,7 +77,20 @@ $result = mysqli_query($conn, $category_query);
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
+            <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+              <div class="col-md-5 mb-3 ">
+                <label for="product_image" class="d-block">Product Logo</label>
+                <input type="hidden" name="oldImage" value="<?php echo $photo; ?>">
+                <div class="d-flex">
+                  <img src="includes/restaurants/products/product_imgs/<?php echo $photo; ?>" style="width: 100px;" class="elevation-2" id="product_image" alt="Product Image">
+                  <div class="col-md-12 mb-3">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newImage" accept='image/*' onchange="readURL(this)" id="newImage">
+                    <div class="invalid-feedback">
+                      Please select a Product product_image
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-row">
                 <input type="hidden" name="productID" value="<?php echo $productID; ?>">
                 <div class=" col-md-6 mb-3">
@@ -94,18 +107,11 @@ $result = mysqli_query($conn, $category_query);
                     Please enter a product price
                   </div>
                 </div>
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
                   <label for="description">Product description</label>
-                  <textarea type="text" class="form-control" name="description" placeholder="Enter Product description" id="description" required><?php echo $description; ?></textarea>
+                  <textarea rows="1" rows="1" type="text" class="form-control" name="description" placeholder="Enter Product description" id="description" required><?php echo $description; ?></textarea>
                   <div class="invalid-feedback">
                     Please enter a Product description
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="photo">Products photo</label>
-                  <input type="text" class="form-control" value="<?php echo $photo; ?>" name="photo" placeholder="Enter photo" id="photo" required>
-                  <div class="invalid-feedback">
-                    Please enter a product photo
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -147,8 +153,9 @@ $result = mysqli_query($conn, $category_query);
                 <div class="col-md-6 mb-3">
                   <label for="categoriesSelect">Category</label>
                   <select class="form-control" id="categoriesSelect" name="category" required>
+                    <option selected disabled>Select A category</option>
                     <?php
-                    while ($row = mysqli_fetch_array($result)) {
+                    while ($row = mysqli_fetch_assoc($categories)) {
                       if ($row['id'] == $categoryID) {
                         echo "<option selected value='" . $row['id'] . "'>" . $row['category_name'] .  "</option>";
                         continue;
@@ -159,7 +166,7 @@ $result = mysqli_query($conn, $category_query);
                     ?>
                   </select>
                   <div class="invalid-feedback">
-                    Please enter a category
+                    Please select a category
                   </div>
                 </div>
               </div>
@@ -171,6 +178,17 @@ $result = mysqli_query($conn, $category_query);
           </form>
 
           <script>
+            function readURL(input) {
+              if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                  document.querySelector("#product_image").setAttribute("src", e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+              }
+            };
             // Example starter JavaScript for disabling form submissions if there are invalid fields
             (function() {
               'use strict';

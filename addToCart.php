@@ -52,9 +52,9 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
    $price = $row['deal_price'];
 
    $cartArray = array(
-      $name => array(
+      ($name . '_' . $id) => array(
          'name' => $name,
-         'id' => $id,
+         'id' => ($name . '_' . $id),
          'price' => $price,
          'quantity' => 1,
          'type' => 'deal',

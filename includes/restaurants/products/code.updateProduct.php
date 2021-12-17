@@ -7,6 +7,7 @@ $productName;
 $price;
 $description;
 $photo;
+$oldImage;
 $active_status;
 $item_availability;
 $category;
@@ -18,29 +19,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $productName = mysqli_real_escape_string($conn, trim($_POST['productName']));
    $price = mysqli_real_escape_string($conn, trim($_POST['price']));
    $description = mysqli_real_escape_string($conn, trim($_POST['description']));
-   $photo = mysqli_real_escape_string($conn, trim($_POST['photo']));
+   $oldImage = mysqli_real_escape_string($conn, trim($_POST['oldImage']));
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
    $item_availability = mysqli_real_escape_string($conn, trim($_POST['item_availability']));
    $category = mysqli_real_escape_string($conn, trim($_POST['category']));
 
-   // if (!empty($productName)) {
-   //    // first check the database to make sure 
-   //    // a user does not already exist with the same email 
-   //    $product_name_check_query = "SELECT name,id FROM products WHERE name = '$productName' LIMIT 1";
-   //    $result = mysqli_query($conn, $product_name_check_query);
-   //    $product = mysqli_fetch_assoc($result);
-
-   //    if ($product) { // if product exists
-   //       if ($product['id'] != $productID) {
-   //          if ($product['name'] == $productName) {
-   //             array_push($errors, "product name already exists try something else");
-   //          }
-   //       }
-   //    }
-   // }
-
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
+   if (basename($_FILES["newImage"]["name"]) != '' && basename($_FILES["newImage"]["name"]) != null) {
+      $target_dir = "includes/restaurants/products/product_imgs/";
+
+      $check = getimagesize($_FILES["newImage"]["tmp_name"]);
+      if ($check == false) {
+         array_push($errors, "File is not an image");
+      }
+
+      // Check file size
+      if ($_FILES["newImage"]["size"] > 1000000) { // 1000KB is 1MB
+         array_push($errors, "Sorry, your file is too large");
+      }
+
+      // Allow certain file formats
+      $imageFileType = strtolower(pathinfo(basename($_FILES["newImage"]["name"]), PATHINFO_EXTENSION));
+      if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+         array_push($errors, "Sorry, only JPG, JPEG & PNG files are allowed");
+      }
+
+      if (!move_uploaded_file($_FILES["newImage"]["tmp_name"], $target_dir . ($oldImage))) {
+         array_push($errors, "Sorry, there was an error uploading your file");
+      }
+
+      $photo = $oldImage;
+   }
+
+   if (
+      basename($_FILES["newImage"]["name"]) == '' && basename($_FILES["newImage"]["name"]) == null
+   ) {
+      $photo = $oldImage;
+   }
+
    if (empty($productName)) {
       array_push($errors, "Name is required");
    }
@@ -51,13 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
    if (empty($description)) {
       array_push($errors, "description is required");
-   }
-
-   if (empty($photo)) {
-      array_push(
-         $errors,
-         "photo is required"
-      );
    }
 
    if (empty($active_status)) {

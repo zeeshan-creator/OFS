@@ -76,7 +76,7 @@ include("./includes/restaurants/products/code.fetchProducts.php");
             while ($row = mysqli_fetch_assoc($products)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
-              <td style='width:10%;'><img src='includes/restaurants/products/product_imgs/" . $row['photo'] . "' class='img-fluid img-thumbnail' alt='error'></td>
+              <td style='width:7%;'><img src='includes/restaurants/products/product_imgs/" . $row['photo'] . "' class='img-fluid' alt='error'></td>
               <td>" . $row['productName'] . "</td>
               <td>" . $row['price'] . "</td>
               <td>" . $row['description'] . "</td>
