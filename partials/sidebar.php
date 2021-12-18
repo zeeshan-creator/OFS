@@ -154,6 +154,27 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="social_media_links" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Social Media Links</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="delivery_setting" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Delivery Setting </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="restaurant_timing" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Restaurant Timing </p>
+            </a>
+          </li>
+
         <?php endif ?>
 
         <!-- If the user is (sub_branch) show him/her these links -->

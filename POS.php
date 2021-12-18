@@ -156,7 +156,6 @@ include("./includes/restaurants/POS/code.pos.php");
     <?php include './partials/nav.php' ?>
     <!-- End Navbar -->
 
-
     <!-- Main Sidebar Container -->
     <?php include './partials/sidebar.php' ?>
     <!-- END Sidebar Container -->

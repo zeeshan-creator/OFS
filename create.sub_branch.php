@@ -4,7 +4,7 @@ include './auth/!=admin_auth.php';
 include("./includes/sub_branch/code.sub_branch.php");
 
 $restaurant_query = "SELECT id,name, email FROM restaurants";
-$result = mysqli_query($conn, $restaurant_query);
+$restaurants = mysqli_query($conn, $restaurant_query);
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +70,7 @@ $result = mysqli_query($conn, $restaurant_query);
                   <label for="main_branch">Main branch</label>
                   <select class="form-control" id="main_branch" name="main_branch" required>
                     <?php
-                    while ($row = mysqli_fetch_array($result)) {
+                    while ($row = mysqli_fetch_array($restaurants)) {
                       echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";  // displaying data in option menu
                     }
                     ?>
