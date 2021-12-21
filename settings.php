@@ -149,6 +149,7 @@ if ($row) {
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="cuisine">Cuisine</label>
+                  <small>(abc, xyz, etc)</small>
                   <input type="text" class="form-control" value="<?php echo $cuisine; ?>" name="cuisine" placeholder="Enter cuisine" id="cuisine" required>
                   <div class="invalid-feedback">
                     Please enter a cuisine

@@ -5,7 +5,9 @@ include("./includes/restaurants/orders/code.saveOrders.php");
 
 include("./includes/restaurants/POS/code.fetchCategoriesToPOS.php");
 include("./includes/restaurants/POS/code.fetchProductsToPOS.php");
+include("./includes/restaurants/POS/code.fetchAddonsToPOS.php");
 include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
+include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
 include("./includes/restaurants/POS/code.pos.php");
 
 ?>
@@ -45,23 +47,6 @@ include("./includes/restaurants/POS/code.pos.php");
     height: 40px;
     width: 40px;
     border-radius: 100%;
-  }
-
-  hr {
-    border: none;
-    border-top: 3px double #333;
-    color: #333;
-    overflow: visible;
-    text-align: center;
-    height: 5px;
-  }
-
-  hr:after {
-    background: #fff;
-    content: '§';
-    padding: 0 4px;
-    position: relative;
-    top: -13px;
   }
 
   .quantity {
@@ -320,7 +305,10 @@ include("./includes/restaurants/POS/code.pos.php");
                                     <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                   <?php if ($product['type'] == 'deal') : ?>
-                                    <h2 class="border">D<span style="font-size: 17px;font-weight: bold;">EAL</span></h2>
+                                    <h2 class="border p-1">D<span style="font-size: 17px;font-weight: bold;">EAL</span></h2>
+                                  <?php endif ?>
+                                  <?php if ($product['type'] == 'addon') : ?>
+                                    <h2 class="border p-1">A<span style="font-size: 17px;font-weight: bold;">ddon</span></h2>
                                   <?php endif ?>
                                 </td>
                                 <td class="pl-2">
@@ -335,7 +323,7 @@ include("./includes/restaurants/POS/code.pos.php");
                                     <div class="quantity mt-2">
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
-                                    <?php if ($product['type'] != 'deal') : ?>
+                                    <?php if ($product['type'] == 'product') : ?>
                                       <div class="">
                                         <select name="product_size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
                                           <option selected disabled>Sizes</option>
@@ -407,10 +395,10 @@ include("./includes/restaurants/POS/code.pos.php");
                         <tr>
                           <th>Total:</th>
                           <?php if ($subtotal) {
-                            $total = $subtotal + $deliverycharges;
+                            $total = $subtotal - $offerDiscount;
+                            $total = $total + $deliverycharges;
                             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
                           }
-                          $total = $total - $offerDiscount;
                           ?>
                           <td>PKR <?php echo $total ?  $total : "--.--" ?></td>
                         </tr>
@@ -425,24 +413,28 @@ include("./includes/restaurants/POS/code.pos.php");
                   </div>
                 </div>
 
-
+                <hr>
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="">
                       <div class="btn-group w-100 mb-2">
-                        <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
-                        <a class="btn btn-info " href="javascript:void(0)" data-filter="deals"> Deals </a>
-                        <?php
-                        while ($row = mysqli_fetch_assoc($categories)) {
-                          echo '<a class="btn btn-info" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
-                        }
-                        ?>
+                        <div class="row ml-1">
+                          <a class="btn btn-info active pb-0" href="javascript:void(0)" data-filter="all"> All items</a>
+                          <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
+                          <?php
+                          while ($row = mysqli_fetch_assoc($categories)) {
+                            echo '<a class="btn btn-info m-1" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
+                          }
+                          ?>
+                          <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
+
+                        </div>
                       </div>
-                      <div class="mb-2">
+                      <div class="mb-2 ml-1">
                         <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
                       </div>
                     </div>
-                    <div class="col-lg-11">
+                    <div class="col-lg-11 ml-1">
                       <div class="filter-container p-0 mt-3 row">
 
                         <?php
@@ -483,6 +475,23 @@ include("./includes/restaurants/POS/code.pos.php");
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['deal_price'] . '</p>
                                   <button class="mt-2 btn btn-info float-right" onclick="addDealToCart(' . $row['id'] . ')">Add</button>
+                                  </div>
+                                </div>
+                              </div>';
+                        }
+
+                        while ($row = mysqli_fetch_assoc($addons)) {
+                          echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
+                                <div class="card card-outline card-info">
+                                  <div class="card-header">
+                                    <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
+                                  </div>
+                                  <div class="card-body">
+                                   <div class="div" style="height: 128px; overflow:hidden;">
+                                    <h5>' . $row['description'] . '</h5>
+                                    </div>
+                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                                  <button class="mt-2 btn btn-info float-right" onclick="addAddonToCart(' . $row['id'] . ')">Add</button>
                                   </div>
                                 </div>
                               </div>';
@@ -538,7 +547,6 @@ include("./includes/restaurants/POS/code.pos.php");
             })
             .done(function(response) {
               if (response == 1) {
-                // Swal.fire('Added!', "Product Added", "success");
                 location.reload();
               }
               if (response == 0) {
@@ -565,11 +573,31 @@ include("./includes/restaurants/POS/code.pos.php");
           })
           .done(function(response) {
             if (response == 1) {
-              // Swal.fire('Added!', "Deal Added", "success");
               location.reload();
             }
             if (response == 0) {
               Swal.fire('Alreay Exist!', "Deal already in cart", "error");
+            }
+          })
+          .fail(function() {
+            swal('Oops...', 'Something went wrong!', 'error');
+          });
+      }
+
+      function addAddonToCart(id) {
+        $.ajax({
+            url: 'addToCart',
+            type: 'POST',
+            data: {
+              addonID: id
+            },
+          })
+          .done(function(response) {
+            if (response == 1) {
+              location.reload();
+            }
+            if (response == 0) {
+              Swal.fire('Alreay Exist!', "Addon Product already in cart", "error");
             }
           })
           .fail(function() {

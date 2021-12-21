@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
   <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 
+
+
   <!-- Sweet Alert Script & CSS Links -->
   <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
   <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>

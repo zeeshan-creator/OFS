@@ -4,6 +4,8 @@ include './auth/==admin_auth.php';
 
 include("./includes/restaurants/POS/code.fetchCategoriesToPOS.php");
 include("./includes/restaurants/POS/code.fetchProductsToPOS.php");
+include("./includes/restaurants/POS/code.fetchAddonsToPOS.php");
+include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
 include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
 include("./includes/restaurants/orders/code.updateOrders.php");
 
@@ -44,23 +46,6 @@ include("./includes/restaurants/orders/code.updateOrders.php");
     height: 40px;
     width: 40px;
     border-radius: 100%;
-  }
-
-  hr {
-    border: none;
-    border-top: 3px double #333;
-    color: #333;
-    overflow: visible;
-    text-align: center;
-    height: 5px;
-  }
-
-  hr:after {
-    background: #fff;
-    content: '§';
-    padding: 0 4px;
-    position: relative;
-    top: -13px;
   }
 
   .quantity {
@@ -324,6 +309,9 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                   <?php if ($product['type'] == 'deal') : ?>
                                     <h2 class="border">D<span style="font-size: 17px;font-weight: bold;">EAL</span></h2>
                                   <?php endif ?>
+                                  <?php if ($product['type'] == 'addon') : ?>
+                                    <h2 class="border p-1">A<span style="font-size: 17px;font-weight: bold;">ddon</span></h2>
+                                  <?php endif ?>
                                 </td>
                                 <td class="pl-2">
                                   <div class="float-left mr-4">
@@ -338,7 +326,7 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                     <div class="quantity mt-2">
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
-                                    <?php if ($product['type'] != 'deal') : ?>
+                                    <?php if ($product['type'] == 'product') : ?>
                                       <div class="">
                                         <select name="size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
                                           <option selected disabled>Sizes</option>
@@ -391,20 +379,31 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                           <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
                         </tr>
                         <tr>
-                          <th>Tax (13%)</th>
-                          <td>PKR --.--</td>
-                        </tr>
-                        <tr>
                           <th>Shipping:</th>
                           <td>PKR <?php echo $deliverycharges ? $deliverycharges : "--.--" ?></td>
                         </tr>
                         <tr>
+                          <th>Discount:</th>
+                          <?php if ($subtotal >= $ordersOver) {
+                            $offerDiscount = round($subtotal / 100 * $offerPercentage);
+                          }
+                          ?>
+                          <td>PKR <?php echo $offerDiscount ? $offerDiscount : "--.--" ?></td>
+                        </tr>
+
+                        <?php if ($offerDiscount != null) : ?>
+                          <h4><?php echo $offer['offer_name'] ?></h4>
+                          <p><?php echo $offer['offer_percentage'] ?>% discount on orders over <?php echo $offer['order_over'] ?> </p>
+                        <?php endif ?>
+
+                        <tr>
                           <th>Total:</th>
                           <?php if ($subtotal) {
-                            $total = $subtotal + $deliverycharges;
-                            $total2 = $total;
+                            $total = $subtotal - $offerDiscount;
+                            $total = $total + $deliverycharges;
                             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
-                          } ?>
+                          }
+                          ?>
                           <td>PKR <?php echo $total ?  $total : "--.--" ?></td>
                         </tr>
                       </table>
@@ -418,18 +417,22 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                   </div>
                 </div>
 
-
+                <hr>
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="">
                       <div class="btn-group w-100 mb-2">
-                        <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
-                        <a class="btn btn-info " href="javascript:void(0)" data-filter="deals"> Deals </a>
-                        <?php
-                        while ($row = mysqli_fetch_assoc($categories)) {
-                          echo '<a class="btn btn-info" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
-                        }
-                        ?>
+                        <div class="row ml-1">
+                          <a class="btn btn-info active pb-0" href="javascript:void(0)" data-filter="all"> All items</a>
+                          <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
+                          <?php
+                          while ($row = mysqli_fetch_assoc($categories)) {
+                            echo '<a class="btn btn-info m-1" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
+                          }
+                          ?>
+                          <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
+
+                        </div>
                       </div>
                       <div class="mb-2">
                         <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
@@ -476,6 +479,22 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['deal_price'] . '</p>
                                   <button class="mt-2 btn btn-info float-right" onclick="addDealToCart(' . $row['id'] . ')">Add</button>
+                                  </div>
+                                </div>
+                              </div>';
+                        }
+                        while ($row = mysqli_fetch_assoc($addons)) {
+                          echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
+                                <div class="card card-outline card-info">
+                                  <div class="card-header">
+                                    <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
+                                  </div>
+                                  <div class="card-body">
+                                   <div class="div" style="height: 128px; overflow:hidden;">
+                                    <h5>' . $row['description'] . '</h5>
+                                    </div>
+                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                                  <button class="mt-2 btn btn-info float-right" onclick="addAddonToCart(' . $row['id'] . ')">Add</button>
                                   </div>
                                 </div>
                               </div>';
@@ -562,6 +581,20 @@ include("./includes/restaurants/orders/code.updateOrders.php");
             order_product_id: orderID,
             id: id,
             type: 'deal',
+            action: 'addProduct',
+          },
+        })
+        location.reload();
+      }
+
+      function addAddonToCart(id) {
+        $.ajax({
+          url: 'orderDetails',
+          type: 'POST',
+          data: {
+            order_product_id: orderID,
+            id: id,
+            type: 'addon',
             action: 'addProduct',
           },
         })

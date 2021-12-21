@@ -161,6 +161,31 @@ if (isset($_GET['orderID'])) {
             );
          }
 
+         // If type is DEAL
+         if ($rows['type'] == 'addon') {
+            $products_query  =
+               'SELECT `id`, `name`, `price` FROM `addons_products` where `id` = ' . $rows['product_id'];
+            $products_result = mysqli_query($conn, $products_query);
+            $order_products = mysqli_fetch_assoc($products_result);
+
+            $id = $rows['id'];
+            $name = $order_products['name'];
+            $price = $order_products['price'];
+            $type = $rows['type'];
+            $qty = $rows['qty'];
+
+            $orderProducts = array(
+               $name => array(
+                  'id' => $id,
+                  'order_id' => $orderID,
+                  'name' => $name,
+                  'price' => $price,
+                  'quantity' => $qty,
+                  'type' => 'addon',
+               )
+            );
+         }
+
          $_SESSION['order_products'] = array_merge($_SESSION['order_products'], $orderProducts);
       }
    }
@@ -214,6 +239,10 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
    }
 
    if (isset($_POST['type']) && $_POST['type'] == "deal") {
+      $query  = "UPDATE `order_products` SET `qty` =  '$qty'  WHERE `id` = " . $id;
+   }
+
+   if (isset($_POST['type']) && $_POST['type'] == "addon") {
       $query  = "UPDATE `order_products` SET `qty` =  '$qty'  WHERE `id` = " . $id;
    }
 

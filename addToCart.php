@@ -52,12 +52,45 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
    $price = $row['deal_price'];
 
    $cartArray = array(
-      ($name . '_' . $id) => array(
+      ($id . '_' . $name) => array(
          'name' => $name,
-         'id' => ($name . '_' . $id),
+         'id' => ($id . '_' . $name),
          'price' => $price,
          'quantity' => 1,
          'type' => 'deal',
+      )
+   );
+
+   if (empty($_SESSION["shopping_cart"])) {
+      $_SESSION["shopping_cart"] = $cartArray;
+      echo 1;
+   } else {
+      foreach ($_SESSION["shopping_cart"] as &$value) {
+         if ($value['id'] == $id) {
+            exit; // Stop the loop after we've found the Deal
+         }
+      }
+      $_SESSION["shopping_cart"] = array_merge($_SESSION["shopping_cart"], $cartArray);
+      echo 1;
+   }
+}
+
+if (isset($_POST['addonID']) && $_POST['addonID'] != "") {
+   $id = $_POST['addonID'];
+
+   $result = mysqli_query($conn, "SELECT * FROM `addons_products` WHERE `id`='$id'");
+   $row = mysqli_fetch_assoc($result);
+
+   $name = $row['name'];
+   $price = $row['price'];
+
+   $cartArray = array(
+      ($id . '_' . $name) => array(
+         'name' => $name,
+         'id' => ($id . '_' . $name),
+         'price' => $price,
+         'quantity' => 1,
+         'type' => 'addon',
       )
    );
 

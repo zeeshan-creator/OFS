@@ -113,6 +113,13 @@
           </li>
 
           <li class="nav-item">
+            <a href="addon_products" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p> Addon Products </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="sizes" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Sizes </p>
@@ -174,6 +181,7 @@
               <p> Restaurant Timing </p>
             </a>
           </li>
+
 
         <?php endif ?>
 

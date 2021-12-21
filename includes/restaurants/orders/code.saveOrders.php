@@ -23,8 +23,8 @@ if (isset($_POST['action']) && $_POST['action'] == "saveOrder") {
    $total_price = mysqli_real_escape_string($conn, trim($_POST['total_price']));
    $customerName = mysqli_real_escape_string($conn, trim($_POST['customerName']));
    $customerPhone = mysqli_real_escape_string($conn, trim($_POST['customerPhone']));
-   $orderNote = mysqli_real_escape_string($conn, trim($_POST['orderNote']));
    $customerEmail = mysqli_real_escape_string($conn, trim($_POST['customerEmail']));
+   $orderNote = mysqli_real_escape_string($conn, trim($_POST['orderNote']));
 
    if ($_SESSION['role'] == 'main_branch') {
       $restaurant_id = $_SESSION['id'];
