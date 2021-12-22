@@ -98,8 +98,10 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
 
 if (isset($_POST['action']) && $_POST['action'] == "change") {
    $product_qty = trim($_POST['qty']);
+   $product_size = isset($_POST['product_size']) ? $_POST['product_size'] : null;
    $deal_products_id = trim($_POST['deal_products_id']);
-   $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `id` =' . $deal_products_id;
+   // $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `id` =' . $deal_products_id;
+   $products_query  = "UPDATE `deal_products` SET `qty`= '$product_qty', `size`= '$product_size' WHERE `id` =" . $deal_products_id;
    mysqli_query($conn, $products_query);
 }
 
@@ -110,32 +112,69 @@ if (isset($_GET['dealID'])) {
    $deal_products_result = mysqli_query($conn, $deal_products_query);
 
    while ($rows = mysqli_fetch_assoc($deal_products_result)) {
-      $products_query  = 'SELECT `id`, `name`, `price`, `photo` FROM `products` where `id` =' . $rows['product_id'];
-      $products_result = mysqli_query($conn, $products_query);
-      $row = mysqli_fetch_assoc($products_result);
 
-      $products_qty_query  = 'SELECT `id`, `qty` FROM `deal_products` where `product_id` = ' . $rows['product_id'] . ' AND `deal_id` = ' . $dealID;
+
+      $products_qty_query  = 'SELECT `id`, `qty`, `size`, `type` FROM `deal_products` where `product_id` = ' . $rows['product_id'] . ' AND `deal_id` = ' . $dealID;
       $products_qty_result = mysqli_query($conn, $products_qty_query);
       $deal_products = mysqli_fetch_assoc($products_qty_result);
 
-      $id = $row['id'];
-      $name = $row['name'];
-      $price = $row['price'];
-      $qty = $deal_products['qty'];
-      $deal_products_id = $deal_products['id'];
-      $image = $row['photo'];
+      if ($deal_products['type'] == 'product') {
 
-      $dealProducts = array(
-         $name => array(
-            'id' => $id,
-            'name' => $name,
-            'price' => $price,
-            'qty' => $qty,
-            'deal_products_id' => $deal_products_id,
-            'image' => $image
-         )
-      );
-      $_SESSION['deal_products'] = array_merge($_SESSION['deal_products'], $dealProducts);
+         $products_query  = 'SELECT `id`, `name`, `price`, `photo` FROM `products` where `id` =' . $rows['product_id'];
+         $products_result = mysqli_query($conn, $products_query);
+         $row = mysqli_fetch_assoc($products_result);
+
+         $id = $row['id'];
+         $name = $row['name'];
+         $price = $row['price'];
+         $qty = $deal_products['qty'];
+         $size = $deal_products['size'];
+         $type = $deal_products['type'];
+         $deal_products_id = $deal_products['id'];
+         $image = $row['photo'];
+
+         $dealProducts = array(
+            $name => array(
+               'id' => $id,
+               'name' => $name,
+               'price' => $price,
+               'qty' => $qty,
+               'size' => $size,
+               'type' => $type,
+               'deal_products_id' => $deal_products_id,
+               'image' => $image
+            )
+         );
+         $_SESSION['deal_products'] = array_merge($_SESSION['deal_products'], $dealProducts);
+      }
+
+      if ($deal_products['type'] == 'addon') {
+
+         $addons_query  = 'SELECT `id`, `name`, `price` FROM `addons_products` where `id` =' . $rows['product_id'];
+         $addons_result = mysqli_query($conn, $addons_query);
+         $row = mysqli_fetch_assoc($addons_result);
+
+         $id = $row['id'];
+         $name = $row['name'];
+         $price = $row['price'];
+         $qty = $deal_products['qty'];
+         $size = $deal_products['size'];
+         $type = $deal_products['type'];
+         $deal_products_id = $deal_products['id'];
+
+         $dealProducts = array(
+            $name => array(
+               'id' => $id,
+               'name' => $name,
+               'price' => $price,
+               'qty' => $qty,
+               'size' => $size,
+               'type' => $type,
+               'deal_products_id' => $deal_products_id,
+            )
+         );
+         $_SESSION['deal_products'] = array_merge($_SESSION['deal_products'], $dealProducts);
+      }
    }
 
 

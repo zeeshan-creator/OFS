@@ -404,7 +404,7 @@ include("./includes/restaurants/POS/code.pos.php");
                         </tr>
                       </table>
                       <div class="col-12">
-                        <a href="#" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                        <a href="billPrint" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                         <button type="button" id="ordersFormButton" class="btn btn-primary float-right" style="margin-right: 5px;">
                           <i class="fas fa-downloa"></i> Confirm
                         </button>
@@ -418,7 +418,7 @@ include("./includes/restaurants/POS/code.pos.php");
                   <div class="col-lg-12">
                     <div class="">
                       <div class="btn-group w-100 mb-2">
-                        <div class="row ml-1">
+                        <div class="row m-1">
                           <a class="btn btn-info active pb-0" href="javascript:void(0)" data-filter="all"> All items</a>
                           <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
                           <?php
@@ -427,7 +427,6 @@ include("./includes/restaurants/POS/code.pos.php");
                           }
                           ?>
                           <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
-
                         </div>
                       </div>
                       <div class="mb-2 ml-1">

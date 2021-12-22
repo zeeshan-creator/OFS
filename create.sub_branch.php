@@ -38,84 +38,119 @@ $restaurants = mysqli_query($conn, $restaurant_query);
             <form method="POST" class="needs-validation" novalidate>
               <div class="form-row">
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantname">restaurant name</label>
+                  <label for="restaurantname">Restaurant Name</label>
                   <input type="text" class="form-control" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant name
                   </div>
                 </div>
-
                 <div class="col-md-6 mb-3">
                   <label for="phone">Phone</label>
                   <input type="number" class="form-control" name="restaurantPhone" placeholder="Enter restaurant phone number" id="phone" required>
                   <div class="invalid-feedback">
-                    Please enter a restaurant phone number (min=11, max=13)
+                    Please enter a restaurant phone number
                   </div>
                 </div>
+
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantEmail">restaurant E-Mail</label>
-                  <input type="email" class="form-control" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required>
+                  <label for="restaurantEmail">Restaurant E-Mail</label>
+                  <input type="email" class="form-control" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantEmail" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant Email
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantPassword">restaurant Password</label>
-                  <input type="text" class="form-control" name="restaurantPassword" placeholder="Enter restaurant password" id="phone" required>
+                  <label for="restaurantPassword">Restaurant Password</label>
+                  <input type="text" class="form-control" name="restaurantPassword" placeholder="Enter restaurant password" id="restaurantPassword" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant password
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="main_branch">Main branch</label>
-                  <select class="form-control" id="main_branch" name="main_branch" required>
-                    <?php
-                    while ($row = mysqli_fetch_array($restaurants)) {
-                      echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";  // displaying data in option menu
-                    }
-                    ?>
-                  </select>
+                  <label for="contact_name">Contact Name</label>
+                  <input type="text" class="form-control" name="contact_name" placeholder="Enter contact name" id="contact_name" required>
                   <div class="invalid-feedback">
-                    Please enter a restaurant Main branch
+                    Please enter a Contact Name
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="contact_phone">Contact Phone</label>
+                  <input type="number" class="form-control" name="contact_phone" placeholder="Enter contact phone" id="contact_phone" required>
+                  <div class="invalid-feedback">
+                    Please enter a contact phone
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="contact_email">Contact Email</label>
+                  <input type="text" class="form-control" name="contact_email" placeholder="Enter contact email" id="contact_email" required>
+                  <div class="invalid-feedback">
+                    Please enter a contact email
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="country">Country</label>
+                  <input type="text" class="form-control" name="country" placeholder="Enter country" id="country" required>
+                  <div class="invalid-feedback">
+                    Please enter a country
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" name="city" placeholder="Enter city" id="city" required>
+                  <div class="invalid-feedback">
+                    Please enter a city
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="street_address">Street Address</label>
+                  <input type="text" class="form-control" name="street_address" placeholder="Enter street address" id="street_address" required>
+                  <div class="invalid-feedback">
+                    Please enter a street_address
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="cuisine">Cuisine</label>
+                  <input type="text" class="form-control" name="cuisine" placeholder="Enter cuisine" id="cuisine" required>
+                  <div class="invalid-feedback">
+                    Please enter a cuisine
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary float-right" type="submit">Create</button>
+              <button class="btn btn-primary float-right" type="submit">save</button>
+            </form>
+
+            <script>
+              // Example starter JavaScript for disabling form submissions if there are invalid fields
+              (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                  var forms = document.getElementsByClassName('needs-validation');
+                  // Loop over them and prevent submission
+                  var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                      if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      }
+                      form.classList.add('was-validated');
+                    }, false);
+                  });
+                }, false);
+              })();
+            </script>
+
           </div>
-
-          </form>
-
-          <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function() {
-              'use strict';
-              window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                  form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-              }, false);
-            })();
-          </script>
         </div>
       </div>
+
     </div>
-
-  </div>
-  <!-- /.content-wrapper -->
+    <!-- /.content-wrapper -->
 
 
-  <!-- Including footer -->
-  <?php include './partials/footer.php' ?>
-  <?php ob_end_flush(); ?>
+    <!-- Including footer -->
+    <?php include './partials/footer.php' ?>
+    <?php ob_end_flush(); ?>
 
   </div>
   <!-- ./wrapper -->

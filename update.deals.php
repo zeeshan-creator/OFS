@@ -2,6 +2,9 @@
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
 include("./includes/restaurants/deals/code.updateDeal.php");
+include("./includes/restaurants/deals/code.fetchAddons.php");
+include("./includes/restaurants/deals/code.fetchCategories.php");
+
 
 ?>
 <!DOCTYPE html>
@@ -217,7 +220,12 @@ include("./includes/restaurants/deals/code.updateDeal.php");
                         ?>
                           <tr>
                             <td style='width:60px;height:50px' class="">
-                              <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
+                              <?php if ($product['type'] == 'product') : ?>
+                                <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
+                              <?php endif ?>
+                              <?php if ($product['type'] == 'addon') : ?>
+                                <h2 class="border p-1">A<span style="font-size: 17px;font-weight: bold;">ddon</span></h2>
+                              <?php endif ?>
                             </td>
                             <td class="pl-2">
                               <div class="float-left mr-4">
@@ -231,6 +239,21 @@ include("./includes/restaurants/deals/code.updateDeal.php");
                                 <div class="quantity">
                                   <input type="number" name="qty" min="1" step="1" value="<?php echo $product["qty"] ?>" onchange="this.form.submit()">
                                 </div>
+                                <?php if ($product['type'] == 'product') : ?>
+                                  <div class="">
+                                    <select name="product_size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
+                                      <option selected disabled>Sizes</option>
+                                      <?php
+                                      include("./includes/restaurants/deals/code.fetchSizes.php");
+                                      while ($row = mysqli_fetch_assoc($sizes)) {
+                                        echo '<option value="' . $row['size'] . '"';
+                                        echo ($row['size'] == $product["size"]) ? "Selected" : "";
+                                        echo ' >' . $row['size'] . '</option>';
+                                      }
+                                      ?>
+                                    </select>
+                                  </div>
+                                <?php endif ?>
                               </form>
                             </td>
                             <td>
@@ -283,30 +306,15 @@ include("./includes/restaurants/deals/code.updateDeal.php");
 
               <div class="">
                 <div class="btn-group w-100 mb-2">
-                  <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All items </a>
-                  <?php
-                  if ($_SESSION['role'] == 'admin') {
-                    $branchID = trim($_GET['branchId']);
-
-                    $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $branchID . " AND categories.active_status = 'active'";
-                  }
-
-                  if ($_SESSION['role'] == 'main_branch') {
-                    $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $_SESSION['id'] . " AND categories.active_status = 'active'";
-                  }
-
-                  if ($_SESSION['role'] == 'sub_branch') {
-                    $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-                    $results = mysqli_query($conn, $query);
-                    $row = mysqli_fetch_assoc($results);
-
-                    $query = "SELECT categories.id, categories.category_name, categories.category_desc, categories.created_at, restaurants.name AS mainBranchName FROM `categories` JOIN restaurants on categories.restaurant_id = restaurants.id WHERE restaurants.id = " . $row['main_branch'] . " AND categories.active_status = 'active'";
-                  }
-                  $categories = mysqli_query($conn, $query);
-                  while ($row = mysqli_fetch_assoc($categories)) {
-                    echo '<a class="btn btn-info" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
-                  }
-                  ?>
+                  <div class="row m-1">
+                    <a class="btn btn-info active m-1" href="javascript:void(0)" data-filter="all"> All items </a>
+                    <?php
+                    while ($row = mysqli_fetch_assoc($categories)) {
+                      echo '<a class="btn btn-info m-1" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
+                    }
+                    ?>
+                    <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
+                  </div>
                 </div>
                 <div class="mb-2">
                   <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
@@ -336,24 +344,46 @@ include("./includes/restaurants/deals/code.updateDeal.php");
                   $products = mysqli_query($conn, $query);
                   while ($row = mysqli_fetch_assoc($products)) {
                     echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
-                      <div class="card card-outline card-info">
-                        <div class="card-header">
-                          <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
-                        </div>
-                        <div class="card-body">
-                          <div class="text-center" style="">
-                            <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
-                          </div>
-                          <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                            <button type="button" onclick="addToDeal(' . $row['id'] . ',' . $dealID . ')" class="btn btn-info float-right mt-2">
-                              Add</button>
-                        </div>
-                      </div>
-                    </div>';
+                                <div class="card card-outline card-info">
+                                  <div class="card-header">
+                                    <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
+                                  </div>
+                                  <div class="card-body">
+                                    <div class="text-center" style="">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
+                                    </div>
+                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                                    <button class="mt-2 btn btn-info float-right" onclick="addProductToDeal(' . $row['id'] . ',' . $dealID . ')">Add</button>
+                                    <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
+                                    <option selected disabled>Sizes</option>';
+                    include("./includes/restaurants/deals/code.fetchSizes.php");
+                    while ($row = mysqli_fetch_assoc($sizes)) {
+                      echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
+                    }
+                    echo '
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>';
+                  }
+                  while ($row = mysqli_fetch_assoc($addons)) {
+                    echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
+                                <div class="card card-outline card-info">
+                                  <div class="card-header">
+                                    <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
+                                  </div>
+                                  <div class="card-body">
+                                   <div class="div" style="height: 128px; overflow:hidden;">
+                                    <h5>' . $row['description'] . '</h5>
+                                    </div>
+                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                                  <button class="mt-2 btn btn-info float-right" onclick="addAddonToDeal(' . $row['id'] . ',' . $dealID . ')">Add</button>
+                                  </div>
+                                </div>
+                              </div>';
                   } ?>
                 </div>
               </div>
-
 
             </div>
           </div>
@@ -405,18 +435,50 @@ include("./includes/restaurants/deals/code.updateDeal.php");
             });
           })
 
-          function addToDeal(productID, dealID) {
+          function addProductToDeal(productID, dealID) {
+            var selectOption = document.getElementById(`product_size_${productID}`);
+            var product_size = selectOption.options[selectOption.selectedIndex].text;
+            if (product_size != null && product_size != 'Sizes') {
+              $.ajax({
+                  url: 'addToDeal',
+                  type: 'POST',
+                  data: {
+                    productID: productID,
+                    dealID: dealID,
+                    type: 'product',
+                    product_size: product_size
+                  },
+                })
+                .done(function(response) {
+                  if (response == 1) {
+                    window.location.href = `update.deals?dealID=${dealID}`;
+                  }
+                  if (response == 0) {
+                    Swal.fire('Alreay Exist!', "Product already in deal", "error");
+                  }
+                })
+                .fail(function() {
+                  swal('Oops...', 'Something went wrong!', 'error');
+                });
+            } else {
+              Swal.fire('Please Select Size!', "Product size is required", "error");
+              exit;
+            }
+          }
+
+          function addAddonToDeal(productID, dealID) {
             $.ajax({
                 url: 'addToDeal',
                 type: 'POST',
                 data: {
                   productID: productID,
-                  dealID: dealID
+                  dealID: dealID,
+                  type: 'addon',
                 },
               })
               .done(function(response) {
                 if (response == 1) {
-                  location.reload();
+                  window.location.href = `update.deals?dealID=${dealID}`;
                 }
                 if (response == 0) {
                   Swal.fire('Alreay Exist!', "Product already in deal", "error");
@@ -426,6 +488,7 @@ include("./includes/restaurants/deals/code.updateDeal.php");
                 swal('Oops...', 'Something went wrong!', 'error');
               });
           }
+
           $(document).ready(function() {
             jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
             jQuery('.quantity').each(function() {
