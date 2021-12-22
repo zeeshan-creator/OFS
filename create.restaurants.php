@@ -128,6 +128,7 @@ include("./includes/restaurants/code.createrestaurants.php");
               </div>
               <button class="btn btn-primary float-right" type="submit">save</button>
             </form>
+
           </div>
 
           <script>
@@ -162,6 +163,7 @@ include("./includes/restaurants/code.createrestaurants.php");
               }, false);
             })();
           </script>
+
         </div>
       </div>
     </div>

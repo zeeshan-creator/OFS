@@ -37,6 +37,15 @@ if (isset($_GET['id'])) {
     $deal_query = "SELECT * FROM deals WHERE restaurant_id = '$id'";
     $deals = mysqli_query($conn, $deal_query) or die(mysqli_error($conn));
 
+    $offer_query = "SELECT * FROM offers WHERE restaurant_id = '$id'";
+    $offers = mysqli_query($conn, $offer_query) or die(mysqli_error($conn));
+
+    $size_query = "SELECT * FROM sizes WHERE restaurant_id = '$id'";
+    $sizes = mysqli_query($conn, $size_query) or die(mysqli_error($conn));
+
+    $link_query = "SELECT * FROM social_media_links WHERE restaurant_id = '$id'";
+    $links = mysqli_query($conn, $link_query) or die(mysqli_error($conn));
+
     $product_query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = '$id'";
     $products = mysqli_query($conn, $product_query) or die(mysqli_error($conn));
   } else {
@@ -265,6 +274,7 @@ if (isset($_GET['id'])) {
           <a href="./create.deals?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Deals</a>
         </div>
       </div>
+
       <div class="p-3">
         <table class="table" id="deals">
           <thead>
@@ -309,22 +319,186 @@ if (isset($_GET['id'])) {
         </table>
       </div>
 
-
-      <!-- CUSTOMERS -->
+      <!-- Offers -->
       <div class="row mt-4">
         <div class="col-lg-5 ml-3 mt-4 mb-2">
           <h1 class="">
             <span style="border-bottom: 3px double black;">
-              CUSTOMERS
+              Offers
             </span>
           </h1>
         </div>
-        <!-- <div class="col-lg-6 ml-auto mt-4 p-4">
-          <a href="./create.customers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Create Customer</a>
-        </div> -->
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.offers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Offers</a>
+        </div>
       </div>
-      <div class="p-3">
 
+      <div class="p-3">
+        <table class="table" id="offers">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>offer Name</th>
+              <th>Offer Percentage</th>
+              <th>Offer Message</th>
+              <th>On Orders Over</th>
+              <th>Valid from</th>
+              <th>valid till</th>
+              <th>Active Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="w">
+            <?php
+            $count = 1;
+            $url = 'code.deleteOffer';
+            while ($row = mysqli_fetch_assoc($offers)) {
+              echo "<tr class='text-center'>
+              <td>" . $count . " </td>
+              <td>" . $row['offer_name'] . "</td>
+              <td>" . $row['offer_percentage'] . " %" . "</td>
+              <td>" . $row['offer_message'] . "</td>
+              <td>" . $row['order_over'] . "</td>
+              <td>" . $row['valid_from'] . "</td>
+              <td>" . $row['valid_till'] . "</td>
+              <td>" . $row['active_status'] . "</td>
+              <td class='td-actions text-right'>
+                  <a href='update.offers?offerID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='far fa-edit'></i>
+                    </span>
+                  </a>
+                  <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                  s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='fas fa-trash-alt'></i>
+                    </span>
+                  </button>
+                </td>
+              </tr>";
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sizes -->
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
+          <h1 class="">
+            <span style="border-bottom: 3px double black;">
+              Sizes
+            </span>
+          </h1>
+        </div>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.sizes?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Sizes</a>
+        </div>
+      </div>
+
+      <div class="p-3">
+        <table class="table" id="sizes">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Size</th>
+              <th>Publish Date</th>
+              <th>Active Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="w">
+            <?php
+            $count = 1;
+            $url = 'code.deleteSize';
+            while ($row = mysqli_fetch_assoc($sizes)) {
+              echo "<tr class='text-center'>
+              <td>" . $count . " </td>
+               <td>" . $row['size'] . "</td>
+              <td>" . $row['created_at'] . "</td>
+              <td>" . $row['active_status'] . "</td>
+              <td class='td-actions text-right'>
+                  <a href='update.sizes?sizeID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='far fa-edit'></i>
+                    </span>
+                  </a>
+                  <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                  s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='fas fa-trash-alt'></i>
+                    </span>
+                  </button>
+                </td>
+              </tr>";
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Links -->
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
+          <h1 class="">
+            <span style="border-bottom: 3px double black;">
+              Links
+            </span>
+          </h1>
+        </div>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.socialMediaLinks?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Links</a>
+        </div>
+      </div>
+
+      <div class="p-3">
+        <table class="table" id="links">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Name</th>
+              <th>Link</th>
+              <th>Publish Date</th>
+              <th>Active Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="w">
+            <?php
+            $count = 1;
+            $url = 'code.deleteLink';
+            while ($row = mysqli_fetch_assoc($links)) {
+              echo "<tr class='text-center'>
+              <td>" . $count . " </td>
+              <td>" . $row['name'] . "</td>
+              <td>" . $row['link'] . "</td>
+              <td>" . $row['created_at'] . "</td>
+              <td>" . $row['active_status'] . "</td>
+              <td class='td-actions text-right'>
+                  <a href='update.social_media_links?id=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='far fa-edit'></i>
+                    </span>
+                  </a>
+                  <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                  s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
+                    <span style='color:white;'>
+                      <i class='fas fa-trash-alt'></i>
+                    </span>
+                  </button>
+                </td>
+              </tr>";
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CUSTOMERS -->
+      <div class="p-3">
         <table class="table" id="customers">
           <thead>
             <tr class="text-center">
@@ -400,6 +574,21 @@ if (isset($_GET['id'])) {
         ]
       });
       $('#deals').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+      $('#offers').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+      $('#sizes').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+      $('#links').DataTable({
         "order": [
           [0, "desc"]
         ]

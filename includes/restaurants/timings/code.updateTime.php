@@ -2,8 +2,6 @@
 ob_start();
 
 // initializing variables
-$size_name;
-$active_status;
 $restaurant_Id = $_SESSION['id'];
 
 // Sample 3d arr
@@ -58,20 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $SundayEndTime = isset($_POST['SundayEndTime']) ? $_POST['SundayEndTime'] : null;
    array_push($timings, array($days[6] => array('value' => $Sunday, 'start' => $SundayStartTime, 'end' => $SundayEndTime)));
 
+   for ($i = 0; $i < count($days); $i++) {
+      $day = $days[$i];
+      $val = $timings[$i][$day]['value'];
+      $start = $timings[$i][$day]['start'];
+      $end = $timings[$i][$day]['end'];
 
-   foreach ($timings as $x) {
-      foreach ($days as $day) {
-         $val = $x[$day]['value'];
-         $start = $x[$day]['start'];
-         $end = $x[$day]['end'];
-
-         $query = "UPDATE `restaurant_timings` SET 
-         `value` = '$val', 
-         `start` = '$start',
-         `end` = '$end'
-         WHERE `restaurant_id` = $restaurant_Id AND `day` = '$day'";
-         $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
-      }
+      $query = "UPDATE `restaurant_timings` SET 
+      `value` = '$val', 
+      `start` = '$start',
+      `end` = '$end'
+      WHERE `restaurant_id` = $restaurant_Id AND `day` = '$day'";
+      $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
    }
 
    if ($results) {

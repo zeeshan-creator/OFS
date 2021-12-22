@@ -2,9 +2,8 @@
 
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
-
-
 include("./includes/sub_branch/code.updateSub_branch.php");
+
 if (!isset($_GET['id'])) {
   echo '<script>window.location.href = "allsub_branches";</script>';
   exit();
@@ -23,7 +22,13 @@ if (isset($_GET['id'])) {
     $phone = $row["phone"];
     $email = $row["email"];
     $password = $row["password"];
-    $role = $row["role"];
+    $contact_name = $row['contact_name'];
+    $contact_phone = $row['contact_phone'];
+    $contact_email = $row['contact_email'];
+    $country = $row['country'];
+    $city = $row['city'];
+    $street_address = $row['street_address'];
+    $cuisine = $row['cuisine'];
     $active_status = $row["active_status"];
     $main_branch = $row["main_branch"];
   } else {
@@ -34,7 +39,7 @@ if (isset($_GET['id'])) {
 ob_end_flush();
 
 $restaurant_query = "SELECT id,name, email FROM restaurants";
-$result = mysqli_query($conn, $restaurant_query);
+$restaurants = mysqli_query($conn, $restaurant_query);
 
 ?>
 
@@ -98,23 +103,52 @@ $result = mysqli_query($conn, $restaurant_query);
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="roleSelect">Role</label>
-                  <!-- <select class="form-control" id="roleSelect" name="role" required>
-                                 <?php
-                                  // if ($role == "main_branch") {
-                                  //    echo '<option value="main_branch" selected>Main branch</option>
-                                  //    <option value="sub_branch" >Sub branch</option>';
-                                  // }
-                                  // if ($role == "sub_branch") {
-                                  //    echo '<option value="sub_branch" selected>Sub branch</option>
-                                  //    <option value="sub_branch">Main branch</option>';
-                                  // }
-                                  ?>
-                              </select> -->
-                  <input type="hidden" name="role" value="<?php echo $role ?>">
-                  <p class="rounded" style="color:grey;border: 1px solid #2b3553; padding: 6px 0px 6px 10px; border-radius:"><?php echo $role; ?></p>
+                  <label for="contact_name">Contact Name</label>
+                  <input type="text" class="form-control" value="<?php echo $contact_name; ?>" name="contact_name" placeholder="Enter contact name" id="contact_name" required>
                   <div class="invalid-feedback">
-                    Please enter a Role
+                    Please enter a Contact Name
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="contact_phone">Contact Phone</label>
+                  <input type="number" class="form-control" value="<?php echo $contact_phone; ?>" name="contact_phone" placeholder="Enter contact phone" id="contact_phone" required>
+                  <div class="invalid-feedback">
+                    Please enter a contact phone
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="contact_email">Contact Email</label>
+                  <input type="text" class="form-control" value="<?php echo $contact_email; ?>" name="contact_email" placeholder="Enter contact email" id="contact_email" required>
+                  <div class="invalid-feedback">
+                    Please enter a contact email
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="country">Country</label>
+                  <input type="text" class="form-control" value="<?php echo $country; ?>" name="country" placeholder="Enter country" id="country" required>
+                  <div class="invalid-feedback">
+                    Please enter a country
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" value="<?php echo $city; ?>" name="city" placeholder="Enter city" id="city" required>
+                  <div class="invalid-feedback">
+                    Please enter a city
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="street_address">Street Address</label>
+                  <input type="text" class="form-control" value="<?php echo $street_address; ?>" name="street_address" placeholder="Enter street address" id="street_address" required>
+                  <div class="invalid-feedback">
+                    Please enter a street_address
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="cuisine">Cuisine</label>
+                  <input type="text" class="form-control" value="<?php echo $cuisine; ?>" name="cuisine" placeholder="Enter cuisine" id="cuisine" required>
+                  <div class="invalid-feedback">
+                    Please enter a cuisine
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -140,7 +174,7 @@ $result = mysqli_query($conn, $restaurant_query);
                     <label for="roleSelect">Main branch</label>
                     <select class="form-control" id="roleSelect" name="main_branch" required>
                       <?php
-                      while ($row = mysqli_fetch_array($result)) {
+                      while ($row = mysqli_fetch_array($restaurants)) {
                         if ($row['id'] == $main_branch) {
                           # code...
                           echo "<option selected value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";
