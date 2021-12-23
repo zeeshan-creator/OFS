@@ -176,7 +176,6 @@ $restaurants = mysqli_query($conn, $restaurant_query);
                       <?php
                       while ($row = mysqli_fetch_array($restaurants)) {
                         if ($row['id'] == $main_branch) {
-                          # code...
                           echo "<option selected value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";
                           continue;
                         }

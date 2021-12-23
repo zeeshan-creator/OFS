@@ -115,6 +115,26 @@ $restaurants = mysqli_query($conn, $restaurant_query);
                     Please enter a cuisine
                   </div>
                 </div>
+                <?php if (isset($_GET['branchId'])) : ?>
+                  <input type="hidden" name="main_branch" value="<?php echo $_GET['branchId'] ?>">
+                <?php endif ?>
+
+                <?php if (!isset($_GET['branchId'])) : ?>
+                  <div class="col-md-6 mb-3">
+                    <label for="roleSelect">Main branch</label>
+                    <select class="form-control" id="roleSelect" name="main_branch" required>
+                      <option disabled>Select a restaurant</option>
+                      <?php
+                      while ($row = mysqli_fetch_array($restaurants)) {
+                        echo "<option value='" . $row['id'] . "'>" . $row['name'] . " (" . $row['email'] . ")" . "</option>";  // displaying data in option menu
+                      }
+                      ?>
+                    </select>
+                    <div class=" invalid-feedback">
+                      Please enter a restaurant Main branch
+                    </div>
+                  </div>
+                <?php endif ?>
               </div>
               <button class="btn btn-primary float-right" type="submit">save</button>
             </form>

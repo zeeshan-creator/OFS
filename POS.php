@@ -374,10 +374,7 @@ include("./includes/restaurants/POS/code.pos.php");
                           <th style="width:50%">Subtotal:</th>
                           <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
                         </tr>
-                        <tr>
-                          <th>Shipping:</th>
-                          <td>PKR <?php echo $deliverycharges ? $deliverycharges : "--.--" ?></td>
-                        </tr>
+
                         <tr>
                           <th>Discount:</th>
                           <?php if ($subtotal >= $ordersOver) {
@@ -396,7 +393,6 @@ include("./includes/restaurants/POS/code.pos.php");
                           <th>Total:</th>
                           <?php if ($subtotal) {
                             $total = $subtotal - $offerDiscount;
-                            $total = $total + $deliverycharges;
                             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
                           }
                           ?>
@@ -406,7 +402,7 @@ include("./includes/restaurants/POS/code.pos.php");
                       <div class="col-12">
                         <a href="billPrint" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                         <button type="button" id="ordersFormButton" class="btn btn-primary float-right" style="margin-right: 5px;">
-                          <i class="fas fa-downloa"></i> Confirm
+                          Confirm
                         </button>
                       </div>
                     </div>
