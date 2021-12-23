@@ -40,11 +40,19 @@ if (isset($_GET['id'])) {
     $offer_query = "SELECT * FROM offers WHERE restaurant_id = '$id'";
     $offers = mysqli_query($conn, $offer_query) or die(mysqli_error($conn));
 
+
+    $addon_query = "SELECT * FROM addons_products WHERE restaurant_id = '$id'";
+    $addons = mysqli_query($conn, $addon_query) or die(mysqli_error($conn));
+
     $size_query = "SELECT * FROM sizes WHERE restaurant_id = '$id'";
     $sizes = mysqli_query($conn, $size_query) or die(mysqli_error($conn));
 
     $link_query = "SELECT * FROM social_media_links WHERE restaurant_id = '$id'";
     $links = mysqli_query($conn, $link_query) or die(mysqli_error($conn));
+
+    $query = "SELECT * FROM `offers` WHERE `restaurant_id` = " . $id . " LIMIT 1";
+    $offer_results = mysqli_query($conn, $query) or die(mysqli_error($conn));
+    $offer = mysqli_fetch_assoc($offer_results);
 
     $product_query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = '$id'";
     $products = mysqli_query($conn, $product_query) or die(mysqli_error($conn));
@@ -261,6 +269,64 @@ if (isset($_GET['id'])) {
         </table>
       </div>
 
+      <!-- addons -->
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
+          <h1 class="">
+            <span style="border-bottom: 3px double black;">
+              ADDONS
+            </span>
+          </h1>
+        </div>
+        <div class="col-lg-6 ml-auto mt-4 p-4">
+          <a href="./create.addons?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Products</a>
+        </div>
+      </div>
+
+      <div class="p-3">
+        <table class="table" id="addons">
+          <thead>
+            <tr class="text-center">
+              <th>#</th>
+              <th>Product</th>
+              <th>price</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $count = 1;
+            $url = 'code.deleteAddons';
+            while ($row = mysqli_fetch_assoc($addons)) {
+              echo "<tr class='text-center'>
+              <td class='text-center'>" . $count . " </td>
+              <td>" . $row['name'] . "</td>
+              <td>" . $row['price'] . "</td>
+              <td>" . $row['description'] . "</td>
+              <td>" . $row['active_status'] . "</td>
+              <td class='td-actions text-right'>
+                <a href='update.addons?addonID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                 <span style='color:white;'>
+                    <i class='far fa-edit'></i>
+                  </span>
+                </a>
+                <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
+                  <span style='color:white;'>
+                    <i class='fas fa-trash-alt'></i>
+                  </span>
+                </button>
+              </td>
+            </tr>";
+              $count++;
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
       <!-- Deals -->
       <div class="row mt-4">
         <div class="col-lg-5 ml-3 mt-4 mb-2">
@@ -328,9 +394,11 @@ if (isset($_GET['id'])) {
             </span>
           </h1>
         </div>
-        <div class="col-lg-6 ml-auto mt-4 p-4">
-          <a href="./create.offers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Offers</a>
-        </div>
+        <?php if (!$offer) : ?>
+          <div class="col-lg-6 ml-auto mt-4 p-4">
+            <a href="./create.offers?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Offers</a>
+          </div>
+        <?php endif ?>
       </div>
 
       <div class="p-3">
@@ -353,14 +421,17 @@ if (isset($_GET['id'])) {
             $count = 1;
             $url = 'code.deleteOffer';
             while ($row = mysqli_fetch_assoc($offers)) {
+              $start = date("M j, Y", strtotime($row['valid_from']));
+              $end = date("M j, Y", strtotime($row['valid_till']));
+
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
               <td>" . $row['offer_name'] . "</td>
               <td>" . $row['offer_percentage'] . " %" . "</td>
               <td>" . $row['offer_message'] . "</td>
               <td>" . $row['order_over'] . "</td>
-              <td>" . $row['valid_from'] . "</td>
-              <td>" . $row['valid_till'] . "</td>
+              <td>" . $start . "</td>
+              <td>" . $end . "</td>
               <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                   <a href='update.offers?offerID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
@@ -498,6 +569,15 @@ if (isset($_GET['id'])) {
       </div>
 
       <!-- CUSTOMERS -->
+      <div class="row mt-4">
+        <div class="col-lg-5 ml-3 mt-4 mb-2">
+          <h1 class="">
+            <span style="border-bottom: 3px double black;">
+              Customers
+            </span>
+          </h1>
+        </div>
+      </div>
       <div class="p-3">
         <table class="table" id="customers">
           <thead>
@@ -569,6 +649,11 @@ if (isset($_GET['id'])) {
         ]
       });
       $('#products').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+      $('#addons').DataTable({
         "order": [
           [0, "desc"]
         ]

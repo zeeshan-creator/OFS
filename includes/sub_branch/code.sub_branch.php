@@ -4,16 +4,6 @@ ob_start();
 // require('./config/db.php');
 
 // initializing variables
-
-$branchId;
-if (isset($_GET['branchId'])) {
-   $branchId = trim($_GET['branchId']);
-   if ($_SESSION['role'] != 'admin') {
-      header("location: restaurantDetails?id=$branchId");
-      exit();
-   }
-}
-
 $restaurantName;
 $restaurantPhone;
 $restaurantEmail;
@@ -25,7 +15,10 @@ $country;
 $city;
 $street_address;
 $cuisine;
+$main_branch;
 $errors   = array();
+$branchId;
+
 // array_push($errors, "JUST CHECKING");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -41,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $city = mysqli_real_escape_string($conn, trim($_POST['city']));
    $street_address = mysqli_real_escape_string($conn, trim($_POST['street_address']));
    $cuisine = mysqli_real_escape_string($conn, trim($_POST['cuisine']));
+   $main_branch = mysqli_real_escape_string($conn, trim($_POST['main_branch']));
 
    // if (!empty($restaurantName)) {
    //    // first check the database to make sure 
@@ -143,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                'offline', 
                'active',  
                '$date', 
-               $branchId 
+               $main_branch 
                )";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));

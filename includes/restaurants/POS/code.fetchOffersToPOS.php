@@ -2,7 +2,6 @@
 // Initializing varibles
 $query;
 $subtotal = 0;
-$deliverycharges = 150;
 $offerDiscount = null;
 $offerPercentage = null;
 $ordersOver = null;
@@ -16,7 +15,7 @@ $query = "SELECT
 `order_over`,
 `valid_from`,
 `valid_till`
-FROM `offers` WHERE
+FROM `offers` WHERE  
 `restaurant_id` = " . $_SESSION['id'] . " AND `active_status` = 'active' LIMIT 1 ";
 
 $offer_results = mysqli_query($conn, $query) or die(mysqli_error($conn));

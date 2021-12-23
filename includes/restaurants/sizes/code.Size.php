@@ -25,12 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $size_check_query = "SELECT `size` FROM sizes WHERE `size`='$sizeName' LIMIT 1";
       $result = mysqli_query($conn, $size_check_query);
       $size = mysqli_fetch_assoc($result);
-
-      if ($size) { // if size exists
-         if ($size['size'] == $sizeName) {
-            array_push($errors, "Size name already exists try something else");
-         }
-      }
    }
 
    // form validation: ensure that the form is correctly filled ...

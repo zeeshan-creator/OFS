@@ -3,12 +3,10 @@ include './auth/login_auth.php';
 include './auth/==admin_auth.php';
 include("./includes/restaurants/offers/code.fetchOffers.php");
 
-
 $query = "SELECT * FROM `offers` WHERE `restaurant_id` = " . $_SESSION['id'] . " LIMIT 1";
 $offer_results = mysqli_query($conn, $query) or die(mysqli_error($conn));
 $offer = mysqli_fetch_assoc($offer_results);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

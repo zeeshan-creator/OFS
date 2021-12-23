@@ -117,7 +117,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
       <div class="row m-1">
         <div class="card card-info w-100 p-2">
           <div class="card-header">
-            <h3 class="card-title">Create Deal</h3>
+            <h3 class="card-title">Update Deal</h3>
           </div>
 
           <div class="card-body">
@@ -172,9 +172,12 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
                           </div>
                         </div>
                         <div class="col-lg-12 mt-4">
-                          <button type="submit" class="mt-4 btn btn-primary float-right" style="margin-right: 5px;">
-                            <i class="fas fa-downloa"></i> Save Changes
-                          </button>
+                          <button type="submit" class="mt-4 btn btn-primary float-right" style="margin-right: 5px;">Save Changes</button>
+                          <?php if ($_SESSION['role'] == 'admin') : ?>
+                            <button type="button" onclick="window.history.back()" class="mt-4 btn btn-danger float-right" style="margin-right: 5px;">
+                              Go Back
+                            </button>
+                          <?php endif ?>
                         </div>
                       </div>
                     </form>
@@ -400,6 +403,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
             var dealPrice = document.getElementById("dealPrice");
             dealPrice.innerHTML = input.value;
           }
+
           // Example starter JavaScript for disabling form submissions if there are invalid fields
           (function() {
             'use strict';
@@ -435,9 +439,13 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
             });
           })
 
+          const urlParams = new URLSearchParams(window.location.search);
+          const branchId = urlParams.get('branchId');
+
           function addProductToDeal(productID, dealID) {
             var selectOption = document.getElementById(`product_size_${productID}`);
             var product_size = selectOption.options[selectOption.selectedIndex].text;
+
             if (product_size != null && product_size != 'Sizes') {
               $.ajax({
                   url: 'addToDeal',
@@ -451,7 +459,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
                 })
                 .done(function(response) {
                   if (response == 1) {
-                    window.location.href = `update.deals?dealID=${dealID}`;
+                    window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
                   }
                   if (response == 0) {
                     Swal.fire('Alreay Exist!', "Product already in deal", "error");
@@ -478,7 +486,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
               })
               .done(function(response) {
                 if (response == 1) {
-                  window.location.href = `update.deals?dealID=${dealID}`;
+                  window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
                 }
                 if (response == 0) {
                   Swal.fire('Alreay Exist!', "Product already in deal", "error");
