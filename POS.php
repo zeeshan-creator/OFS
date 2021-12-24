@@ -133,7 +133,7 @@ include("./includes/restaurants/POS/code.pos.php");
   }
 </style>
 
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 
   <div class="wrapper">
 
@@ -504,6 +504,10 @@ include("./includes/restaurants/POS/code.pos.php");
     </div>
     <!-- /.content-wrapper -->
 
+
+    <!-- Including footer -->
+    <?php include './partials/footer.php' ?>
+    <?php ob_end_flush(); ?>
     <script>
       $(document).ready(function() {
         $("#ordersFormButton").click(function() {
@@ -635,9 +639,6 @@ include("./includes/restaurants/POS/code.pos.php");
         });
       });
     </script>
-    <!-- Including footer -->
-    <?php include './partials/footer.php' ?>
-    <?php ob_end_flush(); ?>
 
   </div>
   <!-- ./wrapper -->

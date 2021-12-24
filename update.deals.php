@@ -393,145 +393,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
         </div>
 
 
-        <script>
-          var input = document.getElementById("price");
-          var dealPrice = document.getElementById("dealPrice");
-          dealPrice.innerHTML = input.value;
 
-          function priceToHeading() {
-            var input = document.getElementById("price");
-            var dealPrice = document.getElementById("dealPrice");
-            dealPrice.innerHTML = input.value;
-          }
-
-          // Example starter JavaScript for disabling form submissions if there are invalid fields
-          (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-              // Fetch all the forms we want to apply custom Bootstrap validation styles to
-              var forms = document.getElementsByClassName('needs-validation');
-              // Loop over them and prevent submission
-              var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                  if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                  }
-                  form.classList.add('was-validated');
-                }, false);
-              });
-            }, false);
-          })();
-          $(function() {
-            $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-              event.preventDefault();
-              $(this).ekkoLightbox({
-                alwaysShowClose: true
-              });
-            });
-
-            $('.filter-container').filterizr({
-              gutterPixels: 3
-            });
-            $('.btn[data-filter]').on('click', function() {
-              $('.btn[data-filter]').removeClass('active');
-              $(this).addClass('active');
-            });
-          })
-
-          const urlParams = new URLSearchParams(window.location.search);
-          const branchId = urlParams.get('branchId');
-
-          function addProductToDeal(productID, dealID) {
-            var selectOption = document.getElementById(`product_size_${productID}`);
-            var product_size = selectOption.options[selectOption.selectedIndex].text;
-
-            if (product_size != null && product_size != 'Sizes') {
-              $.ajax({
-                  url: 'addToDeal',
-                  type: 'POST',
-                  data: {
-                    productID: productID,
-                    dealID: dealID,
-                    type: 'product',
-                    product_size: product_size
-                  },
-                })
-                .done(function(response) {
-                  if (response == 1) {
-                    window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
-                  }
-                  if (response == 0) {
-                    Swal.fire('Alreay Exist!', "Product already in deal", "error");
-                  }
-                })
-                .fail(function() {
-                  swal('Oops...', 'Something went wrong!', 'error');
-                });
-            } else {
-              Swal.fire('Please Select Size!', "Product size is required", "error");
-              exit;
-            }
-          }
-
-          function addAddonToDeal(productID, dealID) {
-            $.ajax({
-                url: 'addToDeal',
-                type: 'POST',
-                data: {
-                  productID: productID,
-                  dealID: dealID,
-                  type: 'addon',
-                },
-              })
-              .done(function(response) {
-                if (response == 1) {
-                  window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
-                }
-                if (response == 0) {
-                  Swal.fire('Alreay Exist!', "Product already in deal", "error");
-                }
-              })
-              .fail(function() {
-                swal('Oops...', 'Something went wrong!', 'error');
-              });
-          }
-
-          $(document).ready(function() {
-            jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
-            jQuery('.quantity').each(function() {
-              var spinner = jQuery(this),
-                input = spinner.find('input[type="number"]'),
-                btnUp = spinner.find('.quantity-up'),
-                btnDown = spinner.find('.quantity-down'),
-                min = input.attr('min'),
-                max = input.attr('max');
-
-              btnUp.click(function() {
-                var oldValue = parseFloat(input.val());
-                if (oldValue >= max) {
-                  var newVal = oldValue;
-                } else {
-                  var newVal = oldValue + 1;
-                }
-                spinner.find("input").val(newVal);
-                spinner.find("input").trigger("change");
-              });
-
-              btnDown.click(function() {
-                var oldValue = parseFloat(input.val());
-                if (oldValue <= min) {
-                  var newVal = oldValue;
-                } else {
-                  var newVal = oldValue - 1;
-                }
-                spinner.find("input").val(newVal);
-                spinner.find("input").trigger("change");
-              });
-
-            });
-          });
-        </script>
       </div>
 
     </div>
@@ -543,6 +405,148 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
 
   </div>
   <!-- ./wrapper -->
+
+
+  <script>
+    var input = document.getElementById("price");
+    var dealPrice = document.getElementById("dealPrice");
+    dealPrice.innerHTML = input.value;
+
+    function priceToHeading() {
+      var input = document.getElementById("price");
+      var dealPrice = document.getElementById("dealPrice");
+      dealPrice.innerHTML = input.value;
+    }
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    $(function() {
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+          alwaysShowClose: true
+        });
+      });
+
+      $('.filter-container').filterizr({
+        gutterPixels: 3
+      });
+      $('.btn[data-filter]').on('click', function() {
+        $('.btn[data-filter]').removeClass('active');
+        $(this).addClass('active');
+      });
+    })
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const branchId = urlParams.get('branchId');
+
+    function addProductToDeal(productID, dealID) {
+      var selectOption = document.getElementById(`product_size_${productID}`);
+      var product_size = selectOption.options[selectOption.selectedIndex].text;
+
+      if (product_size != null && product_size != 'Sizes') {
+        $.ajax({
+            url: 'addToDeal',
+            type: 'POST',
+            data: {
+              productID: productID,
+              dealID: dealID,
+              type: 'product',
+              product_size: product_size
+            },
+          })
+          .done(function(response) {
+            if (response == 1) {
+              window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
+            }
+            if (response == 0) {
+              Swal.fire('Alreay Exist!', "Product already in deal", "error");
+            }
+          })
+          .fail(function() {
+            swal('Oops...', 'Something went wrong!', 'error');
+          });
+      } else {
+        Swal.fire('Please Select Size!', "Product size is required", "error");
+        exit;
+      }
+    }
+
+    function addAddonToDeal(productID, dealID) {
+      $.ajax({
+          url: 'addToDeal',
+          type: 'POST',
+          data: {
+            productID: productID,
+            dealID: dealID,
+            type: 'addon',
+          },
+        })
+        .done(function(response) {
+          if (response == 1) {
+            window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
+          }
+          if (response == 0) {
+            Swal.fire('Alreay Exist!', "Product already in deal", "error");
+          }
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
+
+    $(document).ready(function() {
+      jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
+      jQuery('.quantity').each(function() {
+        var spinner = jQuery(this),
+          input = spinner.find('input[type="number"]'),
+          btnUp = spinner.find('.quantity-up'),
+          btnDown = spinner.find('.quantity-down'),
+          min = input.attr('min'),
+          max = input.attr('max');
+
+        btnUp.click(function() {
+          var oldValue = parseFloat(input.val());
+          if (oldValue >= max) {
+            var newVal = oldValue;
+          } else {
+            var newVal = oldValue + 1;
+          }
+          spinner.find("input").val(newVal);
+          spinner.find("input").trigger("change");
+        });
+
+        btnDown.click(function() {
+          var oldValue = parseFloat(input.val());
+          if (oldValue <= min) {
+            var newVal = oldValue;
+          } else {
+            var newVal = oldValue - 1;
+          }
+          spinner.find("input").val(newVal);
+          spinner.find("input").trigger("change");
+        });
+
+      });
+    });
+  </script>
+
 
 </body>
 

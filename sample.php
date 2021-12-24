@@ -35,6 +35,10 @@ include './auth/login_auth.php';
     <?php include './partials/footer.php' ?>
     <?php ob_end_flush(); ?>
 
+    <script>
+
+    </script>
+
   </div>
   <!-- ./wrapper -->
 

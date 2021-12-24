@@ -512,136 +512,140 @@ include("./includes/restaurants/orders/code.updateOrders.php");
     </div>
     <!-- /.content-wrapper -->
 
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const orderID = urlParams.get('orderID');
-      const total_price = document.getElementById("totalPrice").value;
 
-      $(document).ready(function() {
-        // update the new total_price in the database.
-        $.ajax({
-          url: 'orderDetails',
-          type: 'POST',
-          data: {
-            order_product_id: orderID,
-            total_price: total_price,
-            action: 'updatePrice',
-          }
-        });
-        $("#ordersFormButton").click(function() {
-          $("#ordersForm").submit();
-        });
-      });
-
-      $(function() {
-        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-          event.preventDefault();
-          $(this).ekkoLightbox({
-            alwaysShowClose: true
-          });
-        });
-
-        $('.filter-container').filterizr({
-          gutterPixels: 3
-        });
-        $('.btn[data-filter]').on('click', function() {
-          $('.btn[data-filter]').removeClass('active');
-          $(this).addClass('active');
-        });
-      })
-
-      function addToCart(id) {
-        var selectOption = document.getElementById(`product_size_${id}`);
-        var product_size = selectOption.options[selectOption.selectedIndex].text;
-
-        if (product_size != null && product_size != 'Sizes') {
-          $.ajax({
-            url: 'orderDetails',
-            type: 'POST',
-            data: {
-              order_product_id: orderID,
-              id: id,
-              type: 'product',
-              product_size: product_size,
-              action: 'addProduct',
-            },
-          })
-        } else {
-          Swal.fire('Please Select Size!', "Product size is required", "error");
-          exit;
-        }
-        location.reload();
-      }
-
-      function addDealToCart(id) {
-        $.ajax({
-          url: 'orderDetails',
-          type: 'POST',
-          data: {
-            order_product_id: orderID,
-            id: id,
-            type: 'deal',
-            action: 'addProduct',
-          },
-        })
-        location.reload();
-      }
-
-      function addAddonToCart(id) {
-        $.ajax({
-          url: 'orderDetails',
-          type: 'POST',
-          data: {
-            order_product_id: orderID,
-            id: id,
-            type: 'addon',
-            action: 'addProduct',
-          },
-        })
-        location.reload();
-      }
-
-      $(document).ready(function() {
-        jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
-        jQuery('.quantity').each(function() {
-          var spinner = jQuery(this),
-            input = spinner.find('input[type="number"]'),
-            btnUp = spinner.find('.quantity-up'),
-            btnDown = spinner.find('.quantity-down'),
-            min = input.attr('min'),
-            max = input.attr('max');
-
-          btnUp.click(function() {
-            var oldValue = parseFloat(input.val());
-            if (oldValue >= max) {
-              var newVal = oldValue;
-            } else {
-              var newVal = oldValue + 1;
-            }
-            spinner.find("input").val(newVal);
-            spinner.find("input").trigger("change");
-          });
-
-          btnDown.click(function() {
-            var oldValue = parseFloat(input.val());
-            if (oldValue <= min) {
-              var newVal = oldValue;
-            } else {
-              var newVal = oldValue - 1;
-            }
-            spinner.find("input").val(newVal);
-            spinner.find("input").trigger("change");
-          });
-
-        });
-      });
-    </script>
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>
     <?php ob_end_flush(); ?>
 
   </div>
   <!-- ./wrapper -->
+
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderID = urlParams.get('orderID');
+    const total_price = document.getElementById("totalPrice").value;
+
+    $(document).ready(function() {
+      // update the new total_price in the database.
+      $.ajax({
+        url: 'orderDetails',
+        type: 'POST',
+        data: {
+          order_product_id: orderID,
+          total_price: total_price,
+          action: 'updatePrice',
+        }
+      });
+      $("#ordersFormButton").click(function() {
+        $("#ordersForm").submit();
+      });
+    });
+
+    $(function() {
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+          alwaysShowClose: true
+        });
+      });
+
+      $('.filter-container').filterizr({
+        gutterPixels: 3
+      });
+      $('.btn[data-filter]').on('click', function() {
+        $('.btn[data-filter]').removeClass('active');
+        $(this).addClass('active');
+      });
+    })
+
+    function addToCart(id) {
+      var selectOption = document.getElementById(`product_size_${id}`);
+      var product_size = selectOption.options[selectOption.selectedIndex].text;
+
+      if (product_size != null && product_size != 'Sizes') {
+        $.ajax({
+          url: 'orderDetails',
+          type: 'POST',
+          data: {
+            order_product_id: orderID,
+            id: id,
+            type: 'product',
+            product_size: product_size,
+            action: 'addProduct',
+          },
+        })
+      } else {
+        Swal.fire('Please Select Size!', "Product size is required", "error");
+        exit;
+      }
+      location.reload();
+    }
+
+    function addDealToCart(id) {
+      $.ajax({
+        url: 'orderDetails',
+        type: 'POST',
+        data: {
+          order_product_id: orderID,
+          id: id,
+          type: 'deal',
+          action: 'addProduct',
+        },
+      })
+      location.reload();
+    }
+
+    function addAddonToCart(id) {
+      $.ajax({
+        url: 'orderDetails',
+        type: 'POST',
+        data: {
+          order_product_id: orderID,
+          id: id,
+          type: 'addon',
+          action: 'addProduct',
+        },
+      })
+      location.reload();
+    }
+
+    $(document).ready(function() {
+      jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
+      jQuery('.quantity').each(function() {
+        var spinner = jQuery(this),
+          input = spinner.find('input[type="number"]'),
+          btnUp = spinner.find('.quantity-up'),
+          btnDown = spinner.find('.quantity-down'),
+          min = input.attr('min'),
+          max = input.attr('max');
+
+        btnUp.click(function() {
+          var oldValue = parseFloat(input.val());
+          if (oldValue >= max) {
+            var newVal = oldValue;
+          } else {
+            var newVal = oldValue + 1;
+          }
+          spinner.find("input").val(newVal);
+          spinner.find("input").trigger("change");
+        });
+
+        btnDown.click(function() {
+          var oldValue = parseFloat(input.val());
+          if (oldValue <= min) {
+            var newVal = oldValue;
+          } else {
+            var newVal = oldValue - 1;
+          }
+          spinner.find("input").val(newVal);
+          spinner.find("input").trigger("change");
+        });
+
+      });
+    });
+  </script>
+
 
 </body>
 

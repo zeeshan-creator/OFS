@@ -84,104 +84,136 @@
         <!-- If the user is restaurant(main_branch) show him/her these links -->
         <?php if ($_SESSION['role'] == 'main_branch') : ?>
 
+
+          <li class="nav-item">
+            <a href="index" class="nav-link">
+              <i class="nav-icon fad fa-chart-line"></i>
+              <p> Dashboard </p>
+            </a>
+          </li>
+
           <li class="nav-item">
             <a href="allsub_branches" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-code-branch"></i>
               <p> Sub Branches </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="restaurantCategories" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Categories </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="deals" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Deals </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="products" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Products </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="addon_products" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Addon Products </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="sizes" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Sizes </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="customers" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Customers </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
             <a href="orders" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-arrow-to-left"></i>
               <p> Orders </p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="POS" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> POS </p>
+              <i class="nav-icon fas fa-stream "></i>
+              <p> Point Of Sale </p>
+            </a>
+          </li>
+
+          <!-- <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fad fa-chart-pie"></i>
+              <p>
+                Catalogues
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              </ul>
+          </li> -->
+
+          <li class="nav-item">
+            <a href="sizes" class="nav-link">
+              <i class="nav-icon fad fa-sort-amount-up-alt"></i>
+              <p> Sizes </p>
             </a>
           </li>
 
           <li class="nav-item">
+            <a href="restaurantCategories" class="nav-link">
+              <i class="nav-icon fad fa-th"></i>
+              <p> Categories </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="products" class="nav-link">
+              <i class="nav-icon fad fa-burger-soda"></i>
+              <p> Products </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="addon_products" class="nav-link">
+              <i class="nav-icon fad fa-plus"></i>
+              <p> Addon Products </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="deals" class="nav-link">
+              <i class="nav-icon fad fa-utensils"></i>
+              <p> Deals </p>
+            </a>
+          </li>
+
+          <li class=" nav-item">
             <a href="offers" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Offer </p>
+              <i class="nav-icon fad fa-gift"></i>
+              <p> Offers </p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="settings" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p> Settings </p>
+            <a href="customers" class="nav-link">
+              <i class="nav-icon fad fa-user-tie"></i>
+              <p> Customers </p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="social_media_links" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fab fa-facebook"></i>
               <p> Social Media Links</p>
+            </a>
+          </li>
+
+          <!-- <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fad fa-cogs"></i>
+              <p>
+                Settings
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+            </ul>
+          </li> -->
+
+          <li class="nav-item">
+            <a href="settings" class="nav-link">
+              <i class="nav-icon fad fa-user-circle"></i>
+              <p> Profile </p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="delivery_setting" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-biking-mountain"></i>
               <p> Delivery Setting </p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="restaurant_timing" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-clock"></i>
               <p> Restaurant Timing </p>
             </a>
           </li>
-
 
         <?php endif ?>
 

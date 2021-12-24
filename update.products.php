@@ -177,42 +177,7 @@ $categories = mysqli_query($conn, $category_query);
 
           </form>
 
-          <script>
-            function readURL(input) {
-              if (input.files && input.files[0]) {
 
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                  document.querySelector("#product_image").setAttribute("src", e.target.result);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-              }
-            };
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function() {
-              'use strict';
-              window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                  form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-              }, false);
-            })();
-
-            // GO BACK 
-            function goBack() {
-              window.history.back();
-            }
-          </script>
         </div>
       </div>
 
@@ -226,6 +191,44 @@ $categories = mysqli_query($conn, $category_query);
 
   </div>
   <!-- ./wrapper -->
+
+  <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.querySelector("#product_image").setAttribute("src", e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    };
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+
+    // GO BACK 
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+
 
 </body>
 

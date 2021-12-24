@@ -9,7 +9,14 @@
 </footer>
 
 <!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
 
+<!-- DataTables Script & CSS Links -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+
+<!-- Sweet Alert Script & CSS Links -->
+<script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -19,9 +26,11 @@
 <!-- Filterizr-->
 <script src="plugins/filterizr/jquery.filterizr.min.js"></script>
 
-<!-- OPTIONAL SCRIPTS -->
+<!-- Chart.min.js -->
 <script src="plugins/chart.js/Chart.min.js"></script>
+
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<!-- <script src="dist/js/demo.js"></script> -->
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
+<!-- <script src="dist/js/pages/dashboard3.js"></script> -->

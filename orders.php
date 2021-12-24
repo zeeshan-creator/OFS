@@ -99,6 +99,11 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
     </div>
     <!-- /.content-wrapper -->
 
+
+    <!-- Including footer -->
+    <?php include './partials/footer.php' ?>
+    <?php ob_end_flush(); ?>
+
     <script>
       $(document).ready(function() {
         $('#orders').DataTable({
@@ -108,9 +113,6 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
         });
       });
     </script>
-    <!-- Including footer -->
-    <?php include './partials/footer.php' ?>
-    <?php ob_end_flush(); ?>
 
   </div>
   <!-- ./wrapper -->

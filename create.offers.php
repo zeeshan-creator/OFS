@@ -93,54 +93,6 @@ include("./includes/restaurants/offers/code.offer.php");
 
           </form>
 
-          <script>
-            $(function() {
-              var dtToday = new Date();
-              var month = dtToday.getMonth() + 1;
-              var day = dtToday.getDate();
-              var year = dtToday.getFullYear();
-              if (month < 10)
-                month = '0' + month.toString();
-              if (day < 10)
-                day = '0' + day.toString();
-
-              var minDate = year + '-' + month + '-' + day;
-              $('#valid_from').attr('min', minDate);
-              $("#valid_from").change(function() {
-                var date = new Date($('#valid_from').val());
-                var newDate = date.toString('yyyy-MM-dd');
-
-                $("#valid_till").prop("disabled", false);
-                $('#valid_till').attr('min', convert(newDate));
-
-                function convert(newDate) {
-                  var date = new Date(newDate),
-                    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-                    day = ("0" + date.getDate()).slice(-2);
-                  return [date.getFullYear(), mnth, day].join("-");
-                }
-              });
-            });
-
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function() {
-              'use strict';
-              window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                  form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-              }, false);
-            })();
-          </script>
         </div>
       </div>
 
@@ -154,6 +106,55 @@ include("./includes/restaurants/offers/code.offer.php");
 
   </div>
   <!-- ./wrapper -->
+
+  <script>
+    $(function() {
+      var dtToday = new Date();
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+      if (month < 10)
+        month = '0' + month.toString();
+      if (day < 10)
+        day = '0' + day.toString();
+
+      var minDate = year + '-' + month + '-' + day;
+      $('#valid_from').attr('min', minDate);
+      $("#valid_from").change(function() {
+        var date = new Date($('#valid_from').val());
+        var newDate = date.toString('yyyy-MM-dd');
+
+        $("#valid_till").prop("disabled", false);
+        $('#valid_till').attr('min', convert(newDate));
+
+        function convert(newDate) {
+          var date = new Date(newDate),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+          return [date.getFullYear(), mnth, day].join("-");
+        }
+      });
+    });
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
 
   <script>
     Dropzone.discover();

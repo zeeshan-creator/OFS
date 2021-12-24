@@ -9,14 +9,13 @@ include './auth/login_auth.php';
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
 
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 
   <div class="wrapper">
 
     <!-- Navbar -->
     <?php include './partials/nav.php' ?>
     <!-- End Navbar -->
-
 
     <!-- Main Sidebar Container -->
     <?php include './partials/sidebar.php' ?>
@@ -51,7 +50,6 @@ include './auth/login_auth.php';
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
                     <h3 class="card-title">Online Store Visitors</h3>
-                    <a href="javascript:void(0);">View Report</a>
                   </div>
                 </div>
                 <div class="card-body">
@@ -64,24 +62,15 @@ include './auth/login_auth.php';
                       <span class="text-success">
                         <i class="fas fa-arrow-up"></i> 12.5%
                       </span>
-                      <span class="text-muted">Since last week</span>
+                      <span class="text-muted">Since last month</span>
                     </p>
                   </div>
                   <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
-                    <canvas id="visitors-chart" height="200"></canvas>
+                    <canvas id="myChart"></canvas>
                   </div>
 
-                  <div class="d-flex flex-row justify-content-end">
-                    <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This Week
-                    </span>
-
-                    <span>
-                      <i class="fas fa-square text-gray"></i> Last Week
-                    </span>
-                  </div>
                 </div>
               </div>
               <!-- /.card -->
@@ -198,7 +187,6 @@ include './auth/login_auth.php';
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
                     <h3 class="card-title">Sales</h3>
-                    <a href="javascript:void(0);">View Report</a>
                   </div>
                 </div>
                 <div class="card-body">
@@ -217,18 +205,9 @@ include './auth/login_auth.php';
                   <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
-                    <canvas id="sales-chart" height="200"></canvas>
+                    <canvas id="salesChart"></canvas>
                   </div>
 
-                  <div class="d-flex flex-row justify-content-end">
-                    <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This year
-                    </span>
-
-                    <span>
-                      <i class="fas fa-square text-gray"></i> Last year
-                    </span>
-                  </div>
                 </div>
               </div>
               <!-- /.card -->
@@ -302,6 +281,53 @@ include './auth/login_auth.php';
 
   </div>
   <!-- ./wrapper -->
+
+
+  <script>
+    // Visitor's Chart
+    const ctx1 = $('#myChart');
+    const Visitors_Chart = new Chart(ctx1, {
+      type: 'pie',
+      data: {
+        labels: ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'June', 'Jul'],
+        datasets: [{
+          label: 'number of Votes',
+          data: [12, 19, 3, 5, 12, 19, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(255, 159, 64, 0.5)',
+            'rgba(255, 205, 86, 0.5)',
+            'rgba(75, 192, 192, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(153, 102, 255, 0.5)',
+            'rgba(54, 162, 205, 0.5)'
+          ]
+        }]
+      }
+    });
+
+    // Sales Chart
+    const ctx2 = $('#salesChart');
+    const sales_chart = new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'June', 'Jul'],
+        datasets: [{
+          label: 'number of Votes',
+          data: [12, 19, 3, 5, 12, 19, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(255, 159, 64, 0.5)',
+            'rgba(255, 205, 86, 0.5)',
+            'rgba(75, 192, 192, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(153, 102, 255, 0.5)',
+            'rgba(54, 162, 205, 0.5)'
+          ]
+        }]
+      }
+    });
+  </script>
 
 </body>
 

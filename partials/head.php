@@ -10,7 +10,9 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css"> -->
+  <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+
   <!-- IonIcons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -19,24 +21,21 @@
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
   <!-- jQuery -->
-  <script src="plugins/jquery/jquery.min.js"></script>
 
   <!-- DataTables Script & CSS Links -->
   <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
-
-
 
   <!-- Sweet Alert Script & CSS Links -->
   <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
-  <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="plugins/ekko-lightbox/ekko-lightbox.css">
 
-
-
-
+  <style>
+    body {
+      overflow-x: hidden;
+    }
+  </style>
 
 </head>
 
