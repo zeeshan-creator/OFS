@@ -215,6 +215,21 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="branchSettings" class="nav-link">
+              <i class="nav-icon fad fa-sliders-h"></i>
+              <p> Branch Setting </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="order_now?id=<?php echo $_SESSION['id'] ?>" class="nav-link">
+              <i class="nav-icon fad fa-sliders-h"></i>
+              <p> Order Now </p>
+            </a>
+          </li>
+
+
         <?php endif ?>
 
         <!-- If the user is (sub_branch) show him/her these links -->

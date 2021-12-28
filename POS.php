@@ -419,7 +419,7 @@ include("./includes/restaurants/POS/code.pos.php");
                           <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
                           <?php
                           while ($row = mysqli_fetch_assoc($categories)) {
-                            echo '<a class="btn btn-info m-1" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
+                            echo '<a class="btn btn-info m-1" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
                           }
                           ?>
                           <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
