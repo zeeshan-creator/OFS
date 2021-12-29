@@ -46,6 +46,7 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
               <th>#</th>
               <th>Category</th>
               <th>Description</th>
+              <th>No. of products</th>
               <th>Status</th>
               <th>Publish Date</th>
               <th>Actions</th>
@@ -55,10 +56,14 @@ include("./includes/restaurants/categories/code.fetchCategories.php");
             <?php
             $count = 1;
             while ($row = mysqli_fetch_assoc($categories)) {
+              $query = "SELECT COUNT(`id`) AS NumberOfProducts FROM products Where `category_id` =" . $row['id'];
+              $result = mysqli_query($conn, $query);
+              $no = mysqli_fetch_assoc($result);
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['category_name'] . "</td>
               <td>" . $row['category_desc'] . "</td>
+              <td>" . $no['NumberOfProducts'] . "</td>
               <td>" . $row['active_status'] . "</td>
               <td>" . $row['created_at'] . "</td>
               <td class='td-actions text-right'>

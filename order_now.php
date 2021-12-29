@@ -1,42 +1,35 @@
 <?php
 
-require('config/db.php');
-if (!isset($_GET['id']) || $_GET['id'] == '' || $_GET['id'] == null) {
-   echo '<script>window.location.href = "index";</script>';
-}
-if (isset($_GET['id'])) {
-   $id = trim($_GET['id']);
-   $query = "SELECT * FROM restaurants WHERE id = $id";
-   $results = mysqli_query($conn, $query);
-   $rowNum = mysqli_num_rows($results);
-   if ($rowNum > 0) {
-      $row = mysqli_fetch_assoc($results);
-
-      $query = "SELECT * FROM `categories` WHERE `restaurant_id` = $id";
-      $categories = mysqli_query($conn, $query);
-   } else {
-      echo '<script>window.location.href = "index";</script>';
-   }
-}
-
-
+include("./includes/restaurants/orders/code.order_now.php");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>OFS | <?php echo $row['name'] ?> | Order now</title>
+   <title><?php echo $row['name'] ?> | Order now</title>
 
-   <!-- Google Font: Source Sans Pro -->
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+   <link rel="shortcut icon" href="includes/restaurants/logos/<?php echo $row['logo'] ?> " type="image/x-icon">
    <!-- Font Awesome Icons -->
    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
    <!-- Theme style -->
    <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <style>
+   html {
+      scroll-behavior: smooth;
+   }
+
+   .navbar {
+      overflow: hidden;
+      background-color: #fff;
+      position: fixed;
+      top: 0;
+      width: 100%;
+   }
+
    div.scrollmenu {
       overflow: auto;
       white-space: nowrap;
@@ -78,6 +71,64 @@ if (isset($_GET['id'])) {
       background: grey;
    }
 
+   .sidenav {
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      background-color: #fff;
+      overflow: hidden;
+      padding-top: 20px;
+   }
+
+   .cart_table_main {
+      max-height: 50%;
+      overflow: auto;
+   }
+
+   .cart_table tr {
+      cursor: pointer;
+      font-size: 14px;
+      margin: 10px 0;
+   }
+
+   .cart_table tbody tr td:first-child {
+      width: 40%;
+      font-size: 12px;
+   }
+
+   .cart_table tbody tr td:nth-child(2) {
+      width: 30%;
+      font-size: 12px;
+   }
+
+   .qty_minus,
+   .qty_plus {
+      margin: 0 4px;
+      padding: 4px;
+      color: #C49A6C;
+      cursor: pointer;
+   }
+
+   .category_menu {
+      background-color: #fff !important;
+      position: fixed;
+      z-index: 1;
+      width: 75%;
+   }
+
+   .category_title {
+      text-align: center;
+      font-weight: bold;
+   }
+
+   .no-btn {
+      border: none;
+      background: none;
+   }
+
    .products {
       width: 100%;
       border-top: thin solid #eee;
@@ -115,8 +166,8 @@ if (isset($_GET['id'])) {
 
    .add_btn {
       padding: 8px;
-      background-color: #C49A6C;
-      color: white;
+      background-color: rgba(0, 0, 0, 0.08);
+      color: #373737;
       border-radius: 2px;
       cursor: pointer;
       transition: 0.2s all ease-in-out;
@@ -128,6 +179,90 @@ if (isset($_GET['id'])) {
 
    .add_btn:hover {
       box-shadow: 1px 1px 10px lightgray;
+   }
+
+
+   .quantity {
+      position: relative;
+   }
+
+   input[type=number]::-webkit-inner-spin-button,
+   input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+   }
+
+   input[type=number] {
+      -moz-appearance: textfield;
+   }
+
+   .quantity input {
+      width: 75px;
+      height: 42px;
+      line-height: 1.65;
+      float: left;
+      display: block;
+      padding: 0;
+      margin: 0;
+      padding-left: 20px;
+      border: none;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+      font-size: 1rem;
+      border-radius: 4px;
+   }
+
+   .quantity input:focus {
+      outline: 0;
+   }
+
+   .quantity-nav {
+      float: left;
+      position: relative;
+      height: 42px;
+   }
+
+   .quantity-button {
+      position: relative;
+      cursor: pointer;
+      border: none;
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+      width: 21px;
+      text-align: center;
+      color: #333;
+      font-size: 13px;
+      font-family: "FontAwesome" !important;
+      line-height: 1.5;
+      padding: 0;
+      background: #FAFAFA;
+      -webkit-transform: translateX(-100%);
+      transform: translateX(-100%);
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+   }
+
+   .quantity-button:active {
+      background: #EAEAEA;
+   }
+
+   .quantity-button.quantity-up {
+      position: absolute;
+      height: 50%;
+      top: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      font-family: "FontAwesome";
+      border-radius: 0 4px 0 0;
+      line-height: 1.6
+   }
+
+   .quantity-button.quantity-down {
+      position: absolute;
+      bottom: 0;
+      height: 50%;
+      font-family: "FontAwesome";
+      border-radius: 0 0 4px 0;
    }
 </style>
 
@@ -152,63 +287,126 @@ if (isset($_GET['id'])) {
       <!-- /.navbar -->
 
       <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper bg-white">
+      <div class="content-wrapper bg-white mt-5">
          <!-- Main content -->
          <div class="content">
             <div class="row">
                <div class="col-lg-9">
-                  <div class="row">
-                     <div class="col-lg-12" style="padding:0px;">
+                  <div class="row fix_body">
+                     <div class="col-lg-12 category_menu" style="padding:0px;">
 
-                        <div class="scrollmenu py-3">
+                        <div class="scrollmenu py-2">
                            <?php
                            while ($row = mysqli_fetch_assoc($categories)) {
-                              echo '<a class="btn py-0 m-1" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
+                              echo '<a class="btn py-0 m-1" href="#' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
                            }
                            ?>
 
                         </div>
                      </div>
                   </div>
-
+                  <br>
 
                   <div class="row" style="margin: 30px 30px;">
+
                      <div class="col-lg-12">
 
+                        <div class="container-fluid mt-5">
 
-                        <div class="container-fluid mt-4">
+                           <div class="product_main mt-5">
 
-                           <div class="products">
-                              <div class="row">
-                                 <div href="http://foodsinn.co/menu-and-ordering/public/media/product_images/1631789373.JPG" class="image-popup-no-margins product-img col-xl-2 col-lg-2 col-md-4 col-2">
-                                    <img src="http://foodsinn.co/menu-and-ordering/public/media/product_thumbnails/1631789373.JPG">
-                                 </div>
+                              <?php
+                              $query = "SELECT * FROM `categories` WHERE `restaurant_id` = $id";
+                              $categories = mysqli_query($conn, $query);
+                              while ($category = mysqli_fetch_assoc($categories)) {
+                              ?>
+                                 <h2 class="category_title my-4" id="<?php echo $category['category_name']; ?>">
+                                    <?php echo $category['category_name']; ?></h2>
 
-                                 <div class="col-xl-6 col-lg-7 col-md-8 col-10">
-                                    <h4 class="product_title">Chicken Corn Soup (single)</h4>
-                                    <p class="product_description">Pure chicken stock with chicken minced, and bits of corn.</p>
-                                 </div>
-                                 <div class=" col-xl-4 col-lg-3 col-md-12 ">
-                                    <div class="product_price text-right">
-                                       <span class="ml-2 mr-2">Rs. 280</span>
-                                       <i class="fas fa-plus add_btn add_to_cart_btn"></i>
-                                    </div>
-                                 </div>
-                              </div>
+                                 <?php
+                                 $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = $id AND products.active_status = 'active'  AND categories.active_status = 'active'";
+                                 $products = mysqli_query($conn, $query);
+                                 while ($product = mysqli_fetch_assoc($products)) {
+                                    if ($product['categoryName'] == $category['category_name']) {
+                                 ?>
+                                       <div class="products">
+                                          <div class="row">
+                                             <div class="mx-4">
+                                                <img class="img-lg" src='includes/restaurants/products/product_imgs/<?php echo $product['photo'] ?>'>
+                                             </div>
+
+                                             <div class="col-xl-6 col-lg-7 col-md-8 col-10">
+                                                <h4 class="product_title"><?php echo $product['productName'] ?></h4>
+                                                <p class="product_description"><?php echo $product['description'] ?></p>
+                                             </div>
+                                             <div class="col-xl-4 col-lg-3 col-md-12 mt-4">
+                                                <div class="product_price text-right">
+                                                   <span class="ml-2 mr-2">Rs. <?php echo $product['price'] ?></span>
+                                                   <button type="button" class="no-btn" onclick="addToCart('<?php echo $product['id'] ?>')">
+                                                      <i class="fas fa-plus add_btn add_to_cart_btn"></i>
+                                                   </button>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                 <?php
+                                    }
+                                 } ?>
+                              <?php
+                              } ?>
+
                            </div>
 
                         </div>
-
-
                      </div>
                   </div>
-
                </div>
-               <div class="col-lg-3 elevation-1">
+               <div class="col-lg-3 elevation-1 sidenav">
+                  <br>
+                  <br>
+                  <h1 class="text-center ">
+                     Cart
+                  </h1>
+                  <div class="cart_table_main">
+                     <table class="table table-hover cart_table">
+                        <tbody>
+                           <?php foreach ($_SESSION["order_cart"] as $product) { ?>
+
+                              <tr>
+                                 <td class="cart_item_name"><?php echo $product["name"]; ?></td>
+                                 <td>
+                                    <form action="" method="post">
+                                       <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                       <input type='hidden' name='action' value="change" />
+                                       <div class="quantity mt-2">
+                                          <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
+                                       </div>
+                                    </form>
+                                 </td>
+                                 <td class="cart_item_subtotal text-right">Rs. <?php echo $product["price"]; ?></td>
+                                 <td>
+                                    <div class="pl-2 float-right">
+                                       <form method='post' action=''>
+                                          <input type='hidden' name='key' value="<?php echo $product["id"]; ?>" />
+                                          <input type='hidden' name='action' value="remove" />
+                                          <button type='submit' class='remove btn btn-danger'>
+                                             <span style='color:white;'>
+                                                <i class='fas fa-trash-alt'></i>
+                                             </span></button>
+                                       </form>
+                                    </div>
+                                 </td>
+                              </tr>
+
+                           <?php
+                           }
+                           ?>
+                        </tbody>
+                     </table>
+                  </div>
                   <div class="" style="height: 1000px;">
-                     <h1 class="text-center mt-2">
-                        Cart
-                     </h1>
+                     <br>
+
                      <hr>
                      <div class="row">
 
@@ -294,6 +492,64 @@ if (isset($_GET['id'])) {
    <script src="plugins/jquery/jquery.min.js"></script>
    <!-- Bootstrap 4 -->
    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+   <script>
+      $(document).ready(function() {
+         jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up" ><span class="white"  ><i class="fas fa-angle-up" ></i></span></button><button class="quantity-button quantity-down" ><span class="white"><i  class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
+         jQuery('.quantity').each(function() {
+            var spinner = jQuery(this),
+               input = spinner.find('input[type="number"]'),
+               btnUp = spinner.find('.quantity-up'),
+               btnDown = spinner.find('.quantity-down'),
+               min = input.attr('min'),
+               max = input.attr('max');
+
+            btnUp.click(function() {
+               var oldValue = parseFloat(input.val());
+               if (oldValue >= max) {
+                  var newVal = oldValue;
+               } else {
+                  var newVal = oldValue + 1;
+               }
+               spinner.find("input").val(newVal);
+               spinner.find("input").trigger("change");
+            });
+
+            btnDown.click(function() {
+               var oldValue = parseFloat(input.val());
+               if (oldValue <= min) {
+                  var newVal = oldValue;
+               } else {
+                  var newVal = oldValue - 1;
+               }
+               spinner.find("input").val(newVal);
+               spinner.find("input").trigger("change");
+            });
+
+         });
+      });
+
+      function addToCart(id) {
+         $.ajax({
+               url: 'orderCart',
+               type: 'POST',
+               data: {
+                  productId: id
+               },
+            })
+            .done(function(response) {
+               if (response == 1) {
+                  location.reload();
+               }
+               if (response == 0) {
+                  Swal.fire('Alreay Exist!', "Product already in cart", "error");
+               }
+            })
+            .fail(function() {
+               swal('Oops...', 'Something went wrong!', 'error');
+            });
+      }
+   </script>
 </body>
 
 </html>
