@@ -1,6 +1,40 @@
 <?php
-
+$subTotal = 0;
+$deliveryCharges = 0;
+$total = 0;
 include("./includes/restaurants/orders/code.order_now.php");
+if (isset($_GET['id'])) {
+   $id = trim($_GET['id']);
+   $query = "SELECT * FROM restaurants WHERE id = $id";
+   $results = mysqli_query($conn, $query);
+   $rowNum = mysqli_num_rows($results);
+   if ($rowNum > 0) {
+      $row = mysqli_fetch_assoc($results);
+
+      $query = "SELECT * FROM `categories` WHERE `restaurant_id` = $id";
+      $categories = mysqli_query($conn, $query);
+
+      $query = "SELECT * FROM `areas`";
+      $areas = mysqli_query($conn, $query);
+
+
+      $restaurant_query = "SELECT * FROM `delivery_settings` WHERE `restaurant_id` = '$id'";
+      $result = mysqli_query($conn, $restaurant_query);
+      $settings = mysqli_fetch_assoc($result);
+
+      if ($settings) {
+         // Retrieve individual field value
+         $min_delivery = $settings["min_delivery"];
+         $min_pickup = $settings["min_pickup"];
+         $deliveryCharges = $settings["delivery_charges"];
+         $free_delivery_over = $settings["free_delivery_over"];
+         $tax = $settings['tax'];
+         $delivery_time = $settings['delivery_time'];
+      }
+   } else {
+      echo '<script>location.reload();</script>';
+   }
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +62,31 @@ include("./includes/restaurants/orders/code.order_now.php");
       position: fixed;
       top: 0;
       width: 100%;
+   }
+
+   .zoneTags {
+      padding: 5px;
+      width: 50%;
+      min-height: 120px;
+      max-height: fit-content;
+      border: thin solid grey
+   }
+
+   .tag {
+      margin: 5px;
+      background-color: rgba(0, 0, 0, .2);
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: thin solid grey;
+   }
+
+   .areas {
+      height: 500px;
+      overflow-y: auto;
+   }
+
+   .areas p:hover {
+      box-shadow: 1px 1px 4px;
    }
 
    div.scrollmenu {
@@ -129,6 +188,10 @@ include("./includes/restaurants/orders/code.order_now.php");
       background: none;
    }
 
+   .mt-6 {
+      margin-top: 55px;
+   }
+
    .products {
       width: 100%;
       border-top: thin solid #eee;
@@ -162,6 +225,17 @@ include("./includes/restaurants/orders/code.order_now.php");
       width: 100%;
       height: auto;
       text-align: right;
+   }
+
+   #areaTitle {
+      border: none;
+      padding: 0px 10px;
+      -webkit-appearance: none;
+      text-decoration: underline;
+   }
+
+   #areaTitle:hover {
+      color: rgba(0, 0, 0, .5)
    }
 
    .add_btn {
@@ -273,10 +347,15 @@ include("./includes/restaurants/orders/code.order_now.php");
       <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
          <div class="container">
             <a href="#" class="navbar-brand">
-               <!-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
                <img src="includes/restaurants/logos/<?php echo $row['logo'] ?>" class="brand-image img-circle elevation-3" alt="Restaurant logo">
                <span class="brand-text font-weight-light"><?php echo $row['name'] ?></span>
             </a>
+
+            <ul class="navbar-nav ml-auto">
+               <li class="nav-item">
+                  <a class="nav-link" href="userLogin?branchID=<?php echo $row['id'] ?>">Login / Sign Up</a>
+               </li>
+            </ul>
 
             <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -285,9 +364,8 @@ include("./includes/restaurants/orders/code.order_now.php");
          </div>
       </nav>
       <!-- /.navbar -->
-
       <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper bg-white mt-5">
+      <div class="content-wrapper bg-white mt-6">
          <!-- Main content -->
          <div class="content">
             <div class="row">
@@ -322,7 +400,6 @@ include("./includes/restaurants/orders/code.order_now.php");
                               ?>
                                  <h2 class="category_title my-4" id="<?php echo $category['category_name']; ?>">
                                     <?php echo $category['category_name']; ?></h2>
-
                                  <?php
                                  $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = $id AND products.active_status = 'active'  AND categories.active_status = 'active'";
                                  $products = mysqli_query($conn, $query);
@@ -370,35 +447,40 @@ include("./includes/restaurants/orders/code.order_now.php");
                   <div class="cart_table_main">
                      <table class="table table-hover cart_table">
                         <tbody>
-                           <?php foreach ($_SESSION["order_cart"] as $product) { ?>
-
-                              <tr>
-                                 <td class="cart_item_name"><?php echo $product["name"]; ?></td>
-                                 <td>
-                                    <form action="" method="post">
-                                       <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
-                                       <input type='hidden' name='action' value="change" />
-                                       <div class="quantity mt-2">
-                                          <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
-                                       </div>
-                                    </form>
-                                 </td>
-                                 <td class="cart_item_subtotal text-right">Rs. <?php echo $product["price"]; ?></td>
-                                 <td>
-                                    <div class="pl-2 float-right">
-                                       <form method='post' action=''>
-                                          <input type='hidden' name='key' value="<?php echo $product["id"]; ?>" />
-                                          <input type='hidden' name='action' value="remove" />
-                                          <button type='submit' class='remove btn btn-danger'>
-                                             <span style='color:white;'>
-                                                <i class='fas fa-trash-alt'></i>
-                                             </span></button>
+                           <?php if (isset($_SESSION["order_cart"])) {
+                              foreach ($_SESSION["order_cart"] as $product) { ?>
+                                 <tr>
+                                    <td class="cart_item_name"><?php echo $product["name"]; ?></td>
+                                    <td>
+                                       <form action="" method="post">
+                                          <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
+                                          <input type='hidden' name='action' value="change" />
+                                          <div class="quantity mt-2">
+                                             <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
+                                          </div>
                                        </form>
-                                    </div>
-                                 </td>
-                              </tr>
-
+                                    </td>
+                                    <td class="cart_item_subtotal text-right">Rs. <?php echo $product["price"]; ?></td>
+                                    <td>
+                                       <div class="pl-2 float-right">
+                                          <form method='post' action=''>
+                                             <input type='hidden' name='key' value="<?php echo $product["id"]; ?>" />
+                                             <input type='hidden' name='action' value="remove" />
+                                             <button type='submit' class='remove btn btn-default'>
+                                                <span style='color:grey;'>
+                                                   <i class='fas fa-trash-alt'></i>
+                                                </span></button>
+                                          </form>
+                                       </div>
+                                    </td>
+                                 </tr>
                            <?php
+                                 $subTotal += ($product["price"] * $product["quantity"]);
+
+                                 if ($subTotal >= $free_delivery_over) {
+                                    $deliveryCharges = 0;
+                                 }
+                              }
                            }
                            ?>
                         </tbody>
@@ -409,12 +491,13 @@ include("./includes/restaurants/orders/code.order_now.php");
 
                      <hr>
                      <div class="row">
-
                         <div class="col-lg-6">
                            <h5 class="float-left pl-3">Delivery area</h5>
                         </div>
+
                         <div class="col-lg-6">
-                           <h5 class="float-right pr-3">Azam basti</h5>
+                           <input type="hidden" name="deliveryArea" id="deliveryArea">
+                           <h5 class="pr-3" id="areaTitle" data-toggle="modal" data-target="#zonesModal">Select Area</h5>
                         </div>
 
                      </div>
@@ -425,7 +508,7 @@ include("./includes/restaurants/orders/code.order_now.php");
                            <h5 class="float-left pl-3">Subtotal</h5>
                         </div>
                         <div class="col-lg-6">
-                           <h5 class="float-right pr-3">00.00</h5>
+                           <h5 class="float-right pr-3"><?php echo $subTotal ?  $subTotal : "00.00" ?></h5>
                         </div>
 
                      </div>
@@ -435,7 +518,7 @@ include("./includes/restaurants/orders/code.order_now.php");
                            <h5 class="float-left pl-3">Delivery Charges</h5>
                         </div>
                         <div class="col-lg-6">
-                           <h5 class="float-right pr-3">150.00</h5>
+                           <h5 class="float-right pr-3"><?php echo $deliveryCharges ?  $deliveryCharges : "00.00" ?></h5>
                         </div>
 
                      </div>
@@ -445,7 +528,8 @@ include("./includes/restaurants/orders/code.order_now.php");
                            <h5 class="float-left pl-3 font-weight-bolder">Total <small style="font-size: 12px;">(incl. GST)</small></h5>
                         </div>
                         <div class="col-lg-6">
-                           <h5 class="float-right pr-3">150.00</h5>
+                           <?php $total = $subTotal + $deliveryCharges ?>
+                           <h5 class="float-right pr-3"><?php echo $total ?  $total : "00.00" ?></h5>
                         </div>
 
                      </div>
@@ -462,6 +546,35 @@ include("./includes/restaurants/orders/code.order_now.php");
                   </div>
                </div>
 
+               <div class="modal fade" id="zonesModal">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h4 class="modal-title">Delivery Zones</h4>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           <div class="areas">
+
+                              <?php
+                              while ($area = mysqli_fetch_assoc($areas)) {
+                                 echo "<p><button class='no-btn w-100'
+                                  onclick='selectArea(\"" . $area['area'] . "\")'>"
+                                    . $area['area'] . "</button></p>";
+                              }
+                              ?>
+                           </div>
+
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.modal -->
             </div>
          </div>
          <!-- /.content -->
@@ -494,7 +607,21 @@ include("./includes/restaurants/orders/code.order_now.php");
    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
    <script>
+      function selectArea(newVal) {
+         var areaTitle = document.getElementById('areaTitle');
+         var deliveryArea = document.getElementById('deliveryArea');
+         areaTitle.innerText = newVal;
+         deliveryArea.value = newVal;
+         $("#zonesModal").modal("hide");
+      }
+
       $(document).ready(function() {
+         if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+         }
+
+
+
          jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up" ><span class="white"  ><i class="fas fa-angle-up" ></i></span></button><button class="quantity-button quantity-down" ><span class="white"><i  class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
          jQuery('.quantity').each(function() {
             var spinner = jQuery(this),
@@ -540,10 +667,10 @@ include("./includes/restaurants/orders/code.order_now.php");
             .done(function(response) {
                if (response == 1) {
                   location.reload();
-               }
-               if (response == 0) {
+               } else {
                   Swal.fire('Alreay Exist!', "Product already in cart", "error");
                }
+               if (response == 0) {}
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong!', 'error');

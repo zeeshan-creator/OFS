@@ -2,6 +2,8 @@
 session_start();
 require('./config/db.php');
 
+
+
 if (isset($_POST['productId']) && $_POST['productId'] != "") {
    $id = trim($_POST['productId']);
 

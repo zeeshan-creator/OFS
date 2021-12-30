@@ -56,7 +56,7 @@ include("./includes/restaurants/customers/code.fetchCustomers.php");
             $count = 1;
 
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            while ($row = mysqli_fetch_assoc($customers)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
               <td>" . $row['first_name'] . "</td>
