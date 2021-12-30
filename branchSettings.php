@@ -37,6 +37,8 @@ $deliveryZones = mysqli_query($conn, $query);
   }
 
   .tag {
+    display: inline-block;
+    width: fit-content;
     margin: 5px;
     background-color: rgba(0, 0, 0, .2);
     padding: 2px 5px;
