@@ -23,6 +23,7 @@ if (isset($_GET['addonID'])) {
     $name = $row["name"];
     $description = $row["description"];
     $price = $row["price"];
+    $photo = $row["photo"];
     $active_status = $row["active_status"];
   } else {
     // URL doesn't contain valid id. Redirect to addon_products
@@ -61,7 +62,20 @@ ob_end_flush();
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
+            <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+              <div class="col-md-5 mb-3 ">
+                <label for="product_image" class="d-block">Product Logo</label>
+                <input type="hidden" name="oldImage" value="<?php echo $photo; ?>">
+                <div class="d-flex">
+                  <img src="includes/restaurants/addon_products/addons_imgs/<?php echo $photo; ?>" style="width: 100px;" class="elevation-2" id="product_image" alt="Product Image">
+                  <div class="col-md-12 mb-3">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newImage" accept='image/*' onchange="readURL(this)" id="newImage">
+                    <div class="invalid-feedback">
+                      Please select a Product product_image
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-row">
                 <input type="hidden" name="addonId" value="<?php echo $id; ?>">
                 <div class=" col-md-6 mb-4">
@@ -128,6 +142,17 @@ ob_end_flush();
 
 
   <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.querySelector("#product_image").setAttribute("src", e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    };
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
       'use strict';

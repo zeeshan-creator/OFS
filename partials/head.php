@@ -5,33 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OFS</title>
 
-
-
   <?php
-  if ($_SESSION['role'] == 'admin') {
-    echo '<img src="docs/assets/img/AdminLTELogo.png" class="img-circle elevation-2" alt="User Image">';
-    goto exiit;
-  }
+  if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] == 'admin') {
+      goto exiit;
+    }
 
-  if ($_SESSION['role'] == 'main_branch') {
-    $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $_SESSION['id'];
-  }
+    if ($_SESSION['role'] == 'main_branch') {
+      $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $_SESSION['id'];
+    }
 
-  if ($_SESSION['role'] == 'sub_branch') {
-    $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-    $results = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($results);
-    $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $row['main_branch'];
-  }
+    if ($_SESSION['role'] == 'sub_branch') {
+      $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
+      $results = mysqli_query($conn, $query);
+      $row = mysqli_fetch_assoc($results);
+      $query = "SELECT logo,name FROM `restaurants` WHERE `id`= " . $row['main_branch'];
+    }
 
-  $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
-  $row = mysqli_fetch_assoc($result);
+    $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+    $row = mysqli_fetch_assoc($result);
 
-  if ($row['logo'] == '' && $row['logo'] == null) {
-    echo '<link rel="shortcut icon" href="dist\img\AdminLTELogo.png" >';
-  }
-  if ($row['logo'] != '' && $row['logo'] != null) {
-    echo ' <link rel="shortcut icon" href="includes/restaurants/logos/' . $row['logo'] . '" type="image/x-icon">';
+    if ($row['logo'] == '' && $row['logo'] == null) {
+      echo '<link rel="shortcut icon" href="dist\img\AdminLTELogo.png" >';
+    }
+    if ($row['logo'] != '' && $row['logo'] != null) {
+      echo ' <link rel="shortcut icon" href="includes/restaurants/logos/' . $row['logo'] . '" type="image/x-icon">';
+    }
   }
   exiit:
   ?>

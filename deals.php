@@ -49,6 +49,7 @@ include("./includes/restaurants/deals/code.fetchdeals.php");
           <thead>
             <tr class="text-center">
               <th>#</th>
+              <th>Image</th>
               <th>Deal Name</th>
               <th>Price</th>
               <th>Description</th>
@@ -74,6 +75,7 @@ include("./includes/restaurants/deals/code.fetchdeals.php");
             while ($row = mysqli_fetch_assoc($results)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
+              <td style='width:7%;'><img src='includes/restaurants/deals/deals_imgs/" . $row['photo'] . "' class='img-fluid' alt='error'></td>
               <td>" . $row['deal_name'] . "</td>
               <td>" . $row['deal_price'] . "</td>
               <td>" . $row['deal_desc'] . "</td>";

@@ -223,7 +223,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="order_now?id=<?php echo $_SESSION['id'] ?>" class="nav-link">
+            <a target="_blank" href="order_now?id=<?php echo $_SESSION['id'] ?>" class="nav-link">
               <i class="nav-icon fad fa-sliders-h"></i>
               <p> Order Now </p>
             </a>
@@ -237,26 +237,32 @@
 
           <li class="nav-item">
             <a href="products" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-burger-soda"></i>
               <p> Products </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="deals" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-utensils"></i>
               <p> Deals </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="POS" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-stream "></i>
               <p> POS </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="Orders" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fad fa-arrow-to-left"></i>
               <p> Orders </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="branchSettings" class="nav-link">
+              <i class="nav-icon fad fa-sliders-h"></i>
+              <p> Branch Setting </p>
             </a>
           </li>
 

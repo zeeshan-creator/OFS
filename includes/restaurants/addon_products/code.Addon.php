@@ -4,6 +4,19 @@ ob_start();
 // initializing variables
 $sizeName;
 $restaurant_id;
+$imageFileType;
+$randomString;
+function generateRandomString($length = 10)
+{
+   $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+   $charactersLength = strlen($characters);
+   $randomString = '';
+   for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, $charactersLength - 1)];
+   }
+   return $randomString;
+}
+
 if (isset($_GET['branchId'])) {
    $id = trim($_GET['branchId']);
    if ($_SESSION['role'] == 'admin') {
@@ -20,6 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    $name = mysqli_real_escape_string($conn, trim($_POST['name']));
    $description = mysqli_real_escape_string($conn, trim($_POST['description']));
    $price = mysqli_real_escape_string($conn, trim($_POST['price']));
+   $target_dir = "includes/restaurants/addon_products/addons_imgs/";
+   $randomString  = generateRandomString();
+   $target_file = $target_dir . $randomString;
 
    if (!empty($sizeName)) {
       // first check the database to make sure 
@@ -55,13 +71,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       );
    }
 
+   $check = getimagesize($_FILES["photo"]["tmp_name"]);
+   if ($check == false) {
+      array_push($errors, "File is not an image");
+   }
+
+   // Check if file already exists
+   // if (file_exists($target_file)) {
+   //    array_push($errors, "Sorry, file already exists");
+   // }
+
+   // Check file size
+   if ($_FILES["photo"]["size"] > 500000) {
+      array_push($errors, "Sorry, your file is too large");
+   }
+
+   // Allow certain file formats
+   $imageFileType = strtolower(pathinfo(basename($_FILES["photo"]["name"]), PATHINFO_EXTENSION));
+   if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+      array_push($errors, "Sorry, only JPG, JPEG & PNG files are allowed");
+   }
+
+   if (!move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file . "." . $imageFileType)) {
+      array_push($errors, "Sorry, there was an error uploading your file");
+   } else {
+      $filename = $randomString . "." . $imageFileType;
+   }
+
    // Finally, save Category if there are no errors in the form
    if (count($errors) == 0) {
 
       $date = date('Y-m-d H:i:s');
       $query = "INSERT INTO `addons_products` 
-      (`name`, `restaurant_id`, `price`, `description`, `active_status`, `created_at`) VALUES
-      ('$name', '$restaurant_id', '$price', '$description', 'active', '$date')";
+      (`name`, `restaurant_id`, `price`, `photo`, `description`, `active_status`, `created_at`) VALUES
+      ('$name', '$restaurant_id', '$price', '$filename', '$description', 'active', '$date')";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
       if (isset($_GET['branchId'])) {

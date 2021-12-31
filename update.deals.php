@@ -127,8 +127,22 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
               <div class="col-lg-8">
                 <div class="row">
                   <div class="col-lg-12">
-                    <form method="POST" class="needs-validation" novalidate>
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                      <div class="col-md-5 mb-3 ">
+                        <label for="product_image" class="d-block">Deal Logo</label>
+                        <input type="hidden" name="oldImage" value="<?php echo $photo; ?>">
+                        <div class="d-flex">
+                          <img src="includes/restaurants/deals/deals_imgs/<?php echo $photo; ?>" style="width: 100px;" class="elevation-2" id="product_image" alt="Product Image">
+                          <div class="col-md-12 mb-3">
+                            <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newImage" accept='image/*' onchange="readURL(this)" id="newImage">
+                            <div class="invalid-feedback">
+                              Please select a deal image
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="form-row">
+
                         <div class=" col-lg-6 mb-3">
                           <input type="hidden" name="dealID" value="<?Php echo $dealID   ?>">
                           <input type="hidden" name="action" value="update">
@@ -408,6 +422,17 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
 
 
   <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.querySelector("#product_image").setAttribute("src", e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    };
     var input = document.getElementById("price");
     var dealPrice = document.getElementById("dealPrice");
     dealPrice.innerHTML = input.value;

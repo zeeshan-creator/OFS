@@ -1,12 +1,18 @@
 <?php
 include './auth/login_auth.php';
+include './auth/==admin_auth.php';
 include("./includes/sub_branch/code.branchSetting.php");
 
 $query = "SELECT * FROM `areas`";
 $areas = mysqli_query($conn, $query);
 
+if ($_SESSION['role'] == 'main_branch') {
+  $query = "SELECT * FROM `delivery_zone` WHERE `restaurant_id` = " . $_SESSION['id'];
+}
+if ($_SESSION['role'] == 'sub_branch') {
+  $query = "SELECT * FROM `delivery_zone` WHERE `branch_id` = " . $_SESSION['id'];
+}
 
-$query = "SELECT * FROM `delivery_zone` WHERE `restaurant_id` = " . $_SESSION['id'];
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 

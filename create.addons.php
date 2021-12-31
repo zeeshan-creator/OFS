@@ -34,10 +34,22 @@ include("./includes/restaurants/addon_products/code.Addon.php");
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
-            <form method="POST" class="needs-validation" novalidate>
+            <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+              <div class="col-md-5 mb-3 ">
+                <label for="photo" class="d-block">Addon Image</label>
+                <div class="d-flex">
+                  <img src="" style="width: 100px;" class="elevation-2 d-none" id="logo" alt="product Image">
+                  <div class="col-md-12 mb-3">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="photo" accept='image/*' onchange="readURL(this)" id="photo" required>
+                    <div class="invalid-feedback">
+                      Please select a product image
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-row">
                 <div class=" col-md-6 mb-4">
-                  <label for="name">addons name</label>
+                  <label for="name">Addon name</label>
                   <input type="text" class="form-control" name="name" placeholder="Enter addon Name" id="name" required>
                   <div class="invalid-feedback">
                     Please enter a addon name
@@ -80,6 +92,18 @@ include("./includes/restaurants/addon_products/code.Addon.php");
   </div>
   <!-- ./wrapper -->
   <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var logo = document.getElementById("logo");
+          logo.setAttribute("src", e.target.result);
+          logo.classList.remove("d-none");
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    };
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
       'use strict';

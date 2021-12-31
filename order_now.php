@@ -2,6 +2,21 @@
 $subTotal = 0;
 $deliveryCharges = 0;
 $total = 0;
+$selectedZone = NULL;
+
+if (!isset($_GET['id']) || $_GET['id'] == '' || $_GET['id'] == null) {
+   echo "branchID is missing from the url parameters";
+   exit;
+}
+
+if (isset($_post['selectedZone'])) {
+   $_SESSION['selectedZone'] = $_POST['selectedZone'];
+   $selectedZone = $_SESSION['selectedZone'];
+}
+if (!isset($_post['selectedZone'])) {
+   $selectedZone = (isset($_SESSION['selectedZone'])) ? $_SESSION['selectedZone'] : '';
+}
+
 include("./includes/restaurants/orders/code.order_now.php");
 if (isset($_GET['id'])) {
    $id = trim($_GET['id']);
@@ -16,7 +31,6 @@ if (isset($_GET['id'])) {
 
       $query = "SELECT * FROM `areas`";
       $areas = mysqli_query($conn, $query);
-
 
       $restaurant_query = "SELECT * FROM `delivery_settings` WHERE `restaurant_id` = '$id'";
       $result = mysqli_query($conn, $restaurant_query);
@@ -47,7 +61,9 @@ if (isset($_GET['id'])) {
 
    <link rel="shortcut icon" href="includes/restaurants/logos/<?php echo $row['logo'] ?> " type="image/x-icon">
    <!-- Font Awesome Icons -->
-   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+   <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+   <!-- <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css"> -->
+
    <!-- Theme style -->
    <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
@@ -351,11 +367,31 @@ if (isset($_GET['id'])) {
                <span class="brand-text font-weight-light"><?php echo $row['name'] ?></span>
             </a>
 
-            <ul class="navbar-nav ml-auto">
-               <li class="nav-item">
-                  <a class="nav-link" href="userLogin?branchID=<?php echo $row['id'] ?>">Login / Sign Up</a>
-               </li>
-            </ul>
+            <?php
+            if (!isset($_SESSION['userName'])) {
+            ?>
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                     <a class="nav-link" href="userLogin?branchID=<?php echo $row['id'] ?>">Login / Sign Up</a>
+                  </li>
+               </ul>
+            <?php
+            }
+            ?>
+            <?php
+            if (isset($_SESSION['userName'])) {
+            ?>
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                     <a class="nav-link" href="userLogout">Logout</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" data-toggle="modal" data-target="#profileModal"><i class="fas fa-user-circle"></i> Profile</a>
+                  </li>
+               </ul>
+            <?php
+            }
+            ?>
 
             <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -379,7 +415,8 @@ if (isset($_GET['id'])) {
                               echo '<a class="btn py-0 m-1" href="#' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
                            }
                            ?>
-
+                           <a class="btn py-0 m-1" href="#deals">Deals</a>
+                           <a class="btn py-0 m-1" href="#addons">Addons</a>
                         </div>
                      </div>
                   </div>
@@ -392,6 +429,8 @@ if (isset($_GET['id'])) {
                         <div class="container-fluid mt-5">
 
                            <div class="product_main mt-5">
+
+                              <!-- For  Products -->
 
                               <?php
                               $query = "SELECT * FROM `categories` WHERE `restaurant_id` = $id";
@@ -409,7 +448,7 @@ if (isset($_GET['id'])) {
                                        <div class="products">
                                           <div class="row">
                                              <div class="mx-4">
-                                                <img class="img-lg" src='includes/restaurants/products/product_imgs/<?php echo $product['photo'] ?>'>
+                                                <img class="img-lg" src=' includes/restaurants/products/product_imgs/<?php echo $product['photo'] ?>'>
                                              </div>
 
                                              <div class="col-xl-6 col-lg-7 col-md-8 col-10">
@@ -429,6 +468,73 @@ if (isset($_GET['id'])) {
                                  <?php
                                     }
                                  } ?>
+
+                              <?php
+                              } ?>
+
+                              <!-- For  Deals-->
+                              <?php
+                              $query = "SELECT deals.id, deals.deal_name, deals.photo, deals.deal_desc, deals.deal_price FROM `deals` JOIN restaurants on deals.restaurant_id = restaurants.id WHERE restaurant_id = $id AND deals.active_status = 'active'  AND restaurants.active_status = 'active'";
+                              $deals = mysqli_query($conn, $query);
+                              $rowNum = mysqli_num_rows($deals);
+                              if ($rowNum > 0) {
+                                 echo '<h2 class="category_title my-4" id="deals">Deals</h2>';
+                              }
+                              while ($deal = mysqli_fetch_assoc($deals)) {
+                              ?>
+                                 <div class="products">
+                                    <div class="row">
+                                       <div class="mx-4">
+                                          <img class="img-lg" src="includes/restaurants/deals/deals_imgs/<?php echo $deal['photo'] ?>">
+                                       </div>
+
+                                       <div class="col-xl-6 col-lg-7 col-md-8 col-10">
+                                          <h4 class="deal_title"><?php echo $deal['deal_name'] ?></h4>
+                                          <p class="deal_description"><?php echo $deal['deal_desc'] ?></p>
+                                       </div>
+                                       <div class="col-xl-4 col-lg-3 col-md-12 mt-4">
+                                          <div class="deal_price text-right">
+                                             <span class="ml-2 mr-2">Rs. <?php echo $deal['deal_price'] ?></span>
+                                             <button type="button" class="no-btn" onclick="addDealToCart('<?php echo $deal['id'] ?>')">
+                                                <i class="fas fa-plus add_btn add_to_cart_btn"></i>
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              <?php
+                              } ?>
+
+                              <!-- For  Addons -->
+                              <?php
+                              $query = "SELECT addons_products.id, addons_products.photo, addons_products.name, addons_products.description, addons_products.price FROM `addons_products` JOIN restaurants on addons_products.restaurant_id = restaurants.id WHERE restaurant_id = $id AND addons_products.active_status = 'active'  AND restaurants.active_status = 'active'";
+                              $addons = mysqli_query($conn, $query);
+                              $rowNum = mysqli_num_rows($addons);
+                              if ($rowNum > 0) {
+                                 echo '<h2 class="category_title my-4" id="addons">Addons</h2>';
+                              }
+                              while ($addon = mysqli_fetch_assoc($addons)) {
+                              ?>
+                                 <div class="products">
+                                    <div class="row">
+                                       <div class="mx-4">
+                                          <img class="img-lg" src="includes/restaurants/addon_products/addons_imgs/<?php echo $addon['photo'] ?>">
+                                       </div>
+
+                                       <div class="col-xl-6 col-lg-7 col-md-8 col-10">
+                                          <h4 class="addon_title"><?php echo $addon['name'] ?></h4>
+                                          <p class="addon_description"><?php echo $addon['description'] ?></p>
+                                       </div>
+                                       <div class="col-xl-4 col-lg-3 col-md-12 mt-4">
+                                          <div class="addon_price text-right">
+                                             <span class="ml-2 mr-2">Rs. <?php echo $addon['price'] ?></span>
+                                             <button type="button" class="no-btn" onclick="addAddonToCart('<?php echo $addon['id'] ?>')">
+                                                <i class="fas fa-plus add_btn add_to_cart_btn"></i>
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
                               <?php
                               } ?>
 
@@ -497,7 +603,9 @@ if (isset($_GET['id'])) {
 
                         <div class="col-lg-6">
                            <input type="hidden" name="deliveryArea" id="deliveryArea">
-                           <h5 class="pr-3" id="areaTitle" data-toggle="modal" data-target="#zonesModal">Select Area</h5>
+                           <h5 class="pr-3" id="areaTitle" data-toggle="modal" data-target="#zonesModal">
+                              <?php echo ($selectedZone != null) ? $selectedZone : 'Select Area' ?>
+                           </h5>
                         </div>
 
                      </div>
@@ -546,6 +654,7 @@ if (isset($_GET['id'])) {
                   </div>
                </div>
 
+               <!-- zonesModal  -->
                <div class="modal fade" id="zonesModal">
                   <div class="modal-dialog">
                      <div class="modal-content">
@@ -575,6 +684,30 @@ if (isset($_GET['id'])) {
                   </div>
                </div>
                <!-- /.modal -->
+
+
+               <!-- profileModal -->
+               <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           ...
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.modal -->
+
             </div>
          </div>
          <!-- /.content -->
@@ -588,14 +721,12 @@ if (isset($_GET['id'])) {
       <!-- /.control-sidebar -->
 
       <!-- Main Footer -->
-      <footer class="main-footer">
-         <!-- To the right -->
+      <!-- <footer class="main-footer">
          <div class="float-right d-none d-sm-inline">
             Anything you want
          </div>
-         <!-- Default to the left -->
          <strong>Powered By <a href="https://octopusdigitalnetwork.com">Octopus Digital Network</a>.</strong> All rights reserved.
-      </footer>
+      </footer> -->
    </div>
    <!-- ./wrapper -->
 
@@ -607,21 +738,10 @@ if (isset($_GET['id'])) {
    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
    <script>
-      function selectArea(newVal) {
-         var areaTitle = document.getElementById('areaTitle');
-         var deliveryArea = document.getElementById('deliveryArea');
-         areaTitle.innerText = newVal;
-         deliveryArea.value = newVal;
-         $("#zonesModal").modal("hide");
-      }
-
       $(document).ready(function() {
          if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
          }
-
-
-
          jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up" ><span class="white"  ><i class="fas fa-angle-up" ></i></span></button><button class="quantity-button quantity-down" ><span class="white"><i  class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
          jQuery('.quantity').each(function() {
             var spinner = jQuery(this),
@@ -656,12 +776,69 @@ if (isset($_GET['id'])) {
          });
       });
 
+      function selectArea(newVal) {
+         var areaTitle = document.getElementById('areaTitle');
+         var deliveryArea = document.getElementById('deliveryArea');
+         areaTitle.innerText = newVal;
+         deliveryArea.value = newVal;
+         $("#zonesModal").modal("hide");
+         $.ajax({
+            url: 'order_now',
+            type: 'POST',
+            data: {
+               selectedZone: newVal
+            },
+         })
+      }
+
       function addToCart(id) {
          $.ajax({
                url: 'orderCart',
                type: 'POST',
                data: {
                   productId: id
+               },
+            })
+            .done(function(response) {
+               if (response == 1) {
+                  location.reload();
+               } else {
+                  Swal.fire('Alreay Exist!', "Product already in cart", "error");
+               }
+               if (response == 0) {}
+            })
+            .fail(function() {
+               swal('Oops...', 'Something went wrong!', 'error');
+            });
+      }
+
+      function addDealToCart(id) {
+         $.ajax({
+               url: 'orderCart',
+               type: 'POST',
+               data: {
+                  dealID: id
+               },
+            })
+            .done(function(response) {
+               if (response == 1) {
+                  location.reload();
+               } else {
+                  Swal.fire('Alreay Exist!', "Product already in cart", "error");
+               }
+               if (response == 0) {}
+            })
+            .fail(function() {
+               swal('Oops...', 'Something went wrong!', 'error');
+            });
+      }
+
+      function addAddonToCart(id) {
+         $.ajax({
+               url: 'orderCart',
+               type: 'POST',
+               data: {
+                  addonID: id
                },
             })
             .done(function(response) {
