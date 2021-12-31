@@ -42,10 +42,10 @@ include("./includes/restaurants/customers/code.fetchCustomers.php");
           <thead>
             <tr class="text-center">
               <th>#</th>
-              <th>First Name</th>
-              <th>last Name</th>
+              <th>Full Name</th>
               <th>Email</th>
               <th>Password</th>
+              <th>Phone</th>
               <th>Address</th>
               <th>Status</th>
               <th>Actions</th>
@@ -59,10 +59,10 @@ include("./includes/restaurants/customers/code.fetchCustomers.php");
             while ($row = mysqli_fetch_assoc($customers)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
-              <td>" . $row['first_name'] . "</td>
-              <td>" . $row['last_name'] . "</td>
+              <td>" . $row['full_name'] . "</td>
               <td>" . $row['email'] . "</td>
               <td>" . $row['password'] . "</td>
+              <td>" . $row['phone'] . "</td>
               <td>" . $row['address'] . "</td>
               <td>" . $row['status'] . "</td>";
 

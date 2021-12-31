@@ -48,6 +48,7 @@ include("./includes/restaurants/addon_products/code.fetchAddons.php");
           <thead>
             <tr class="text-center">
               <th>#</th>
+              <th>Image</th>
               <th>Name</th>
               <th>Description</th>
               <th>Price</th>
@@ -62,6 +63,7 @@ include("./includes/restaurants/addon_products/code.fetchAddons.php");
             while ($row = mysqli_fetch_assoc($addons)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
+              <td style='width:7%;'><img src='includes/restaurants/addon_products/addons_imgs/" . $row['photo'] . "' class='img-fluid' alt='error'></td>
               <td>" . $row['name'] . "</td>
               <td>" . $row['description'] . "</td>
               <td>" . $row['price'] . "</td>
