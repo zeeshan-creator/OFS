@@ -50,6 +50,7 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
 
    $name = $row['deal_name'];
    $price = $row['deal_price'];
+   $image = $row['photo'];
 
    $cartArray = array(
       ($id . '_' . $name) => array(
@@ -58,6 +59,7 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
          'price' => $price,
          'quantity' => 1,
          'type' => 'deal',
+         'image' => $image
       )
    );
 
@@ -83,6 +85,7 @@ if (isset($_POST['addonID']) && $_POST['addonID'] != "") {
 
    $name = $row['name'];
    $price = $row['price'];
+   $image = $row['photo'];
 
    $cartArray = array(
       ($id . '_' . $name) => array(
@@ -91,6 +94,7 @@ if (isset($_POST['addonID']) && $_POST['addonID'] != "") {
          'price' => $price,
          'quantity' => 1,
          'type' => 'addon',
+         'image' => $image
       )
    );
 

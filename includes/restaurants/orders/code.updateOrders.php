@@ -139,13 +139,14 @@ if (isset($_GET['orderID'])) {
          // If type is DEAL
          if ($rows['type'] == 'deal') {
             $products_query  =
-               'SELECT `id`, `deal_name`, `deal_price` FROM `deals` where `id` = ' . $rows['product_id'];
+               'SELECT `id`, `deal_name`, `photo`, `deal_price` FROM `deals` where `id` = ' . $rows['product_id'];
             $products_result = mysqli_query($conn, $products_query);
             $order_products = mysqli_fetch_assoc($products_result);
 
             $id = $rows['id'];
             $name = $order_products['deal_name'];
             $price = $order_products['deal_price'];
+            $image = $order_products['photo'];
             $type = $rows['type'];
             $qty = $rows['qty'];
 
@@ -157,6 +158,7 @@ if (isset($_GET['orderID'])) {
                   'price' => $price,
                   'quantity' => $qty,
                   'type' => 'deal',
+                  'image' => $image
                )
             );
          }
@@ -164,13 +166,14 @@ if (isset($_GET['orderID'])) {
          // If type is DEAL
          if ($rows['type'] == 'addon') {
             $products_query  =
-               'SELECT `id`, `name`, `price` FROM `addons_products` where `id` = ' . $rows['product_id'];
+               'SELECT `id`, `name`, `photo`, `price` FROM `addons_products` where `id` = ' . $rows['product_id'];
             $products_result = mysqli_query($conn, $products_query);
             $order_products = mysqli_fetch_assoc($products_result);
 
             $id = $rows['id'];
             $name = $order_products['name'];
             $price = $order_products['price'];
+            $image = $order_products['photo'];
             $type = $rows['type'];
             $qty = $rows['qty'];
 
@@ -182,6 +185,7 @@ if (isset($_GET['orderID'])) {
                   'price' => $price,
                   'quantity' => $qty,
                   'type' => 'addon',
+                  'image' => $image
                )
             );
          }

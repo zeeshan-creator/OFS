@@ -216,6 +216,7 @@ include("./includes/restaurants/POS/code.pos.php");
                               </div>
                             </div>
                           </div>
+
                         </div>
                       </div>
 
@@ -265,28 +266,29 @@ include("./includes/restaurants/POS/code.pos.php");
                   </div>
 
                   <div class="col-lg-4 mb-4">
-                    <h2 class="">Item/s
-                      <?php
-                      if (!empty($_SESSION["shopping_cart"])) {
-                        $cart_count = count(array_keys($_SESSION["shopping_cart"]));
-                      ?>
-                        : <span><?php echo $cart_count; ?></span>
-                      <?php
-                      }
-                      ?>
-                    </h2>
+                    <div class="" id="item_cart">
 
-                    <?php if (empty($_SESSION["shopping_cart"])) : ?>
-                      <div class="text-center my-4">
-                        <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
-                        <p>
-                          Your cart is empty <br>
-                          Add product to get started </p>
-                      </div>
-                    <?php endif ?>
+                      <h2 class="">Item/s
+                        <?php
+                        if (!empty($_SESSION["shopping_cart"])) {
+                          $cart_count = count(array_keys($_SESSION["shopping_cart"]));
+                        ?>
+                          : <span><?php echo $cart_count; ?></span>
+                        <?php
+                        }
+                        ?>
+                      </h2>
 
-                    <?php if (!empty($_SESSION["shopping_cart"])) : ?>
-                      <div class="">
+                      <?php if (empty($_SESSION["shopping_cart"])) : ?>
+                        <div class="text-center my-4">
+                          <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
+                          <p>
+                            Your cart is empty <br>
+                            Add product to get started </p>
+                        </div>
+                      <?php endif ?>
+
+                      <?php if (!empty($_SESSION["shopping_cart"])) : ?>
                         <table>
                           <thead>
                             <tr class="text-bold">
@@ -305,10 +307,10 @@ include("./includes/restaurants/POS/code.pos.php");
                                     <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                   <?php if ($product['type'] == 'deal') : ?>
-                                    <h2 class="border p-1">D<span style="font-size: 17px;font-weight: bold;">EAL</span></h2>
+                                    <img src='includes/restaurants/deals/deals_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                   <?php if ($product['type'] == 'addon') : ?>
-                                    <h2 class="border p-1">A<span style="font-size: 17px;font-weight: bold;">ddon</span></h2>
+                                    <img src='includes/restaurants/addon_products/addons_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                 </td>
                                 <td class="pl-2">
@@ -317,42 +319,35 @@ include("./includes/restaurants/POS/code.pos.php");
                                   </div>
                                 </td>
                                 <td>
-                                  <form action="" method="post">
-                                    <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
-                                    <input type='hidden' name='action' value="change" />
-                                    <div class="quantity mt-2">
-                                      <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
+                                  <div class="quantity mt-2">
+                                    <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="changeQty('<?php echo $product['id']; ?>',this.value)">
+                                  </div>
+                                  <?php if ($product['type'] == 'product') : ?>
+                                    <div class="">
+                                      <select name="product_size" onchange="changeSize('<?php echo $product['id']; ?>',this.value)" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
+                                        <option selected disabled>Sizes</option>
+                                        <?php
+                                        include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
+                                        while ($row = mysqli_fetch_assoc($sizes)) {
+                                          echo '<option value="' . $row['size'] . '"';
+                                          echo ($row['size'] == $product["size"]) ? "Selected" : " Failed";
+                                          echo ' >' . $row['size'] . '</option>';
+                                        }
+                                        ?>
+                                      </select>
                                     </div>
-                                    <?php if ($product['type'] == 'product') : ?>
-                                      <div class="">
-                                        <select name="product_size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
-                                          <option selected disabled>Sizes</option>
-                                          <?php
-                                          include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                                          while ($row = mysqli_fetch_assoc($sizes)) {
-                                            echo '<option value="' . $row['size'] . '"';
-                                            echo ($row['size'] == $product["size"]) ? "Selected" : " Failed";
-                                            echo ' >' . $row['size'] . '</option>';
-                                          }
-                                          ?>
-                                        </select>
-                                      </div>
-                                    <?php endif ?>
-                                  </form>
+                                  <?php endif ?>
                                 </td>
                                 <td>
                                   <div class="float-left mx-4">
                                     <?php echo "PKR. " . $product["price"]; ?>
                                   </div>
                                   <div class="pl-2 float-right">
-                                    <form method='post' action=''>
-                                      <input type='hidden' name='key' value="<?php echo $product["id"]; ?>" />
-                                      <input type='hidden' name='action' value="remove" />
-                                      <button type='submit' class='remove btn btn-danger'>
-                                        <span style='color:white;'>
-                                          <i class='fas fa-trash-alt'></i>
-                                        </span></button>
-                                    </form>
+                                    <button type='button' onclick="removeFromCart('<?php echo $product['id']; ?>')" class='remove btn btn-danger'>
+                                      <span style='color:white;'>
+                                        <i class='fas fa-trash-alt'></i>
+                                      </span>
+                                    </button>
                                   </div>
                                 </td>
                               </tr>
@@ -362,14 +357,15 @@ include("./includes/restaurants/POS/code.pos.php");
                             ?>
                           </tbody>
                         </table>
-                      </div>
-                    <?php endif ?>
+                      <?php endif ?>
+
+                    </div>
 
                     <br>
                     <p class="lead">Amount</p>
 
                     <div class="table-responsive">
-                      <table class="table">
+                      <table class="table" id="prices">
                         <tr>
                           <th style="width:50%">Subtotal:</th>
                           <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
@@ -406,36 +402,39 @@ include("./includes/restaurants/POS/code.pos.php");
                         </button>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <hr>
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div class="">
-                      <div class="btn-group w-100 mb-2">
-                        <div class="row m-1">
-                          <a class="btn btn-info active pb-0" href="javascript:void(0)" data-filter="all"> All items</a>
-                          <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
-                          <?php
-                          while ($row = mysqli_fetch_assoc($categories)) {
-                            echo '<a class="btn btn-info m-1" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
-                          }
-                          ?>
-                          <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
-                        </div>
-                      </div>
-                      <div class="mb-2 ml-1">
-                        <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
+                  </div>
+
+                </div>
+              </div>
+
+              <hr>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="">
+                    <div class="btn-group w-100 mb-2">
+                      <div class="row m-1">
+                        <a class="btn btn-info active pb-0" href="javascript:void(0)" data-filter="all"> All items</a>
+                        <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
+                        <?php
+                        while ($row = mysqli_fetch_assoc($categories)) {
+                          echo '<a class="btn btn-info m-1" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
+                        }
+                        ?>
+                        <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
                       </div>
                     </div>
-                    <div class="col-lg-11 ml-1">
-                      <div class="filter-container p-0 mt-3 row">
+                    <div class="mb-2 ml-1">
+                      <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-11 ml-1">
+                    <div class="filter-container p-0 mt-3 row">
 
-                        <?php
-                        while ($row = mysqli_fetch_assoc($products)) {
+                      <?php
+                      while ($row = mysqli_fetch_assoc($products)) {
 
-                          echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
+                        echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
                                 <div class="card card-outline card-info">
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
@@ -448,51 +447,50 @@ include("./includes/restaurants/POS/code.pos.php");
                                     <button class="mt-2 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
                                     <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
                                     <option selected disabled>Sizes</option>';
-                          include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                          while ($row = mysqli_fetch_assoc($sizes)) {
-                            echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
-                          }
-                          echo '
+                        include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
+                        while ($row = mysqli_fetch_assoc($sizes)) {
+                          echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
+                        }
+                        echo '
                                         </select>
                                       </div>
                                     </div>
                                   </div>';
-                        }
-                        while ($row = mysqli_fetch_assoc($deals)) {
-                          echo '<div class="filtr-item col-lg-2 col-md-4" data-category="deals">
+                      }
+                      while ($row = mysqli_fetch_assoc($deals)) {
+                        echo '<div class="filtr-item col-lg-2 col-md-4" data-category="deals">
                                 <div class="card card-outline card-info">
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['deal_name'] . '</h3>
                                   </div>
                                   <div class="card-body">
-                                   <div class="div" style="height: 128px; overflow:hidden;">
-                                    <h5>' . $row['deal_desc'] . '</h5>
+                                   <div class="text-center" style="height:128px;">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/deals/deals_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['deal_price'] . '</p>
                                   <button class="mt-2 btn btn-info float-right" onclick="addDealToCart(' . $row['id'] . ')">Add</button>
                                   </div>
                                 </div>
                               </div>';
-                        }
+                      }
 
-                        while ($row = mysqli_fetch_assoc($addons)) {
-                          echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
+                      while ($row = mysqli_fetch_assoc($addons)) {
+                        echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
                                 <div class="card card-outline card-info">
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
                                   </div>
                                   <div class="card-body">
-                                   <div class="div" style="height: 128px; overflow:hidden;">
-                                    <h5>' . $row['description'] . '</h5>
+                                   <div class="text-center" style="height:128px;">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/addon_products/addons_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
                                   <button class="mt-2 btn btn-info float-right" onclick="addAddonToCart(' . $row['id'] . ')">Add</button>
                                   </div>
                                 </div>
                               </div>';
-                        }
-                        ?>
-                      </div>
+                      }
+                      ?>
                     </div>
                   </div>
                 </div>
@@ -502,143 +500,206 @@ include("./includes/restaurants/POS/code.pos.php");
         </div>
       </div>
     </div>
-    <!-- /.content-wrapper -->
+  </div>
+  <!-- /.content-wrapper -->
 
 
-    <!-- Including footer -->
-    <?php include './partials/footer.php' ?>
-    <?php ob_end_flush(); ?>
-    <script>
-      $(document).ready(function() {
-        $("#ordersFormButton").click(function() {
-          $("#ordersForm").submit();
+  <!-- Including footer -->
+  <?php include './partials/footer.php' ?>
+  <?php ob_end_flush(); ?>
+  <script>
+    $(document).ready(function() {
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+      $("#ordersFormButton").click(function() {
+        $("#ordersForm").submit();
+      });
+    });
+
+    $(function() {
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+          alwaysShowClose: true
         });
       });
 
-      $(function() {
-        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-          event.preventDefault();
-          $(this).ekkoLightbox({
-            alwaysShowClose: true
-          });
+      $('.filter-container').filterizr({
+        gutterPixels: 3
+      });
+      $('.btn[data-filter]').on('click', function() {
+        $('.btn[data-filter]').removeClass('active');
+        $(this).addClass('active');
+      });
+    })
+
+    function removeFromCart(id) {
+      $.ajax({
+          url: 'POS',
+          type: 'POST',
+          data: {
+            key: id,
+            action: 'remove'
+          },
+        })
+        .done(function(response) {
+          $("#item_cart").load(window.location.href + " #item_cart");
+          $("#prices").load(window.location.href + " #prices");
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong! Please try again', 'error');
         });
+    }
 
-        $('.filter-container').filterizr({
-          gutterPixels: 3
+    function changeQty(id, quantity) {
+      $.ajax({
+          url: 'POS',
+          type: 'POST',
+          data: {
+            id: id,
+            action: 'change',
+            quantity: quantity
+          },
+        })
+        .done(function(response) {
+          $("#prices").load(window.location.href + " #prices");
+          $("#cart_table").load(window.location.href + " #cart_table");
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong! Please try again', 'error');
         });
-        $('.btn[data-filter]').on('click', function() {
-          $('.btn[data-filter]').removeClass('active');
-          $(this).addClass('active');
+    }
+
+    function changeSize(id, size) {
+      $.ajax({
+          url: 'POS',
+          type: 'POST',
+          data: {
+            id: id,
+            action: 'change',
+            product_size: size
+          },
+        })
+        .done(function(response) {
+          $("#prices").load(window.location.href + " #prices");
+          $("#cart_table").load(window.location.href + " #cart_table");
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong! Please try again', 'error');
         });
-      })
+    }
 
-      function addToCart(id) {
-        var selectOption = document.getElementById(`product_size_${id}`);
-        var product_size = selectOption.options[selectOption.selectedIndex].text;
-        if (product_size != null && product_size != 'Sizes') {
-          $.ajax({
-              url: 'addToCart',
-              type: 'POST',
-              data: {
-                productID: id,
-                product_size: product_size
-              },
-            })
-            .done(function(response) {
-              if (response == 1) {
-                location.reload();
-              }
-              if (response == 0) {
-                Swal.fire('Alreay Exist!', "Product already in cart", "error");
-              }
-            })
-            .fail(function() {
-              swal('Oops...', 'Something went wrong!', 'error');
-            });
-        } else {
-          Swal.fire('Please Select Size!', "Product size is required", "error");
-          exit;
-        }
-
-      }
-
-      function addDealToCart(id) {
+    function addToCart(id) {
+      var selectOption = document.getElementById(`product_size_${id}`);
+      var product_size = selectOption.options[selectOption.selectedIndex].text;
+      if (product_size != null && product_size != 'Sizes') {
         $.ajax({
             url: 'addToCart',
             type: 'POST',
             data: {
-              dealID: id
+              productID: id,
+              product_size: product_size
             },
           })
           .done(function(response) {
             if (response == 1) {
-              location.reload();
+              $("#item_cart").load(window.location.href + " #item_cart");
+              $("#prices").load(window.location.href + " #prices");
             }
             if (response == 0) {
-              Swal.fire('Alreay Exist!', "Deal already in cart", "error");
+              Swal.fire('Alreay Exist!', "Product already in cart", "error");
             }
           })
           .fail(function() {
             swal('Oops...', 'Something went wrong!', 'error');
           });
+      } else {
+        Swal.fire('Please Select Size!', "Product size is required", "error");
+        exit;
       }
 
-      function addAddonToCart(id) {
-        $.ajax({
-            url: 'addToCart',
-            type: 'POST',
-            data: {
-              addonID: id
-            },
-          })
-          .done(function(response) {
-            if (response == 1) {
-              location.reload();
-            }
-            if (response == 0) {
-              Swal.fire('Alreay Exist!', "Addon Product already in cart", "error");
-            }
-          })
-          .fail(function() {
-            swal('Oops...', 'Something went wrong!', 'error');
-          });
-      }
+    }
 
-      $(document).ready(function() {
-        jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
-        jQuery('.quantity').each(function() {
-          var spinner = jQuery(this),
-            input = spinner.find('input[type="number"]'),
-            btnUp = spinner.find('.quantity-up'),
-            btnDown = spinner.find('.quantity-down'),
-            min = input.attr('min'),
-            max = input.attr('max');
-
-          btnUp.click(function() {
-            var oldValue = parseFloat(input.val());
-            if (oldValue >= max) {
-              var newVal = oldValue;
-            } else {
-              var newVal = oldValue + 1;
-            }
-            spinner.find("input").val(newVal);
-            spinner.find("input").trigger("change");
-          });
-
-          btnDown.click(function() {
-            var oldValue = parseFloat(input.val());
-            if (oldValue <= min) {
-              var newVal = oldValue;
-            } else {
-              var newVal = oldValue - 1;
-            }
-            spinner.find("input").val(newVal);
-            spinner.find("input").trigger("change");
-          });
-
+    function addDealToCart(id) {
+      $.ajax({
+          url: 'addToCart',
+          type: 'POST',
+          data: {
+            dealID: id
+          },
+        })
+        .done(function(response) {
+          if (response == 1) {
+            $("#item_cart").load(window.location.href + " #item_cart");
+            $("#prices").load(window.location.href + " #prices");
+          }
+          if (response == 0) {
+            Swal.fire('Alreay Exist!', "Deal already in cart", "error");
+          }
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
         });
+    }
+
+    function addAddonToCart(id) {
+      $.ajax({
+          url: 'addToCart',
+          type: 'POST',
+          data: {
+            addonID: id
+          },
+        })
+        .done(function(response) {
+          if (response == 1) {
+            $("#item_cart").load(window.location.href + " #item_cart");
+            $("#prices").load(window.location.href + " #prices");
+          }
+          if (response == 0) {
+            Swal.fire('Alreay Exist!', "Addon Product already in cart", "error");
+          }
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
+
+    $(document).ready(function() {
+      jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
+      jQuery('.quantity').each(function() {
+        var spinner = jQuery(this),
+          input = spinner.find('input[type="number"]'),
+          btnUp = spinner.find('.quantity-up'),
+          btnDown = spinner.find('.quantity-down'),
+          min = input.attr('min'),
+          max = input.attr('max');
+
+        btnUp.click(function() {
+          var oldValue = parseFloat(input.val());
+          if (oldValue >= max) {
+            var newVal = oldValue;
+          } else {
+            var newVal = oldValue + 1;
+          }
+          spinner.find("input").val(newVal);
+          spinner.find("input").trigger("change");
+        });
+
+        btnDown.click(function() {
+          var oldValue = parseFloat(input.val());
+          if (oldValue <= min) {
+            var newVal = oldValue;
+          } else {
+            var newVal = oldValue - 1;
+          }
+          spinner.find("input").val(newVal);
+          spinner.find("input").trigger("change");
+        });
+
       });
-    </script>
+    });
+  </script>
 
   </div>
   <!-- ./wrapper -->

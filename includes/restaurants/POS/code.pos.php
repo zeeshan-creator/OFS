@@ -6,11 +6,9 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
       foreach ($_SESSION["shopping_cart"] as $id => $value) {
          if ($_POST["key"] == $id) {
             unset($_SESSION["shopping_cart"][$id]);
-            echo "<script>window.location.href = 'POS';</script>";
          }
          if (empty($_SESSION["shopping_cart"])) {
             unset($_SESSION["shopping_cart"]);
-            echo "<script>window.location.href = 'POS';</script>";
          }
       }
    }
