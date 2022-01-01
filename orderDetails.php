@@ -307,10 +307,10 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                     <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                   <?php if ($product['type'] == 'deal') : ?>
-                                    <h2 class="border">D<span style="font-size: 17px;font-weight: bold;">EAL</span></h2>
+                                    <img src='includes/restaurants/deals/deals_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                   <?php if ($product['type'] == 'addon') : ?>
-                                    <h2 class="border p-1">A<span style="font-size: 17px;font-weight: bold;">ddon</span></h2>
+                                    <img src='includes/restaurants/addon_products/addons_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
                                   <?php endif ?>
                                 </td>
                                 <td class="pl-2">
@@ -474,8 +474,8 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                     <h3 class="card-title text-bold text-sm">' . $row['deal_name'] . '</h3>
                                   </div>
                                   <div class="card-body">
-                                   <div class="div" style="height: 128px; overflow:hidden;">
-                                    <h5>' . $row['deal_desc'] . '</h5>
+                                   <div class="text-center" style="height:128px;">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/deals/deals_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['deal_price'] . '</p>
                                   <button class="mt-2 btn btn-info float-right" onclick="addDealToCart(' . $row['id'] . ')">Add</button>
@@ -490,8 +490,8 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                     <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
                                   </div>
                                   <div class="card-body">
-                                   <div class="div" style="height: 128px; overflow:hidden;">
-                                    <h5>' . $row['description'] . '</h5>
+                                   <div class="text-center" style="height:128px;">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/addon_products/addons_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
                                   <button class="mt-2 btn btn-info float-right" onclick="addAddonToCart(' . $row['id'] . ')">Add</button>

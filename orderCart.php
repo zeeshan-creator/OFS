@@ -3,6 +3,28 @@ session_start();
 require('./config/db.php');
 
 
+// unset($_SESSION["order_cart"]);
+if (isset($_POST['action']) && $_POST['action'] == "remove") {
+   if (!empty($_SESSION["order_cart"])) {
+      foreach ($_SESSION["order_cart"] as $id => $value) {
+         if ($_POST["key"] == $id) {
+            unset($_SESSION["order_cart"][$id]);
+         }
+         if (empty($_SESSION["order_cart"])) {
+            unset($_SESSION["order_cart"]);
+         }
+      }
+   }
+}
+
+if (isset($_POST['action']) && $_POST['action'] == "change") {
+   foreach ($_SESSION["order_cart"] as &$value) {
+      if ($value['id'] === $_POST["id"]) {
+         $value['quantity'] = $_POST['quantity'];
+         break; // Stop the loop after we've found the product
+      }
+   }
+}
 
 if (isset($_POST['productId']) && $_POST['productId'] != "") {
    $id = trim($_POST['productId']);
@@ -25,7 +47,6 @@ if (isset($_POST['productId']) && $_POST['productId'] != "") {
 
    if (empty($_SESSION["order_cart"])) {
       $_SESSION["order_cart"] = $cartArray;
-      echo 1;
    } else {
       foreach ($_SESSION["order_cart"] as &$value) {
          if ($value['id'] == $id) {
@@ -34,7 +55,6 @@ if (isset($_POST['productId']) && $_POST['productId'] != "") {
          }
       }
       $_SESSION["order_cart"] = array_merge($_SESSION["order_cart"], $cartArray);
-      echo 1;
    }
 }
 
@@ -59,7 +79,6 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
 
    if (empty($_SESSION["order_cart"])) {
       $_SESSION["order_cart"] = $cartArray;
-      echo 1;
    } else {
       foreach ($_SESSION["order_cart"] as &$value) {
          if ($value['id'] == $id) {
@@ -67,7 +86,6 @@ if (isset($_POST['dealID']) && $_POST['dealID'] != "") {
          }
       }
       $_SESSION["order_cart"] = array_merge($_SESSION["order_cart"], $cartArray);
-      echo 1;
    }
 }
 
@@ -92,7 +110,6 @@ if (isset($_POST['addonID']) && $_POST['addonID'] != "") {
 
    if (empty($_SESSION["order_cart"])) {
       $_SESSION["order_cart"] = $cartArray;
-      echo 1;
    } else {
       foreach ($_SESSION["order_cart"] as &$value) {
          if ($value['id'] == $id) {
@@ -100,6 +117,5 @@ if (isset($_POST['addonID']) && $_POST['addonID'] != "") {
          }
       }
       $_SESSION["order_cart"] = array_merge($_SESSION["order_cart"], $cartArray);
-      echo 1;
    }
 }

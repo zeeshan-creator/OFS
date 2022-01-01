@@ -2,22 +2,14 @@
 $subTotal = 0;
 $deliveryCharges = 0;
 $total = 0;
-$selectedZone = NULL;
 
 if (!isset($_GET['id']) || $_GET['id'] == '' || $_GET['id'] == null) {
    echo "branchID is missing from the url parameters";
    exit;
 }
 
-if (isset($_post['selectedZone'])) {
-   $_SESSION['selectedZone'] = $_POST['selectedZone'];
-   $selectedZone = $_SESSION['selectedZone'];
-}
-if (!isset($_post['selectedZone'])) {
-   $selectedZone = (isset($_SESSION['selectedZone'])) ? $_SESSION['selectedZone'] : '';
-}
-
 include("./includes/restaurants/orders/code.order_now.php");
+
 if (isset($_GET['id'])) {
    $id = trim($_GET['id']);
    $query = "SELECT * FROM restaurants WHERE id = $id";
@@ -46,7 +38,7 @@ if (isset($_GET['id'])) {
          $delivery_time = $settings['delivery_time'];
       }
    } else {
-      echo '<script>location.reload();</script>';
+      echo '<script>alert("branchID in the parameters is not found!");</script>';
    }
 }
 ?>
@@ -385,7 +377,7 @@ if (isset($_GET['id'])) {
                   <li class="nav-item">
                      <a class="nav-link" href="userLogout">Logout</a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item" style="cursor: pointer;">
                      <a class="nav-link" data-toggle="modal" data-target="#profileModal"><i class="fas fa-user-circle"></i> Profile</a>
                   </li>
                </ul>
@@ -544,39 +536,32 @@ if (isset($_GET['id'])) {
                      </div>
                   </div>
                </div>
-               <div class="col-lg-3 elevation-1 sidenav">
+               <div class="col-lg-3 elevation-1 sidenav" id="sidenav">
                   <br>
                   <br>
                   <h1 class="text-center ">
                      Cart
                   </h1>
                   <div class="cart_table_main">
-                     <table class="table table-hover cart_table">
+                     <table class="table table-hover cart_table" id="cart_table">
                         <tbody>
                            <?php if (isset($_SESSION["order_cart"])) {
                               foreach ($_SESSION["order_cart"] as $product) { ?>
                                  <tr>
                                     <td class="cart_item_name"><?php echo $product["name"]; ?></td>
                                     <td>
-                                       <form action="" method="post">
-                                          <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
-                                          <input type='hidden' name='action' value="change" />
-                                          <div class="quantity mt-2">
-                                             <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
-                                          </div>
-                                       </form>
+                                       <div class="quantity mt-2">
+                                          <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="changeCart('<?php echo $product['id']; ?>', this.value)">
+                                       </div>
+
                                     </td>
                                     <td class="cart_item_subtotal text-right">Rs. <?php echo $product["price"]; ?></td>
                                     <td>
                                        <div class="pl-2 float-right">
-                                          <form method='post' action=''>
-                                             <input type='hidden' name='key' value="<?php echo $product["id"]; ?>" />
-                                             <input type='hidden' name='action' value="remove" />
-                                             <button type='submit' class='remove btn btn-default'>
-                                                <span style='color:grey;'>
-                                                   <i class='fas fa-trash-alt'></i>
-                                                </span></button>
-                                          </form>
+                                          <button type='submit' onclick="removeFromCart('<?php echo $product['id']; ?>')" class='remove btn btn-default'>
+                                             <span style='color:grey;'>
+                                                <i class='fas fa-trash-alt'></i>
+                                             </span></button>
                                        </div>
                                     </td>
                                  </tr>
@@ -604,43 +589,49 @@ if (isset($_GET['id'])) {
                         <div class="col-lg-6">
                            <input type="hidden" name="deliveryArea" id="deliveryArea">
                            <h5 class="pr-3" id="areaTitle" data-toggle="modal" data-target="#zonesModal">
-                              <?php echo ($selectedZone != null) ? $selectedZone : 'Select Area' ?>
+                              Select Area
                            </h5>
                         </div>
 
                      </div>
 
-                     <div class="row mt-1 mb-0">
+                     <div class="" id="prices">
 
-                        <div class="col-lg-6">
-                           <h5 class="float-left pl-3">Subtotal</h5>
+                        <div class="row mt-1 mb-0">
+
+                           <div class="col-lg-6">
+                              <h5 class="float-left pl-3">Subtotal</h5>
+                           </div>
+                           <div class="col-lg-6">
+                              <h5 class="float-right pr-3"><?php echo $subTotal ?  $subTotal : "00.00" ?></h5>
+                           </div>
+
                         </div>
-                        <div class="col-lg-6">
-                           <h5 class="float-right pr-3"><?php echo $subTotal ?  $subTotal : "00.00" ?></h5>
+                        <div class="row mb-2">
+
+                           <div class="col-lg-6">
+                              <h5 class="float-left pl-3">Delivery Charges</h5>
+                           </div>
+                           <div class="col-lg-6">
+                              <h5 class="float-right pr-3"><?php echo $deliveryCharges ?  $deliveryCharges : "00.00" ?></h5>
+                           </div>
+
+                        </div>
+                        <div class="row">
+
+                           <div class="col-lg-6">
+                              <h5 class="float-left pl-3 font-weight-bolder">Total <small style="font-size: 12px;">(incl. GST)</small></h5>
+                           </div>
+                           <div class="col-lg-6">
+                              <?php $total = $subTotal + $deliveryCharges ?>
+                              <h5 class="float-right pr-3"><?php echo $total ?  $total : "00.00" ?></h5>
+                           </div>
+
                         </div>
 
                      </div>
-                     <div class="row mb-2">
 
-                        <div class="col-lg-6">
-                           <h5 class="float-left pl-3">Delivery Charges</h5>
-                        </div>
-                        <div class="col-lg-6">
-                           <h5 class="float-right pr-3"><?php echo $deliveryCharges ?  $deliveryCharges : "00.00" ?></h5>
-                        </div>
 
-                     </div>
-                     <div class="row">
-
-                        <div class="col-lg-6">
-                           <h5 class="float-left pl-3 font-weight-bolder">Total <small style="font-size: 12px;">(incl. GST)</small></h5>
-                        </div>
-                        <div class="col-lg-6">
-                           <?php $total = $subTotal + $deliveryCharges ?>
-                           <h5 class="float-right pr-3"><?php echo $total ?  $total : "00.00" ?></h5>
-                        </div>
-
-                     </div>
                      <div class="row text-center mt-3">
 
                         <div class="col-lg-6">
@@ -772,7 +763,6 @@ if (isset($_GET['id'])) {
                spinner.find("input").val(newVal);
                spinner.find("input").trigger("change");
             });
-
          });
       });
 
@@ -791,6 +781,44 @@ if (isset($_GET['id'])) {
          })
       }
 
+      function removeFromCart(id) {
+         $.ajax({
+               url: 'orderCart',
+               type: 'POST',
+               data: {
+                  key: id,
+                  action: 'remove'
+               },
+            })
+            .done(function(response) {
+               $("#cart_table").load(window.location.href + " #cart_table");
+               $("#prices").load(window.location.href + " #prices");
+            })
+            .fail(function() {
+               swal('Oops...', 'Something went wrong! Please try again', 'error');
+            });
+      }
+
+      function changeCart(id, quantity) {
+         $.ajax({
+               url: 'orderCart',
+               type: 'POST',
+               data: {
+                  id: id,
+                  action: 'change',
+                  quantity: quantity
+               },
+            })
+            .done(function(response) {
+               $("#prices").load(window.location.href + " #prices");
+               $("#cart_table").load(window.location.href + " #cart_table");
+            })
+            .fail(function() {
+               swal('Oops...', 'Something went wrong! Please try again', 'error');
+            });
+      }
+
+
       function addToCart(id) {
          $.ajax({
                url: 'orderCart',
@@ -800,15 +828,11 @@ if (isset($_GET['id'])) {
                },
             })
             .done(function(response) {
-               if (response == 1) {
-                  location.reload();
-               } else {
-                  Swal.fire('Alreay Exist!', "Product already in cart", "error");
-               }
-               if (response == 0) {}
+               $("#prices").load(window.location.href + " #prices");
+               $("#cart_table").load(window.location.href + " #cart_table");
             })
             .fail(function() {
-               swal('Oops...', 'Something went wrong!', 'error');
+               swal('Oops...', 'Something went wrong! Please try again', 'error');
             });
       }
 
@@ -821,12 +845,8 @@ if (isset($_GET['id'])) {
                },
             })
             .done(function(response) {
-               if (response == 1) {
-                  location.reload();
-               } else {
-                  Swal.fire('Alreay Exist!', "Product already in cart", "error");
-               }
-               if (response == 0) {}
+               $("#prices").load(window.location.href + " #prices");
+               $("#cart_table").load(window.location.href + " #cart_table");
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong!', 'error');
@@ -842,12 +862,8 @@ if (isset($_GET['id'])) {
                },
             })
             .done(function(response) {
-               if (response == 1) {
-                  location.reload();
-               } else {
-                  Swal.fire('Alreay Exist!', "Product already in cart", "error");
-               }
-               if (response == 0) {}
+               $("#prices").load(window.location.href + " #prices");
+               $("#cart_table").load(window.location.href + " #cart_table");
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong!', 'error');
