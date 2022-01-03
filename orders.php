@@ -2,8 +2,6 @@
 include './auth/login_auth.php';
 include './auth/==admin_auth.php';
 include("./includes/restaurants/orders/code.fetchOrders.php");
-
-
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +39,6 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
         <table class="table" id="orders">
           <thead>
             <tr class="text-center">
-              <th>#</th>
               <th>Order ID</th>
               <th>Order Type</th>
               <th>Customer Name</th>
@@ -63,13 +60,10 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
               <?php endif ?>
             </tr>
           </thead>
-          <tbody class="w">
+          <tbody class="w" id="orders_tbody">
             <?php
-            $count = 1;
-
             while ($row = mysqli_fetch_assoc($orders)) {
               echo "<tr class='text-center'>
-              <td>" . $count . " </td>
               <td>" . $row['id'] . "</td>
               <td>" . $row['order_type'] . "</td>
               <td>" . $row['customer_name'] . "</td>
@@ -89,7 +83,6 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
                         </td>
                       </tr>";
               }
-              $count++;
             }
             ?>
           </tbody>
@@ -106,7 +99,18 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
 
     <script>
       $(document).ready(function() {
+        setInterval(function() {
+          jQuery.ajax({
+            url: 'includes/restaurants/orders/code.loadOrder.php',
+            success: function(response) {
+              $('#orders_tbody').html(response);
+
+            },
+          });
+        }, 1000);
         $('#orders').DataTable({
+          "lengthChange": false,
+          "bInfo": false,
           "order": [
             [0, "desc"]
           ]
