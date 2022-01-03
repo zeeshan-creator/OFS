@@ -36,7 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          $query = "UPDATE `delivery_zone` SET `zone_name`='$zoneName', `updated_at`='$date' WHERE `restaurant_id` = $restaurant_id";
       }
       if ($_SESSION['role'] == 'sub_branch') {
-         $query = "UPDATE `delivery_zone` SET `zone_name`='$zoneName', `updated_at`='$date' WHERE `branch_id` = $restaurant_id";
+         $query = "SELECT `main_branch` FROM `sub_restaurants` where id = " . $restaurant_id;
+         $results = mysqli_query($conn, $query);
+         $row = mysqli_fetch_assoc($results);
+         $resID = $row['main_branch'];
+
+         $query = "UPDATE `delivery_zone` SET `zone_name`='$zoneName', `updated_at`='$date', `restaurant_id` = $resID  WHERE `branch_id` = $restaurant_id";
       }
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));

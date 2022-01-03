@@ -598,7 +598,7 @@ if (isset($_GET['id'])) {
             while ($row = mysqli_fetch_assoc($customers)) {
               echo "<tr class='text-center'>
               <td class='text-center'>" . $count . " </td>
-              <td>" . $row['first_name'] . " " . $row['last_name'] . "</td>
+              <td>" . $row['full_name'] . "</td>
               <td>" . $row['email'] . "</td>
               <td>" . $row['password'] . "</td>
               <td>" . $row['phone'] . "</td>

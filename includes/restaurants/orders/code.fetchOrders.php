@@ -14,4 +14,4 @@ if ($_SESSION['role'] == 'sub_branch') {
    $query = "SELECT * FROM `orders` WHERE `branch_id` =" . $_SESSION['id'];
 }
 
-$results = mysqli_query($conn, $query);
+$orders = mysqli_query($conn, $query);

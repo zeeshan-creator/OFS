@@ -67,7 +67,7 @@ include("./includes/restaurants/orders/code.fetchOrders.php");
             <?php
             $count = 1;
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            while ($row = mysqli_fetch_assoc($orders)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
               <td>" . $row['id'] . "</td>

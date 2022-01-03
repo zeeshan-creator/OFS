@@ -17,10 +17,12 @@ if (isset($_GET['id'])) {
    $rowNum = mysqli_num_rows($results);
    if ($rowNum > 0) {
       $row = mysqli_fetch_assoc($results);
+      $resID = $row['id'];
 
       $query = "SELECT * FROM `categories` WHERE `restaurant_id` = $id";
       $categories = mysqli_query($conn, $query);
 
+      // $query = "SELECT * FROM `delivery_zone` WHERE `restaurant_id` = $id";
       $query = "SELECT * FROM `areas`";
       $areas = mysqli_query($conn, $query);
 
@@ -364,7 +366,7 @@ if (isset($_GET['id'])) {
             ?>
                <ul class="navbar-nav ml-auto">
                   <li class="nav-item">
-                     <a class="nav-link" href="userLogin?branchID=<?php echo $row['id'] ?>">Login / Sign Up</a>
+                     <a class="nav-link" href="userLogin?branchID=<?php echo $resID ?>">Login / Sign Up</a>
                   </li>
                </ul>
             <?php
@@ -634,12 +636,30 @@ if (isset($_GET['id'])) {
 
                      <div class="row text-center mt-3">
 
-                        <div class="col-lg-6">
-                           <input type="button" value="Delivery" class="btn btn-light bg-white px-5 elevation-2 font-weight-bold">
-                        </div>
-                        <div class="col-lg-6">
-                           <input type="button" value="Take away" class="btn btn-light bg-white px-5 elevation-2 font-weight-bold">
-                        </div>
+
+
+                        <?php
+                        if (!isset($_SESSION['userName'])) {
+                        ?>
+                           <div class="col-lg-12">
+                              <a href="userLogin" class="btn btn-light bg-white px-5 elevation-2 font-weight-bold">Login / Sign Up</a>
+                           </div>
+                        <?php
+                        }
+                        ?>
+
+                        <?php
+                        if (isset($_SESSION['userName'])) {
+                        ?>
+                           <div class="col-lg-12">
+                              <a href="checkOut?id=<?php echo $resID ?>" class="btn btn-light bg-white px-5 elevation-2 font-weight-bold">Check Out</a>
+                           </div>
+                           <!-- <div class="col-lg-6">
+                              <input type="button" value="Take away" class="btn btn-light bg-white px-5 elevation-2 font-weight-bold">
+                           </div> -->
+                        <?php
+                        }
+                        ?>
 
                      </div>
                   </div>

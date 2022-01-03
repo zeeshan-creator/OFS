@@ -72,7 +72,7 @@ include("./includes/restaurants/deals/code.fetchdeals.php");
               $feildName = 'active_status';
             }
 
-            while ($row = mysqli_fetch_assoc($results)) {
+            while ($row = mysqli_fetch_assoc($deals)) {
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
               <td style='width:7%;'><img src='includes/restaurants/deals/deals_imgs/" . $row['photo'] . "' class='img-fluid' alt='error'></td>

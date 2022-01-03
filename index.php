@@ -103,7 +103,7 @@ include './auth/login_auth.php';
                           <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
                           Some Product
                         </td>
-                        <td>$13 USD</td>
+                        <td>PKR 13 USD</td>
                         <td>
                           <small class="text-success mr-1">
                             <i class="fas fa-arrow-up"></i>
@@ -122,7 +122,7 @@ include './auth/login_auth.php';
                           <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
                           Another Product
                         </td>
-                        <td>$29 USD</td>
+                        <td>PKR 29 USD</td>
                         <td>
                           <small class="text-warning mr-1">
                             <i class="fas fa-arrow-down"></i>
@@ -141,7 +141,7 @@ include './auth/login_auth.php';
                           <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
                           Amazing Product
                         </td>
-                        <td>$1,230 USD</td>
+                        <td>PKR 1,230 USD</td>
                         <td>
                           <small class="text-danger mr-1">
                             <i class="fas fa-arrow-down"></i>
@@ -161,7 +161,7 @@ include './auth/login_auth.php';
                           Perfect Item
                           <span class="badge bg-danger">NEW</span>
                         </td>
-                        <td>$199 USD</td>
+                        <td>PKR 199 USD</td>
                         <td>
                           <small class="text-success mr-1">
                             <i class="fas fa-arrow-up"></i>
@@ -192,7 +192,7 @@ include './auth/login_auth.php';
                 <div class="card-body">
                   <div class="d-flex">
                     <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">$18,230.00</span>
+                      <span class="text-bold text-lg">PKR 18,230.00</span>
                       <span>Sales Over Time</span>
                     </p>
                     <p class="ml-auto d-flex flex-column text-right">
