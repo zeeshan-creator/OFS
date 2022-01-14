@@ -385,19 +385,19 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
                   }
                   while ($row = mysqli_fetch_assoc($addons)) {
                     echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
-                                <div class="card card-outline card-info">
-                                  <div class="card-header">
-                                    <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
-                                  </div>
-                                  <div class="card-body">
-                                   <div class="div" style="height: 128px; overflow:hidden;">
-                                    <h5>' . $row['description'] . '</h5>
-                                    </div>
-                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                  <button class="mt-2 btn btn-info float-right" onclick="addAddonToDeal(' . $row['id'] . ',' . $dealID . ')">Add</button>
-                                  </div>
+                            <div class="card card-outline card-info">
+                              <div class="card-header">
+                                <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
+                              </div>
+                              <div class="card-body">
+                               <div class="text-center" style="height:128px;">
+                                  <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/addon_products/addons_imgs/' . $row['photo'] . '">
                                 </div>
-                              </div>';
+                                <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                              <button class="mt-2 btn btn-info float-right" onclick="addAddonToCart(' . $row['id'] . ')">Add</button>
+                              </div>
+                            </div>
+                          </div>';
                   } ?>
                 </div>
               </div>

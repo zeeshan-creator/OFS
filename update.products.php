@@ -3,6 +3,8 @@
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
 include("./includes/restaurants/products/code.updateProduct.php");
+include("includes/restaurants/products/code.Size.php");
+
 
 if (!isset($_GET['productID'])) {
   echo '<script>window.location.href = "products";</script>';
@@ -170,9 +172,71 @@ $categories = mysqli_query($conn, $category_query);
                   </div>
                 </div>
               </div>
-
               <button class="btn btn-primary float-right" type="submit">Save</button>
               <button class="btn btn-danger mr-3 float-right" type="button" onclick="window.history.back()">Discard</button>
+
+              <br>
+              <div class="row">
+                <div class="col-lg-5 ml-3 mt-4 mb-2">
+                  <h1 class="">
+                    <span style="border-bottom: 3px double black;">
+                      Sizes
+                    </span>
+                  </h1>
+                </div>
+
+                <div class="col-lg-6 ml-auto mt-4 p-4">
+                  <a class="btn btn-primary float-right" data-toggle="modal" data-target="#addSizes">Add Sizes</a>
+                </div>
+              </div>
+
+              <div class="p-1">
+                <table class="table" id="sizes">
+                  <thead>
+                    <tr class="text-center">
+                      <th>#</th>
+                      <th>Size</th>
+                      <th>Price</th>
+                      <th>Publish Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="w">
+                    <?php
+                    $count = 1;
+                    $feildName;
+                    if ($_SESSION['role'] == 'main_branch') {
+                      $feildName = 'active_status';
+                    }
+                    include("./includes/restaurants/Products/code.fetchSizesToProduct.php");
+                    while ($row = mysqli_fetch_assoc($sizes)) {
+                      echo "<tr class='text-center'>
+              <td>" . $count . " </td>
+              <td>" . $row['size'] . "</td>
+              <td>" . $row['price'] . "</td>
+              <td>" . $row['created_at'] . "</td>
+              <td class='td-actions text-right'>
+                    <a href='update.sizes?sizeID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
+                      <span style='color:white;'>
+                        <i class='far fa-edit'></i>
+                      </span>
+                    </a>
+                    <button type='button' rel='tooltip' id='delete-sizes' title='Delete'
+                    s onclick='deletesizes(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
+                      <span style='color:white;'>
+                        <i class='fas fa-trash-alt'></i>
+                      </span>
+                    </button>
+                  </td>
+                </tr>";
+                      $count++;
+                    }
+                    ?>
+                  </tbody>
+                </table>
+              </div>
+
+
           </div>
 
           </form>
@@ -184,6 +248,45 @@ $categories = mysqli_query($conn, $category_query);
     </div>
     <!-- /.content-wrapper -->
 
+    <!-- addSizes  -->
+    <div class="modal fade" id="addSizes">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Sizes</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="" method="POST" class="needs-validation" novalidate>
+          <div class="modal-body">
+              <div class="form-row">
+                <div class="col-lg-12 mb-3">
+                  <input type="hidden" name="action" value="addSize">
+                  <input type="hidden" name="productID" value="<?php echo $_GET['productID'] ?>">
+                  <label for="sizename">Size name</label>
+                  <input type="text" class="form-control float-left" name="sizeName" placeholder="Enter size name" id="sizename" required>
+                  <div class="invalid-feedback">
+                    Please enter a size name
+                  </div>
+                </div>
+                <div class="col-lg-12 mb-3">
+                  <label for="price">Price</label>
+                  <input type="text" class="form-control float-left" name="price" placeholder="Enter price" id="price" required>
+                  <div class="invalid-feedback">
+                    Please enter a price
+                  </div>
+                </div>
+                <div class="col-lg-12 ">
+                  <button class="btn btn-primary float-right" type="submit">ADD</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal -->
 
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>
@@ -193,6 +296,51 @@ $categories = mysqli_query($conn, $category_query);
   <!-- ./wrapper -->
 
   <script>
+    $(document).ready(function() {
+      $('#sizes').DataTable({
+        "order": [
+          [0, "desc"]
+        ]
+      });
+    });
+
+    function deletesizes(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function() {
+          return new Promise(function(resolve) {
+            $.ajax({
+                url: 'code.deleteSize',
+                type: 'POST',
+                data: {
+                  id: id
+                },
+              })
+              .done(function(response) {
+                if (response == 1) {
+                  Swal.fire('Deleted!', "Records deleted", "success");
+                }
+                if (response == 0) {
+                  Swal.fire('INVALID ID!', "Something went wrong", "error");
+                }
+                location.reload();
+              })
+              .fail(function() {
+                swal('Oops...', 'Something went wrong!', 'error');
+              });
+          });
+        },
+        allowOutsideClick: false
+      });
+    }
+
     function readURL(input) {
       if (input.files && input.files[0]) {
 

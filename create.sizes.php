@@ -57,9 +57,9 @@ if (isset($_GET['branchId'])) {
                   <button class="btn btn-primary float-right" type="submit">ADD</button>
                 </div>
               </div>
+              
+            </form>
           </div>
-
-          </form>
 
 
         </div>

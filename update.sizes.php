@@ -21,7 +21,7 @@ if (isset($_GET['sizeID'])) {
     // Retrieve individual field value
     $id = $row["id"];
     $size_name = $row["size"];
-    $active_status = $row["active_status"];
+    $price = $row["price"];
   } else {
     // URL doesn't contain valid id. Redirect to sizes
     echo '<script>window.location.href = "sizes";</script>';
@@ -55,7 +55,7 @@ ob_end_flush();
       <div class="row m-1">
         <div class="card card-info w-100 p-2">
           <div class="card-header">
-            <h3 class="card-title">Edit Sizes</h3>
+            <h3 class="card-title">Edit Size</h3>
           </div>
           <div class="card-body">
             <?php include('./errors.php'); ?>
@@ -63,26 +63,15 @@ ob_end_flush();
               <div class="form-row">
                 <input type="hidden" name="sizeId" value="<?php echo $id; ?>">
                 <div class=" col-md-12 mb-4">
-                  <label for="size_name">sizes name</label>
+                  <label for="size_name">Size</label>
                   <input type="text" class="form-control" value="<?php echo $size_name; ?>" name="size_name" placeholder="Enter size Name" id="size_name" required>
                   <div class="invalid-feedback">
                     Please enter a size name
                   </div>
                 </div>
                 <div class="col-md-12 mb-4">
-                  <label for="activeStatus">Active Status</label>
-                  <select class="form-control" id="activeStatus" name="active_status" required>
-                    <?php
-                    if ($active_status == "active") {
-                      echo '<option value="active" selected>Active</option>
-                                          <option value="inactive">Inactive</option>';
-                    }
-                    if ($active_status == "inactive") {
-                      echo '<option value="inactive" selected>Inactive</option>
-                                       <option value="active">Active</option>';
-                    }
-                    ?>
-                  </select>
+                  <label for="price">Price</label>
+                  <input type="text" class="form-control" value="<?php echo $price; ?>" name="price" placeholder="Enter price" id="price" required>
                   <div class="invalid-feedback">
                     Please enter a active status
                   </div>

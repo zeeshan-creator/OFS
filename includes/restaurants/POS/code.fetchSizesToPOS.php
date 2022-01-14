@@ -2,7 +2,7 @@
 
 // SIzes
 if ($_SESSION['role'] == 'main_branch') {
-   $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $_SESSION['id'] . " AND active_status = 'active'";
+   $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $_SESSION['id'];
 }
 
 if ($_SESSION['role'] == 'sub_branch') {
@@ -10,6 +10,6 @@ if ($_SESSION['role'] == 'sub_branch') {
    $results = mysqli_query($conn, $query);
    $row = mysqli_fetch_assoc($results);
 
-   $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $row['main_branch'] . " AND active_status = 'active'";
+   $query = "SELECT * FROM `sizes` WHERE restaurant_id = " . $row['main_branch'];
 }
 $sizes = mysqli_query($conn, $query);

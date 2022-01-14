@@ -50,8 +50,8 @@ include("./includes/restaurants/sizes/code.fetchSizes.php");
             <tr class="text-center">
               <th>#</th>
               <th>Size</th>
+              <th>Price</th>
               <th>Publish Date</th>
-              <th>Active Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -67,8 +67,8 @@ include("./includes/restaurants/sizes/code.fetchSizes.php");
               echo "<tr class='text-center'>
               <td>" . $count . " </td>
               <td>" . $row['size'] . "</td>
+              <td>" . $row['price'] . "</td>
               <td>" . $row['created_at'] . "</td>
-              <td>" . $row['active_status'] . "</td>
               <td class='td-actions text-right'>
                     <a href='update.sizes?sizeID=" . $row['id'] . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
                       <span style='color:white;'>

@@ -2,7 +2,7 @@
 $subTotal = 0;
 $deliveryCharges = 0;
 $total = 0;
-
+// unset($_SESSION["order_cart"]);
 if (!isset($_GET['id']) || $_GET['id'] == '' || $_GET['id'] == null) {
    echo "branchID is missing from the url parameters";
    exit;
@@ -348,6 +348,47 @@ if (isset($_GET['id'])) {
       font-family: "FontAwesome";
       border-radius: 0 0 4px 0;
    }
+   #add_toast,#Remove_toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#add_toast.show,#Remove_toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
 </style>
 
 <body class="hold-transition layout-top-nav">
@@ -741,8 +782,12 @@ if (isset($_GET['id'])) {
    </div>
    <!-- ./wrapper -->
 
-   <!-- REQUIRED SCRIPTS -->
+   <div id="add_toast">Product Added To Cart</div>
+   <div id="Remove_toast">Removed From Cart</div>
 
+
+
+   <!-- REQUIRED SCRIPTS -->
    <!-- jQuery -->
    <script src="plugins/jquery/jquery.min.js"></script>
    <!-- Bootstrap 4 -->
@@ -813,6 +858,7 @@ if (isset($_GET['id'])) {
             .done(function(response) {
                $("#cart_table").load(window.location.href + " #cart_table");
                $("#prices").load(window.location.href + " #prices");
+               Remove_toast();
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong! Please try again', 'error');
@@ -850,6 +896,7 @@ if (isset($_GET['id'])) {
             .done(function(response) {
                $("#prices").load(window.location.href + " #prices");
                $("#cart_table").load(window.location.href + " #cart_table");
+               add_toast();
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong! Please try again', 'error');
@@ -867,6 +914,7 @@ if (isset($_GET['id'])) {
             .done(function(response) {
                $("#prices").load(window.location.href + " #prices");
                $("#cart_table").load(window.location.href + " #cart_table");
+               add_toast();
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong!', 'error');
@@ -884,10 +932,27 @@ if (isset($_GET['id'])) {
             .done(function(response) {
                $("#prices").load(window.location.href + " #prices");
                $("#cart_table").load(window.location.href + " #cart_table");
+               add_toast();
             })
             .fail(function() {
                swal('Oops...', 'Something went wrong!', 'error');
             });
+      }
+
+      function add_toast() {
+         var x = document.getElementById("add_toast");
+         x.className = "show";
+         setTimeout(function() {
+            x.className = x.className.replace("show", "");
+         }, 3000);
+      }
+
+      function Remove_toast() {
+         var x = document.getElementById("Remove_toast");
+         x.className = "show";
+         setTimeout(function() {
+            x.className = x.className.replace("show", "");
+         }, 3000);
       }
    </script>
 </body>

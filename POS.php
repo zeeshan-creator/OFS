@@ -131,6 +131,47 @@ include("./includes/restaurants/POS/code.pos.php");
     font-family: "FontAwesome";
     border-radius: 0 0 4px 0;
   }
+  #add_toast,#Remove_toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#add_toast.show,#Remove_toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
@@ -448,8 +489,10 @@ include("./includes/restaurants/POS/code.pos.php");
                                     <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
                                     <option selected disabled>Sizes</option>';
                         include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                        while ($row = mysqli_fetch_assoc($sizes)) {
-                          echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
+                        while ($size = mysqli_fetch_assoc($sizes)) {
+                          if ($row['id'] == $size['product_id'] ) {
+                            echo '<option value="' . $size['size'] . '">' . $size['size'] . '</option>';
+                          }
                         }
                         echo '
                                         </select>
@@ -502,8 +545,8 @@ include("./includes/restaurants/POS/code.pos.php");
     </div>
   </div>
   <!-- /.content-wrapper -->
-
-
+  <div id="add_toast">Product Added To Cart</div>
+  <div id="Remove_toast">Removed From Cart</div>
   <!-- Including footer -->
   <?php include './partials/footer.php' ?>
   <?php ob_end_flush(); ?>
@@ -546,6 +589,7 @@ include("./includes/restaurants/POS/code.pos.php");
         .done(function(response) {
           $("#item_cart").load(window.location.href + " #item_cart");
           $("#prices").load(window.location.href + " #prices");
+          Remove_toast();
         })
         .fail(function() {
           swal('Oops...', 'Something went wrong! Please try again', 'error');
@@ -558,7 +602,7 @@ include("./includes/restaurants/POS/code.pos.php");
           type: 'POST',
           data: {
             id: id,
-            action: 'change',
+            action: 'changeQty',
             quantity: quantity
           },
         })
@@ -577,7 +621,7 @@ include("./includes/restaurants/POS/code.pos.php");
           type: 'POST',
           data: {
             id: id,
-            action: 'change',
+            action: 'changeSize',
             product_size: size
           },
         })
@@ -606,8 +650,9 @@ include("./includes/restaurants/POS/code.pos.php");
             if (response == 1) {
               $("#item_cart").load(window.location.href + " #item_cart");
               $("#prices").load(window.location.href + " #prices");
+              add_toast();
             }
-            if (response == 0) {
+            else {
               Swal.fire('Alreay Exist!', "Product already in cart", "error");
             }
           })
@@ -633,6 +678,7 @@ include("./includes/restaurants/POS/code.pos.php");
           if (response == 1) {
             $("#item_cart").load(window.location.href + " #item_cart");
             $("#prices").load(window.location.href + " #prices");
+            add_toast();
           }
           if (response == 0) {
             Swal.fire('Alreay Exist!', "Deal already in cart", "error");
@@ -655,6 +701,7 @@ include("./includes/restaurants/POS/code.pos.php");
           if (response == 1) {
             $("#item_cart").load(window.location.href + " #item_cart");
             $("#prices").load(window.location.href + " #prices");
+            add_toast();
           }
           if (response == 0) {
             Swal.fire('Alreay Exist!', "Addon Product already in cart", "error");
@@ -699,6 +746,17 @@ include("./includes/restaurants/POS/code.pos.php");
 
       });
     });
+
+    function add_toast() {
+      var x = document.getElementById("add_toast");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+    function Remove_toast() {
+      var x = document.getElementById("Remove_toast");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
   </script>
 
   </div>

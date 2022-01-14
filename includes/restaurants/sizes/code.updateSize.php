@@ -3,23 +3,16 @@ ob_start();
 
 // initializing variables
 $size_name;
-$active_status;
+$price;
 $sizeId;
+$productID= $_GET['productID'];
 $errors   = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    // receive all input values from the form
    $size_name = mysqli_real_escape_string($conn, trim($_POST['size_name']));
-   $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
+   $price = mysqli_real_escape_string($conn, trim($_POST['price']));
    $sizeId = mysqli_real_escape_string($conn, trim($_POST['sizeId']));
-
-   if (!empty($size_name)) {
-      // first check the database to make sure 
-      // a size does not already exist with the same size 
-      $size_name_check_query = "SELECT size, id, restaurant_id FROM sizes WHERE `size`='$size_name' LIMIT 1";
-      $result = mysqli_query($conn, $size_name_check_query);
-      $size = mysqli_fetch_assoc($result);
-   }
 
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
@@ -27,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       array_push($errors, "size Name is required");
    }
 
-   if (empty($active_status)) {
+   if (empty($price)) {
       array_push($errors, "active status is required");
    }
 
@@ -37,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $date = date('Y-m-d H:i:s');
       $query = "UPDATE `sizes` SET 
          `size` = '$size_name', 
-         `active_status` = '$active_status',
+         `price` = '$price',
          `updated_at` = '$date'
          WHERE `sizes`.`id` = $sizeId";
 
@@ -52,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                exit();
             }
          }
-         echo '<script>window.location.href = "sizes";</script>';
+         echo '<script>window.location.href = "update.products?productID="'.';</script>';
          exit();
       }
    }
