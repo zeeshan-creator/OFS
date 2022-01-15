@@ -125,12 +125,12 @@
               </ul>
           </li> -->
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="sizes" class="nav-link">
               <i class="nav-icon fad fa-sort-amount-up-alt"></i>
               <p> Sizes </p>
             </a>
-          </li>
+          </li> -->
 
           <li class="nav-item">
             <a href="restaurantCategories" class="nav-link">

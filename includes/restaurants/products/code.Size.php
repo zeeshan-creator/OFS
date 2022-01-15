@@ -9,8 +9,9 @@ ob_start();
 $sizeName;
 $price;
 $productID;
-
 $restaurant_id;
+
+
 if (isset($_GET['branchId'])) {
    $id = trim($_GET['branchId']);
    if ($_SESSION['role'] == 'admin') {
@@ -43,8 +44,8 @@ if (isset($_POST['action']) && $_POST['action'] == "addSize") {
 
       $date = date('Y-m-d H:i:s');
       $query = "INSERT INTO `sizes` 
-      (`size`, `price`, `product_id`, `created_at`) VALUES
-      ('$sizeName', '$price', '$productID', '$date')";
+      (`size`, `price`, `product_id`, `restaurant_id`, `created_at`) VALUES
+      ('$sizeName', '$price', '$productID', '$restaurant_id', '$date')";
 
       $results = mysqli_query($conn, $query) or die(mysqli_error($conn));
       if (isset($_GET['branchId'])) {

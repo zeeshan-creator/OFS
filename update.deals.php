@@ -365,23 +365,34 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
                                   </div>
-                                  <div class="card-body">
-                                    <div class="text-center" style="">
+                                  <div class="card-body">';
+                    $query = "SELECT * FROM `sizes` WHERE product_id = " . $row['id'];
+                    $sizes = mysqli_query($conn, $query);
+                    $nomRows = mysqli_num_rows($sizes);
+                    if ($nomRows > 0) {
+                      echo '<div class="text-center" style="">
                                       <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                    <button class="mt-2 btn btn-info float-right" onclick="addProductToDeal(' . $row['id'] . ',' . $dealID . ')">Add</button>
-                                    <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
+                                    <button class="mt-2 btn btn-info float-right" onclick="addProductToDeal(' . $row['id'] . ',' . $dealID . ')">Add</button>';
+
+                      echo '<select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
                                     <option selected disabled>Sizes</option>';
-                    include("./includes/restaurants/deals/code.fetchSizes.php");
-                    while ($row = mysqli_fetch_assoc($sizes)) {
-                      echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
-                    }
-                    echo '
-                                        </select>
-                                      </div>
+                      include("./includes/restaurants/deals/code.fetchSizes.php");
+                      while ($row = mysqli_fetch_assoc($sizes)) {
+                        if ($row['id'] == $size['product_id']) {
+                          echo '<option value="' . $size['id'] . '">' . $size['size'] . ' (' . $size['price'] . ')</option>';
+                        }
+                      }
+                    } else {
+                      echo '<div class="text-center"  style="height:128px;" >
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
                                     </div>
-                                  </div>';
+                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
+                                    
+                                    <button class="mt-2 btn btn-info float-right" onclick="addToDeal_withoutSize(' . $row['id'] . ')">Add</button>';
+                    }
+                    echo '</select></div></div></div>';
                   }
                   while ($row = mysqli_fetch_assoc($addons)) {
                     echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">

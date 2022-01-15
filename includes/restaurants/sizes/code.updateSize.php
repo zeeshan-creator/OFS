@@ -5,7 +5,7 @@ ob_start();
 $size_name;
 $price;
 $sizeId;
-$productID= $_GET['productID'];
+$productID = $_GET['productID'];
 $errors   = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

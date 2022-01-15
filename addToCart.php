@@ -8,12 +8,18 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
    $product_size = trim($_POST['product_size']);
 
    $result = mysqli_query($conn, "SELECT * FROM `products` WHERE `id`='$id'");
-   $row = mysqli_fetch_assoc($result);
+   $product_row = mysqli_fetch_assoc($result);
 
-   $name = $row['name'];
-   $price = $row['price'];
+   $price = $product_row['price'];
+   $name = $product_row['name'];
    $size = $product_size;
-   $image = $row['photo'];
+   $image = $product_row['photo'];
+
+   if ($product_size != null) {
+      $result = mysqli_query($conn, "SELECT * FROM `sizes` WHERE `id`='$product_size'");
+      $size_row = mysqli_fetch_assoc($result);
+      $price = $size_row['price'];
+   }
 
    $cartArray = array(
       ($id . "_" . $size) => array(
@@ -33,7 +39,7 @@ if (isset($_POST['productID']) && $_POST['productID'] != "") {
    } else {
       foreach ($_SESSION["shopping_cart"] as &$value) {
          if ($value['id'] == $id) {
-            echo 0;
+            // echo 0;
             exit; // Stop the loop after we've found the product
          }
       }

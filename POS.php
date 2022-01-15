@@ -131,47 +131,78 @@ include("./includes/restaurants/POS/code.pos.php");
     font-family: "FontAwesome";
     border-radius: 0 0 4px 0;
   }
-  #add_toast,#Remove_toast {
-  visibility: hidden;
-  min-width: 250px;
-  margin-left: -125px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 2px;
-  padding: 16px;
-  position: fixed;
-  z-index: 1;
-  left: 50%;
-  bottom: 30px;
-  font-size: 17px;
-}
 
-#add_toast.show,#Remove_toast.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
+  #add_toast,
+  #Remove_toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+  }
 
-@-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;} 
-  to {bottom: 30px; opacity: 1;}
-}
+  #add_toast.show,
+  #Remove_toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
 
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
+  @-webkit-keyframes fadein {
+    from {
+      bottom: 0;
+      opacity: 0;
+    }
 
-@-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;} 
-  to {bottom: 0; opacity: 0;}
-}
+    to {
+      bottom: 30px;
+      opacity: 1;
+    }
+  }
 
-@keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
+  @keyframes fadein {
+    from {
+      bottom: 0;
+      opacity: 0;
+    }
+
+    to {
+      bottom: 30px;
+      opacity: 1;
+    }
+  }
+
+  @-webkit-keyframes fadeout {
+    from {
+      bottom: 30px;
+      opacity: 1;
+    }
+
+    to {
+      bottom: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeout {
+    from {
+      bottom: 30px;
+      opacity: 1;
+    }
+
+    to {
+      bottom: 0;
+      opacity: 0;
+    }
+  }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
@@ -363,17 +394,16 @@ include("./includes/restaurants/POS/code.pos.php");
                                   <div class="quantity mt-2">
                                     <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="changeQty('<?php echo $product['id']; ?>',this.value)">
                                   </div>
-                                  <?php if ($product['type'] == 'product') : ?>
+
+                                  <?php if ($product['type'] == 'product' && $product['size'] != null) : ?>
                                     <div class="">
-                                      <select name="product_size" onchange="changeSize('<?php echo $product['id']; ?>',this.value)" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
-                                        <option selected disabled>Sizes</option>
+                                      <select name="product_size" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
                                         <?php
-                                        include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                                        while ($row = mysqli_fetch_assoc($sizes)) {
-                                          echo '<option value="' . $row['size'] . '"';
-                                          echo ($row['size'] == $product["size"]) ? "Selected" : " Failed";
-                                          echo ' >' . $row['size'] . '</option>';
-                                        }
+                                        $query = "SELECT * FROM `sizes` WHERE id = " . $product["size"];
+                                        $sizes = mysqli_query($conn, $query);
+                                        $row = mysqli_fetch_assoc($sizes);
+                                        echo "<option selected disabled>" . $row['size'] . "</option>";
+
                                         ?>
                                       </select>
                                     </div>
@@ -480,26 +510,35 @@ include("./includes/restaurants/POS/code.pos.php");
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
                                   </div>
-                                  <div class="card-body">
-                                    <div class="text-center" style="">
+                                  <div class="card-body">';
+                        $query = "SELECT * FROM `sizes` WHERE product_id = " . $row['id'];
+                        $sizes = mysqli_query($conn, $query);
+                        $nomRows = mysqli_num_rows($sizes);
+                        if ($nomRows > 0) {
+                          echo '<div class="text-center" id="">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
+                                    </div>
+                                    <button class="mt-2 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>';
+
+                          echo '<select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
+                          <option selected disabled>Sizes </option>
+                                    ';
+                          while ($size = mysqli_fetch_assoc($sizes)) {
+                            if ($row['id'] == $size['product_id']) {
+                              echo '<option value="' . $size['id'] . '">' . $size['size'] . ' (' . $size['price'] . ')</option>';
+                            }
+                          }
+                        } else {
+                          echo '<div class="text-center"  style="height:128px;" >
                                       <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                    <button class="mt-2 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
-                                    <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
-                                    <option selected disabled>Sizes</option>';
-                        include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                        while ($size = mysqli_fetch_assoc($sizes)) {
-                          if ($row['id'] == $size['product_id'] ) {
-                            echo '<option value="' . $size['size'] . '">' . $size['size'] . '</option>';
-                          }
+                                    
+                                    <button class="mt-2 btn btn-info float-right" onclick="addToCart_withoutSize(' . $row['id'] . ')">Add</button>';
                         }
-                        echo '
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>';
+                        echo '</select></div></div></div>';
                       }
+
                       while ($row = mysqli_fetch_assoc($deals)) {
                         echo '<div class="filtr-item col-lg-2 col-md-4" data-category="deals">
                                 <div class="card card-outline card-info">
@@ -615,28 +654,27 @@ include("./includes/restaurants/POS/code.pos.php");
         });
     }
 
-    function changeSize(id, size) {
+    function addToCart_withoutSize(id) {
       $.ajax({
-          url: 'POS',
+          url: 'addToCart',
           type: 'POST',
           data: {
-            id: id,
-            action: 'changeSize',
-            product_size: size
+            productID: id,
           },
         })
         .done(function(response) {
-          $("#prices").load(window.location.href + " #prices");
-          $("#cart_table").load(window.location.href + " #cart_table");
+            $("#item_cart").load(window.location.href + " #item_cart");
+            $("#prices").load(window.location.href + " #prices");
+            add_toast();
         })
         .fail(function() {
-          swal('Oops...', 'Something went wrong! Please try again', 'error');
+          swal('Oops...', 'Something went wrong!', 'error');
         });
     }
 
     function addToCart(id) {
       var selectOption = document.getElementById(`product_size_${id}`);
-      var product_size = selectOption.options[selectOption.selectedIndex].text;
+      var product_size = selectOption.options[selectOption.selectedIndex].value;
       if (product_size != null && product_size != 'Sizes') {
         $.ajax({
             url: 'addToCart',
@@ -651,8 +689,7 @@ include("./includes/restaurants/POS/code.pos.php");
               $("#item_cart").load(window.location.href + " #item_cart");
               $("#prices").load(window.location.href + " #prices");
               add_toast();
-            }
-            else {
+            } else {
               Swal.fire('Alreay Exist!', "Product already in cart", "error");
             }
           })
@@ -663,7 +700,6 @@ include("./includes/restaurants/POS/code.pos.php");
         Swal.fire('Please Select Size!', "Product size is required", "error");
         exit;
       }
-
     }
 
     function addDealToCart(id) {
@@ -750,12 +786,17 @@ include("./includes/restaurants/POS/code.pos.php");
     function add_toast() {
       var x = document.getElementById("add_toast");
       x.className = "show";
-      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+      setTimeout(function() {
+        x.className = x.className.replace("show", "");
+      }, 3000);
     }
+
     function Remove_toast() {
       var x = document.getElementById("Remove_toast");
       x.className = "show";
-      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+      setTimeout(function() {
+        x.className = x.className.replace("show", "");
+      }, 3000);
     }
   </script>
 

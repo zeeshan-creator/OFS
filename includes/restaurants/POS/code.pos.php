@@ -22,14 +22,3 @@ if (isset($_POST['action']) && $_POST['action'] == "changeQty") {
       }
    }
 }
-
-if (isset($_POST['action']) && $_POST['action'] == "changeSize") {
-   foreach ($_SESSION["shopping_cart"] as &$value) {
-      if ($value['id'] === $_POST["id"]) {
-         if (isset($_POST['product_size'])) {
-            $value['size'] = $_POST["product_size"];
-         }
-         break; // Stop the loop after we've found the product
-      }
-   }
-}

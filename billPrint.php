@@ -31,7 +31,7 @@ include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
                   </td>
                   <td class="m-4">
                      <div class="">
-                        <!-- <?php echo $product["size"] ? $product["size"] : null ?><br /> -->
+                        <?php echo $product["size"] ? $product["size"] : null ?><br />
                      </div>
                   </td>
                   <td class="m-4">
