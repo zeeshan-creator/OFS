@@ -12,8 +12,8 @@ include("./includes/restaurants/POS/code.pos.php");
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
@@ -484,7 +484,7 @@ include("./includes/restaurants/POS/code.pos.php");
                 <div class="col-lg-12">
                   <div class="">
                     <div class="btn-group w-100 mb-2">
-                      <div class="row m-1">
+                      <div class="row ml-1">
                         <a class="btn btn-info active pb-0" href="javascript:void(0)" data-filter="all"> All items</a>
                         <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="deals"> Deals </a>
                         <?php
@@ -573,6 +573,7 @@ include("./includes/restaurants/POS/code.pos.php");
                               </div>';
                       }
                       ?>
+                      
                     </div>
                   </div>
                 </div>

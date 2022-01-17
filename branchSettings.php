@@ -104,6 +104,7 @@ $deliveryZones = mysqli_query($conn, $query);
               </div>
             </div>
 
+            <!-- zones Modal -->
             <div class="modal fade" id="zonesModal">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -115,7 +116,6 @@ $deliveryZones = mysqli_query($conn, $query);
                   </div>
                   <div class="modal-body">
                     <div class="areas">
-
                       <?php
                       while ($area = mysqli_fetch_assoc($areas)) {
                         echo "<p><button class='no-btn w-100' onclick='addZone(" . $area['id'] . "," . $zoneID . ")'>" . $area['area'] . "</button></p>";
@@ -131,6 +131,7 @@ $deliveryZones = mysqli_query($conn, $query);
               </div>
             </div>
             <!-- /.modal -->
+
             <hr>
 
             <form method="POST" class="needs-validation" novalidate>
@@ -139,11 +140,9 @@ $deliveryZones = mysqli_query($conn, $query);
                 <label for="zone" class="m-2">Zone: </label>
                 <input class="ml-2" type="text" value="<?php echo $zone_name ?>" class="form-control" name="zoneName" min="3" max="15" placeholder="Enter a zone name" id="zone" required>
                 <div class="invalid-feedback">
-                  Please enter a zone
+                  Please enter a zone name
                 </div>
               </div>
-
-
 
               <button class="btn btn-primary float-right mb-4" type="submit">Save changes</button>
             </form>

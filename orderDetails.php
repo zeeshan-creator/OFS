@@ -9,6 +9,8 @@ include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
 include("./includes/restaurants/POS/code.fetchDealsToPOS.php");
 include("./includes/restaurants/orders/code.updateOrders.php");
 
+
+$orderID = trim($_GET['orderID']);
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +134,7 @@ include("./includes/restaurants/orders/code.updateOrders.php");
   }
 </style>
 
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 
   <div class="wrapper">
 
@@ -171,7 +173,7 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                             <div class="container parent">
                               <div class="row">
                                 <div class='col form-check text-center'>
-                                  <input type="hidden" name="id" value="<?php echo trim($_GET['orderID']) ?>">
+                                  <input type="hidden" name="id" value="<?php echo $orderID ?>">
                                   <input type="hidden" name="action" value="updateOrder">
                                   <input type="radio" name="orderType" value="Pick_Up" id="img2" class="d-none imgbgchk form-check-input" required <?php echo ($order_type == 'Pick_Up') ?  'checked' : '' ?>>
                                   <label for="img2" class="form-check-label" for="img2">
@@ -326,17 +328,12 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                     <div class="quantity mt-2">
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
-                                    <?php if ($product['type'] == 'product') : ?>
+                                    <?php if ($product['type'] == 'product' && $product['size'] != null) : ?>
                                       <div class="">
                                         <select name="size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
                                           <option selected disabled>Sizes</option>
                                           <?php
-                                          include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                                          while ($row = mysqli_fetch_assoc($sizes)) {
-                                            echo '<option value="' . $row['size'] . '"';
-                                            echo ($row['size'] == $product["size"]) ? "Selected" : "";
-                                            echo ' >' . $row['size'] . '</option>';
-                                          }
+                                          echo "<option selected disabled>" . $product["size"] . "</option>";
                                           ?>
                                         </select>
                                       </div>
@@ -379,10 +376,6 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                           <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
                         </tr>
                         <tr>
-                          <th>Shipping:</th>
-                          <td>PKR <?php echo $deliverycharges ? $deliverycharges : "--.--" ?></td>
-                        </tr>
-                        <tr>
                           <th>Discount:</th>
                           <?php if ($subtotal >= $ordersOver) {
                             $offerDiscount = round($subtotal / 100 * $offerPercentage);
@@ -400,7 +393,6 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                           <th>Total:</th>
                           <?php if ($subtotal) {
                             $total = $subtotal - $offerDiscount;
-                            $total = $total + $deliverycharges;
                             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
                           }
                           ?>
@@ -408,10 +400,14 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                         </tr>
                       </table>
                       <div class="col-12">
-                        <a href="billPrint" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                        <a href="billPrint?orderID=<?php echo $orderID?>" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                        <a href="orders" id="ordersFormButton" class="btn btn-danger float-right" style="margin-right: 5px;">
+                          <i class="fas fa-downloa"></i> Back
+                        </a>
                         <button type="button" id="ordersFormButton" class="btn btn-primary float-right" style="margin-right: 5px;">
                           <i class="fas fa-downloa"></i> Confirm
                         </button>
+
                       </div>
                     </div>
                   </div>
@@ -449,24 +445,35 @@ include("./includes/restaurants/orders/code.updateOrders.php");
                                   <div class="card-header">
                                     <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
                                   </div>
-                                  <div class="card-body">
-                                    <div class="text-center" style="">
+                                  <div class="card-body">';
+                          $query = "SELECT * FROM `sizes` WHERE product_id = " . $row['id'];
+                          $sizes = mysqli_query($conn, $query);
+                          $nomRows = mysqli_num_rows($sizes);
+                          if ($nomRows > 0) {
+                            echo '<div class="text-center" style="">
+                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
+                                    </div>
+                                    <button class="mt-2 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>';
+
+                            echo '<select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
+                                    <option selected disabled>Sizes</option>';
+
+                            include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
+                            while ($size = mysqli_fetch_assoc($sizes)) {
+                              if ($row['id'] == $size['product_id']) {
+                                echo '<option value="' . $size['id'] . '">' . $size['size'] . ' (' . $size['price'] . ')</option>';
+                              }
+                            }
+                          } else {
+                            echo '<div class="text-center" style="height:128px;">
                                       <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
                                     </div>
                                     <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                    <button class="mt-2 btn btn-info float-right" onclick="addToCart(' . $row['id'] . ')">Add</button>
-                                    <select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
-                                    <option selected disabled>Sizes</option>';
-                          include("./includes/restaurants/POS/code.fetchSizesToPOS.php");
-                          while ($row = mysqli_fetch_assoc($sizes)) {
-                            echo '<option value="' . $row['size'] . '">' . $row['size'] . '</option>';
+                                    <button class="mt-2 btn btn-info float-right" onclick="addToCart_withoutSize(' . $row['id'] . ')">Add</button>';
                           }
-                          echo '
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>';
+                          echo '</select></div></div></div>';
                         }
+
                         while ($row = mysqli_fetch_assoc($deals)) {
                           echo '<div class="filtr-item col-lg-2 col-md-4" data-category="deals">
                                 <div class="card card-outline card-info">
@@ -561,7 +568,7 @@ include("./includes/restaurants/orders/code.updateOrders.php");
 
     function addToCart(id) {
       var selectOption = document.getElementById(`product_size_${id}`);
-      var product_size = selectOption.options[selectOption.selectedIndex].text;
+      var product_size = selectOption.options[selectOption.selectedIndex].value;
 
       if (product_size != null && product_size != 'Sizes') {
         $.ajax({
@@ -580,6 +587,25 @@ include("./includes/restaurants/orders/code.updateOrders.php");
         exit;
       }
       location.reload();
+    }
+
+    function addToCart_withoutSize(id) {
+      $.ajax({
+          url: 'orderDetails',
+          type: 'POST',
+          data: {
+            order_product_id: orderID,
+            id: id,
+            type: 'product',
+            action: 'addProduct',
+          },
+        })
+        .done(function(response) {
+          location.reload();
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
     }
 
     function addDealToCart(id) {

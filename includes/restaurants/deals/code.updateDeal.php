@@ -20,22 +20,6 @@ if (isset($_POST['action']) && $_POST['action'] == "update") {
    $active_status = mysqli_real_escape_string($conn, trim($_POST['active_status']));
    $oldImage = mysqli_real_escape_string($conn, trim($_POST['oldImage']));
 
-   // if (!empty($dealName)) {
-   //    // first check the database to make sure 
-   //    // a deal does not already exist with the same name 
-   //    $deal_name_check_query = "SELECT id,deal_name FROM deals WHERE deal_name = '$dealName' LIMIT 1";
-   //    $result = mysqli_query($conn, $deal_name_check_query);
-   //    $deal = mysqli_fetch_assoc($result);
-
-   //    if ($deal) { // if deal exists
-   //       if ($deal['id'] != $dealID) {
-   //          if ($deal['deal_name'] == $dealName) {
-   //             array_push($errors, "deal name already exists try something else");
-   //          }
-   //       }
-   //    }
-   // }
-
    // form validation: ensure that the form is correctly filled ...
    // by adding (array_push()) corresponding error into $errors array
    if (
@@ -120,7 +104,6 @@ if (isset($_POST['action']) && $_POST['action'] == "update") {
    }
 }
 
-
 if (!isset($_GET['dealID'])) {
    echo '<script>window.location.href = "deals";</script>';
    exit();
@@ -134,87 +117,10 @@ if (isset($_POST['action']) && $_POST['action'] == "remove") {
    mysqli_query($conn, $products_query);
 }
 
-if (isset($_POST['action']) && $_POST['action'] == "change") {
-   $product_qty = trim($_POST['qty']);
-   $product_size = isset($_POST['product_size']) ? $_POST['product_size'] : null;
-   $deal_products_id = trim($_POST['deal_products_id']);
-   // $products_query  = 'UPDATE `deal_products` SET `qty`= ' . $product_qty . ' WHERE `id` =' . $deal_products_id;
-   $products_query  = "UPDATE `deal_products` SET `qty`= '$product_qty', `size`= '$product_size' WHERE `id` =" . $deal_products_id;
-   mysqli_query($conn, $products_query);
-}
+
 
 if (isset($_GET['dealID'])) {
    $dealID = trim($_GET['dealID']);
-
-   $deal_products_query = "SELECT `product_id` FROM `deal_products` WHERE `deal_id` = $dealID";
-   $deal_products_result = mysqli_query($conn, $deal_products_query);
-
-   while ($rows = mysqli_fetch_assoc($deal_products_result)) {
-
-
-      $products_qty_query  = 'SELECT `id`, `qty`, `size`, `type` FROM `deal_products` where `product_id` = ' . $rows['product_id'] . ' AND `deal_id` = ' . $dealID;
-      $products_qty_result = mysqli_query($conn, $products_qty_query);
-      $deal_products = mysqli_fetch_assoc($products_qty_result);
-
-      if ($deal_products['type'] == 'product') {
-
-         $products_query  = 'SELECT `id`, `name`, `price`, `photo` FROM `products` where `id` =' . $rows['product_id'];
-         $products_result = mysqli_query($conn, $products_query);
-         $row = mysqli_fetch_assoc($products_result);
-
-         $id = $row['id'];
-         $name = $row['name'];
-         $price = $row['price'];
-         $qty = $deal_products['qty'];
-         $size = $deal_products['size'];
-         $type = $deal_products['type'];
-         $deal_products_id = $deal_products['id'];
-         $image = $row['photo'];
-
-         $dealProducts = array(
-            $name => array(
-               'id' => $id,
-               'name' => $name,
-               'price' => $price,
-               'qty' => $qty,
-               'size' => $size,
-               'type' => $type,
-               'deal_products_id' => $deal_products_id,
-               'image' => $image
-            )
-         );
-         $_SESSION['deal_products'] = array_merge($_SESSION['deal_products'], $dealProducts);
-      }
-
-      if ($deal_products['type'] == 'addon') {
-
-         $addons_query  = 'SELECT `id`, `name`, `price` FROM `addons_products` where `id` =' . $rows['product_id'];
-         $addons_result = mysqli_query($conn, $addons_query);
-         $row = mysqli_fetch_assoc($addons_result);
-
-         $id = $row['id'];
-         $name = $row['name'];
-         $price = $row['price'];
-         $qty = $deal_products['qty'];
-         $size = $deal_products['size'];
-         $type = $deal_products['type'];
-         $deal_products_id = $deal_products['id'];
-
-         $dealProducts = array(
-            $name => array(
-               'id' => $id,
-               'name' => $name,
-               'price' => $price,
-               'qty' => $qty,
-               'size' => $size,
-               'type' => $type,
-               'deal_products_id' => $deal_products_id,
-            )
-         );
-         $_SESSION['deal_products'] = array_merge($_SESSION['deal_products'], $dealProducts);
-      }
-   }
-
 
    $deal_query = "SELECT * FROM deals WHERE id='$dealID' LIMIT 1";
    $result = mysqli_query($conn, $deal_query);
@@ -232,7 +138,5 @@ if (isset($_GET['dealID'])) {
       exit();
    }
 }
-
-
 
 ob_end_flush();

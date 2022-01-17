@@ -44,9 +44,6 @@ if (isset($_GET['id'])) {
     $addon_query = "SELECT * FROM addons_products WHERE restaurant_id = '$id'";
     $addons = mysqli_query($conn, $addon_query) or die(mysqli_error($conn));
 
-    $size_query = "SELECT * FROM sizes WHERE restaurant_id = '$id'";
-    $sizes = mysqli_query($conn, $size_query) or die(mysqli_error($conn));
-
     $link_query = "SELECT * FROM social_media_links WHERE restaurant_id = '$id'";
     $links = mysqli_query($conn, $link_query) or die(mysqli_error($conn));
 
@@ -454,62 +451,6 @@ if (isset($_GET['id'])) {
         </table>
       </div>
 
-      <!-- Sizes -->
-      <div class="row mt-4">
-        <div class="col-lg-5 ml-3 mt-4 mb-2">
-          <h1 class="">
-            <span style="border-bottom: 3px double black;">
-              Sizes
-            </span>
-          </h1>
-        </div>
-        <div class="col-lg-6 ml-auto mt-4 p-4">
-          <a href="./create.sizes?branchId=<?php echo $id ?>" class="btn btn-primary float-right">Add Sizes</a>
-        </div>
-      </div>
-
-      <div class="p-3">
-        <table class="table" id="sizes">
-          <thead>
-            <tr class="text-center">
-              <th>#</th>
-              <th>Size</th>
-              <th>Publish Date</th>
-              <th>Active Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="w">
-            <?php
-            $count = 1;
-            $url = 'code.deleteSize';
-            while ($row = mysqli_fetch_assoc($sizes)) {
-              echo "<tr class='text-center'>
-              <td>" . $count . " </td>
-               <td>" . $row['size'] . "</td>
-              <td>" . $row['created_at'] . "</td>
-              <td>" . $row['active_status'] . "</td>
-              <td class='td-actions text-right'>
-                  <a href='update.sizes?sizeID=" . $row['id'] . "&branchId=" . $id . "' type='button' rel='tooltip' title='Edit' class='btn btn-success btn-link btn-icon btn-sm'>
-                    <span style='color:white;'>
-                      <i class='far fa-edit'></i>
-                    </span>
-                  </a>
-                  <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
-                  s onclick=deleteRecord(" . $row['id'] . ',\'' . $url . "') class='btn btn-danger btn-link btn-icon btn-sm'>
-                    <span style='color:white;'>
-                      <i class='fas fa-trash-alt'></i>
-                    </span>
-                  </button>
-                </td>
-              </tr>";
-              $count++;
-            }
-            ?>
-          </tbody>
-        </table>
-      </div>
-
       <!-- Links -->
       <div class="row mt-4">
         <div class="col-lg-5 ml-3 mt-4 mb-2">
@@ -664,11 +605,6 @@ if (isset($_GET['id'])) {
         ]
       });
       $('#offers').DataTable({
-        "order": [
-          [0, "desc"]
-        ]
-      });
-      $('#sizes').DataTable({
         "order": [
           [0, "desc"]
         ]

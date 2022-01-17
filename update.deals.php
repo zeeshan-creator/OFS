@@ -2,11 +2,12 @@
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
 include("./includes/restaurants/deals/code.updateDeal.php");
-include("./includes/restaurants/deals/code.fetchAddons.php");
 include("./includes/restaurants/deals/code.fetchCategories.php");
-
-
+include("./includes/restaurants/deals/code.fetchSelects.php");
+$deal_id = $_GET['dealID'];
+$restaurant_id = $_SESSION['id'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -96,6 +97,38 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
     font-family: "FontAwesome";
     border-radius: 0 0 4px 0;
   }
+
+  .zoneTags {
+    padding: 5px;
+    width: 50%;
+    min-height: 120px;
+    max-height: fit-content;
+    border: thin solid grey
+  }
+
+  .tag {
+    display: inline-block;
+    width: fit-content;
+    margin: 5px;
+    background-color: rgba(0, 0, 0, .2);
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: thin solid grey;
+  }
+
+  .areas {
+    height: 500px;
+    overflow-y: auto;
+  }
+
+  .areas p:hover {
+    box-shadow: 1px 1px 4px;
+  }
+
+  .no-btn {
+    border: none;
+    background: none;
+  }
 </style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
@@ -162,7 +195,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
 
                         <div class="col-lg-6 mb-3">
                           <label for="description">Deal description</label>
-                          <textarea rows="1" type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required><?Php echo $description ?></textarea>
+                          <textarea onkeyup="textAreaAdjust(this)" type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required><?Php echo $description ?></textarea>
                           <div class="invalid-feedback">
                             Please enter a deal description
                           </div>
@@ -185,13 +218,11 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
                             Please enter a active status
                           </div>
                         </div>
-                        <div class="col-lg-12 mt-4">
-                          <button type="submit" class="mt-4 btn btn-primary float-right" style="margin-right: 5px;">Save Changes</button>
-                          <?php if ($_SESSION['role'] == 'admin') : ?>
-                            <button type="button" onclick="window.history.back()" class="mt-4 btn btn-danger float-right" style="margin-right: 5px;">
-                              Go Back
-                            </button>
-                          <?php endif ?>
+                        <div class="col-lg-12">
+                          <button type="submit" class="btn btn-primary float-right" style="margin-right: 5px;">Save Changes</button>
+                          <button type="button" onclick="window.history.back()" class="btn btn-danger float-right" style="margin-right: 5px;">
+                            Discard
+                          </button>
                         </div>
                       </div>
                     </form>
@@ -199,225 +230,86 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
                 </div>
               </div>
               <div class="col-lg-4">
-                <h2 class="">Item/s
-                  <?php
-                  if (!empty($_SESSION['deal_products'])) {
-                    $product_count = count(array_keys($_SESSION['deal_products']));
-                  ?>
-                    : <span><?php echo $product_count; ?></span>
-                  <?php
-                  }
-                  ?>
-                </h2>
-
-                <?php if (empty($_SESSION['deal_products'])) : ?>
-                  <div class="text-center my-4">
-                    <i class="text-black-50 fas fa-cart-plus" style="font-size:20px"></i>
-                    <p>
-                      Your Deal is empty <br>
-                      Add products to make a happy meal </p>
-                  </div>
-                <?php endif ?>
-
-                <?php $subtotal = 0; ?>
-                <?php if (!empty($_SESSION['deal_products'])) : ?>
-                  <div class="">
-                    <table>
-                      <thead>
-                        <tr class="text-bold">
-                          <td></td>
-                          <td class="pl-3">ITEM</td>
-                          <td class="pl-4">QTY</td>
-                          <td class="pl-5">PKR</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                        <?php foreach ($_SESSION['deal_products'] as $product) {
-                        ?>
-                          <tr>
-                            <td style='width:60px;height:50px' class="">
-                              <?php if ($product['type'] == 'product') : ?>
-                                <img src='includes/restaurants/products/product_imgs/<?php echo $product['image'] ?>' class='img-fluid img-thumbnail' alt='err'>
-                              <?php endif ?>
-                              <?php if ($product['type'] == 'addon') : ?>
-                                <h2 class="border p-1">A<span style="font-size: 17px;font-weight: bold;">ddon</span></h2>
-                              <?php endif ?>
-                            </td>
-                            <td class="pl-2">
-                              <div class="float-left mr-4">
-                                <?php echo $product["name"]; ?><br />
-                              </div>
-                            </td>
-                            <td>
-                              <form action="" method="post">
-                                <input type='hidden' name='deal_products_id' value="<?php echo $product["deal_products_id"]; ?>" />
-                                <input type='hidden' name='action' value="change" />
-                                <div class="quantity">
-                                  <input type="number" name="qty" min="1" step="1" value="<?php echo $product["qty"] ?>" onchange="this.form.submit()">
-                                </div>
-                                <?php if ($product['type'] == 'product') : ?>
-                                  <div class="">
-                                    <select name="product_size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
-                                      <option selected disabled>Sizes</option>
-                                      <?php
-                                      include("./includes/restaurants/deals/code.fetchSizes.php");
-                                      while ($row = mysqli_fetch_assoc($sizes)) {
-                                        echo '<option value="' . $row['size'] . '"';
-                                        echo ($row['size'] == $product["size"]) ? "Selected" : "";
-                                        echo ' >' . $row['size'] . '</option>';
-                                      }
-                                      ?>
-                                    </select>
-                                  </div>
-                                <?php endif ?>
-                              </form>
-                            </td>
-                            <td>
-                              <div class="float-left mx-4">
-                                <?php echo "PKR. " . $product["price"]; ?>
-                              </div>
-                              <div class="pl-2 float-right">
-                                <form method='post' action=''>
-                                  <input type='hidden' name='id' value="<?php echo $product["id"]; ?>" />
-                                  <input type='hidden' name='action' value="remove" />
-                                  <button type='submit' class='remove btn btn-danger'>
-                                    <span style='color:white;'>
-                                      <i class='fas fa-trash-alt'></i>
-                                    </span></button>
-                                </form>
-                              </div>
-                            </td>
-                          </tr>
-                        <?php
-                          $subtotal += ($product["price"] * $product["qty"]);
-                        }
-                        ?>
-                      </tbody>
-                    </table>
-                  </div>
-                <?php endif ?>
-
-                <br>
-                <p class="lead">Amount</p>
-
-                <div class="table-responsive">
-                  <table class="table">
-                    <tr>
-                      <th style="width:50%">Products total:</th>
-                      <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
-                    </tr>
-                    <tr>
-                      <th>Deal Price:</th>
-                      <td>PKR <span id="dealPrice"></span></td>
-                    </tr>
-                  </table>
-                </div>
               </div>
-
             </div>
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
+              <hr>
+            </div>
+          </div>
 
-              <div class="">
-                <div class="btn-group w-100 mb-2">
-                  <div class="row m-1">
-                    <a class="btn btn-info active m-1" href="javascript:void(0)" data-filter="all"> All items </a>
-                    <?php
-                    while ($row = mysqli_fetch_assoc($categories)) {
-                      echo '<a class="btn btn-info m-1" href="javascript:void(0)" data-filter="' . $row["category_name"] . '">' . $row["category_name"] . '</a>';
-                    }
-                    ?>
-                    <a class="btn btn-info m-1" href="javascript:void(0)" data-filter="addons">Addons</a>
+          <div class="row">
+            <div class="col-lg-8">
+              <!-- data-toggle="modal" data-target="#zonesModal"  -->
+              <button class="btn btn-primary float-right mb-4" onclick="addToSelects(<?php echo $deal_id ?>,<?php echo $restaurant_id ?>)" type="button"> <i class="fas fa-plus-circle mr-1"></i>Add Select</button>
+              <br>
+              <table class="table">
+                <thead>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Products</th>
+                </thead>
+                <tbody>
+                  <?php
+                  $count = 0;
+                  while ($deal_select = mysqli_fetch_assoc($deal_selects)) {
+                    $count++;
+                    echo '<tr><td>' . $count . '</td>';
+                    echo '<td class="w-25"><input onchange="updateSelectName(this,' . $deal_select['id'] . ')" placeholder="Enter Select Name" style="border:none; text-decoration: underline" type="text" value="' . $deal_select['select_name'] . '"></td>';
+                    echo '<td>Hello <div class="pl-2 float-right">
+                          <button type="button" onclick="removeFromSelects(' . $deal_select['id'] . ')" class="remove btn btn-danger">
+                            <span style="color:white;">
+                              <i class="fas fa-trash-alt"></i>
+                            </span>
+                          </button>
+                        </div></td></tr>';
+                  } ?>
+                </tbody>
+              </table>
+              <!-- <div class="zoneTags"> -->
+              <?php
+              // while ($row = mysqli_fetch_assoc($deliveryZones)) {
+              //   echo '<span class="tag">' . $row['area'] . ' <button class="no-btn" onclick="removeZone(' . $row['id'] . ',' . $zoneID . ')"><i class="fal fa-times"></i></button></span>';
+              // }
+              ?>
+              <!-- </div> -->
+
+              <!-- <label for="">Select Name : </label>
+              <input type="text" name="" id="" placeholder="Enter Select Name"> -->
+
+              <!-- zones Modal -->
+              <div class="modal fade" id="zonesModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Categories</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="areas">
+                        <?php
+                        while ($category = mysqli_fetch_assoc($categories)) {
+                          echo "<p><button class='no-btn w-100' onclick='addZone(" . $category['id'] . ")'>" . $category['category_name'] . "</button></p>";
+                        }
+                        ?>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-2">
-                  <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle items </a>
-
-                </div>
               </div>
-              <div class="col-lg-11">
-                <div class="filter-container p-0 mt-3 row">
-
-                  <?php
-                  if ($_SESSION['role'] == 'admin') {
-                    $branchID = trim($_GET['branchId']);
-
-                    $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $branchID . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
-                  }
-                  if ($_SESSION['role'] == 'main_branch') {
-                    $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.item_availability, products.active_status, products.created_at, products.updated_at FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $_SESSION['id'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
-                  }
-
-                  if ($_SESSION['role'] == 'sub_branch') {
-                    $query = "SELECT * FROM `sub_restaurants` where id= " . $_SESSION['id'];
-                    $results = mysqli_query($conn, $query);
-                    $row = mysqli_fetch_assoc($results);
-
-                    $query = "SELECT products.id, products.name as productName, categories.category_name as categoryName, products.description, products.price, products.photo, products.active_status FROM `products` JOIN categories on products.category_id = categories.id WHERE restaurant_id = " . $row['main_branch'] . " AND products.active_status = 'active'  AND categories.active_status = 'active'";
-                  }
-                  $products = mysqli_query($conn, $query);
-                  while ($row = mysqli_fetch_assoc($products)) {
-                    echo ' <div class="filtr-item col-lg-2 col-md-4" data-category="' . $row['categoryName'] . '">
-                                <div class="card card-outline card-info">
-                                  <div class="card-header">
-                                    <h3 class="card-title text-bold text-sm">' . $row['productName'] . '</h3>
-                                  </div>
-                                  <div class="card-body">';
-                    $query = "SELECT * FROM `sizes` WHERE product_id = " . $row['id'];
-                    $sizes = mysqli_query($conn, $query);
-                    $nomRows = mysqli_num_rows($sizes);
-                    if ($nomRows > 0) {
-                      echo '<div class="text-center" style="">
-                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
-                                    </div>
-                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                    <button class="mt-2 btn btn-info float-right" onclick="addProductToDeal(' . $row['id'] . ',' . $dealID . ')">Add</button>';
-
-                      echo '<select name="product_size" id="product_size_' . $row['id'] . '" class="form-select w-100 border mt-1" aria-label="Default select example">
-                                    <option selected disabled>Sizes</option>';
-                      include("./includes/restaurants/deals/code.fetchSizes.php");
-                      while ($row = mysqli_fetch_assoc($sizes)) {
-                        if ($row['id'] == $size['product_id']) {
-                          echo '<option value="' . $size['id'] . '">' . $size['size'] . ' (' . $size['price'] . ')</option>';
-                        }
-                      }
-                    } else {
-                      echo '<div class="text-center"  style="height:128px;" >
-                                      <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/products/product_imgs/' . $row['photo'] . '">
-                                    </div>
-                                    <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                                    
-                                    <button class="mt-2 btn btn-info float-right" onclick="addToDeal_withoutSize(' . $row['id'] . ')">Add</button>';
-                    }
-                    echo '</select></div></div></div>';
-                  }
-                  while ($row = mysqli_fetch_assoc($addons)) {
-                    echo '<div class="filtr-item col-lg-2 col-md-4" data-category="addons">
-                            <div class="card card-outline card-info">
-                              <div class="card-header">
-                                <h3 class="card-title text-bold text-sm">' . $row['name'] . '</h3>
-                              </div>
-                              <div class="card-body">
-                               <div class="text-center" style="height:128px;">
-                                  <img class="img-flui" style="width: 100px; height: 100px;" src="includes/restaurants/addon_products/addons_imgs/' . $row['photo'] . '">
-                                </div>
-                                <p class="card-text text-bold mt-3 float-left text-sm">PKR. ' . $row['price'] . '</p>
-                              <button class="mt-2 btn btn-info float-right" onclick="addAddonToCart(' . $row['id'] . ')">Add</button>
-                              </div>
-                            </div>
-                          </div>';
-                  } ?>
-                </div>
-              </div>
+              <!-- /.modal -->
 
             </div>
           </div>
         </div>
-
-
 
       </div>
 
@@ -433,6 +325,18 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
 
 
   <script>
+    var input = document.getElementById("price");
+    var dealPrice = document.getElementById("dealPrice");
+    dealPrice.innerHTML = input.value;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const branchId = urlParams.get('branchId');
+
+    function textAreaAdjust(element) {
+      element.style.height = "1px";
+      element.style.height = (25 + element.scrollHeight) + "px";
+    }
+
     function readURL(input) {
       if (input.files && input.files[0]) {
 
@@ -444,9 +348,6 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
         reader.readAsDataURL(input.files[0]);
       }
     };
-    var input = document.getElementById("price");
-    var dealPrice = document.getElementById("dealPrice");
-    dealPrice.innerHTML = input.value;
 
     function priceToHeading() {
       var input = document.getElementById("price");
@@ -472,6 +373,7 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
         });
       }, false);
     })();
+
     $(function() {
       $(document).on('click', '[data-toggle="lightbox"]', function(event) {
         event.preventDefault();
@@ -488,9 +390,6 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
         $(this).addClass('active');
       });
     })
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const branchId = urlParams.get('branchId');
 
     function addProductToDeal(productID, dealID) {
       var selectOption = document.getElementById(`product_size_${productID}`);
@@ -581,6 +480,57 @@ include("./includes/restaurants/deals/code.fetchCategories.php");
 
       });
     });
+
+    function addToSelects(dealID, Restaurant_id) {
+      $.ajax({
+          url: 'addToSelects',
+          type: 'POST',
+          data: {
+            dealID: dealID,
+            Restaurant_id: Restaurant_id,
+          },
+        })
+        .done(function(response) {
+          location.reload();
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
+
+    function removeFromSelects(id) {
+      $.ajax({
+          url: 'code.removeFromSelects',
+          type: 'POST',
+          data: {
+            ID: id,
+          },
+        })
+        .done(function(response) {
+          location.reload();
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
+
+    function updateSelectName(name, id) {
+      $.ajax({
+          url: 'code.updateSelectName',
+          type: 'POST',
+          data: {
+            ID: id,
+            action: 'updateSelectName',
+            name: name.value,
+          },
+        })
+        .done(function(response) {
+          location.reload();
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
   </script>
 
 

@@ -1,9 +1,8 @@
 <?php include './auth/login_auth.php';
 include './auth/==admin_auth.php';
-
-
 include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
 ?>
+
 <?php if (!empty($_SESSION["shopping_cart"])) : ?>
    <div class="">
       <table>
@@ -31,7 +30,13 @@ include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
                   </td>
                   <td class="m-4">
                      <div class="">
-                        <?php echo $product["size"] ? $product["size"] : null ?><br />
+                        <?php if (isset($product['size']) && $product['size'] != null) {
+                           $query = "SELECT * FROM `sizes` WHERE id = " . $product["size"];
+                           $sizes = mysqli_query($conn, $query);
+                           $row = mysqli_fetch_assoc($sizes);
+                           echo $row["size"];
+                        }
+                        ?><br />
                      </div>
                   </td>
                   <td class="m-4">
@@ -41,7 +46,6 @@ include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
                   </td>
                </tr>
             <?php
-
                $subtotal += ($product["price"] * $product["quantity"]);
             }
             ?>
@@ -60,10 +64,6 @@ include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
          <td>PKR <?php echo $subtotal ?  $subtotal : "--.--" ?></td>
       </tr>
       <tr>
-         <th>Shipping:</th>
-         <td>PKR <?php echo $deliverycharges ? $deliverycharges : "--.--" ?></td>
-      </tr>
-      <tr>
          <th>Discount:</th>
          <?php if ($subtotal >= $ordersOver) {
             $offerDiscount = round($subtotal / 100 * $offerPercentage);
@@ -71,12 +71,15 @@ include("./includes/restaurants/POS/code.fetchOffersToPOS.php");
          ?>
          <td>PKR <?php echo $offerDiscount ? $offerDiscount : "--.--" ?></td>
       </tr>
+      <?php if ($offerDiscount != null) : ?>
+         <h4><?php echo $offer['offer_name'] ?></h4>
+         <p><?php echo $offer['offer_percentage'] ?>% discount on orders over <?php echo $offer['order_over'] ?> </p>
+      <?php endif ?>
 
       <tr>
          <th>Total:</th>
          <?php if ($subtotal) {
             $total = $subtotal - $offerDiscount;
-            $total = $total + $deliverycharges;
             echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
          }
          ?>

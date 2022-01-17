@@ -108,8 +108,8 @@ if (isset($_GET['orderID'])) {
 
          // If type is PRODUCTS
          if ($rows['type'] == 'product') {
-            $products_query  =
-               'SELECT `id`, `name`, `price`, `photo` FROM `products` where `id` = ' . $rows['product_id'];
+            $products_query  = 'SELECT `id`, `name`, `price`, `photo` FROM `products` 
+                                 where `id` = ' . $rows['product_id'];
             $products_result = mysqli_query($conn, $products_query);
             $order_products = mysqli_fetch_assoc($products_result);
 
@@ -121,6 +121,13 @@ if (isset($_GET['orderID'])) {
             $type = $rows['type'];
             $qty = $rows['qty'];
             $size = $rows['size'];
+
+            if ($size != null) {
+               $result = mysqli_query($conn, "SELECT * FROM `sizes` WHERE `id`='$size'");
+               $size_row = mysqli_fetch_assoc($result);
+               $price = $size_row['price'];
+               $size = $size_row['size'];
+            }
 
             $orderProducts = array(
                $name => array(
@@ -238,8 +245,7 @@ if (isset($_POST['action']) && $_POST['action'] == "change") {
    $qty = trim($_POST['quantity']);
 
    if (isset($_POST['type']) && $_POST['type'] == "product") {
-      $size = trim($_POST['size']);
-      $query  = "UPDATE `order_products` SET `qty` =  '$qty', `size` =  '$size'  WHERE `id` = " . $id;
+      $query  = "UPDATE `order_products` SET `qty` =  '$qty'  WHERE `id` = " . $id;
    }
 
    if (isset($_POST['type']) && $_POST['type'] == "deal") {
