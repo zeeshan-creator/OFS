@@ -12,8 +12,8 @@ include("./includes/restaurants/POS/code.pos.php");
 
 ?>
 
-  <!DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
@@ -460,9 +460,10 @@ include("./includes/restaurants/POS/code.pos.php");
                           <th>Total:</th>
                           <?php if ($subtotal) {
                             $total = $subtotal - $offerDiscount;
-                            echo '<script> document.getElementById("totalPrice").value = "' . $total . '"; </script>';
+                            echo '<input type="hidden" id="total" value="' . $total . '">';
                           }
                           ?>
+
                           <td>PKR <?php echo $total ?  $total : "--.--" ?></td>
                         </tr>
                       </table>
@@ -573,7 +574,7 @@ include("./includes/restaurants/POS/code.pos.php");
                               </div>';
                       }
                       ?>
-                      
+
                     </div>
                   </div>
                 </div>
@@ -596,6 +597,7 @@ include("./includes/restaurants/POS/code.pos.php");
         window.history.replaceState(null, null, window.location.href);
       }
       $("#ordersFormButton").click(function() {
+        document.getElementById("totalPrice").value = document.getElementById("total").value;
         $("#ordersForm").submit();
       });
     });
@@ -664,9 +666,9 @@ include("./includes/restaurants/POS/code.pos.php");
           },
         })
         .done(function(response) {
-            $("#item_cart").load(window.location.href + " #item_cart");
-            $("#prices").load(window.location.href + " #prices");
-            add_toast();
+          $("#item_cart").load(window.location.href + " #item_cart");
+          $("#prices").load(window.location.href + " #prices");
+          add_toast();
         })
         .fail(function() {
           swal('Oops...', 'Something went wrong!', 'error');

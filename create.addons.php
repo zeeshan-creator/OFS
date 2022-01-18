@@ -11,6 +11,13 @@ include("./includes/restaurants/addon_products/code.Addon.php");
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
 
+<style>
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
+</style>
+
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
   <div class="wrapper">
@@ -36,7 +43,7 @@ include("./includes/restaurants/addon_products/code.Addon.php");
             <?php include('./errors.php'); ?>
             <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
               <div class="col-md-5 mb-3 ">
-                <label for="photo" class="d-block">Addon Image</label>
+                <label for="photo" class="d-block redAsterick">Addon Image</label>
                 <div class="d-flex">
                   <img src="" style="width: 100px;" class="elevation-2 d-none" id="logo" alt="product Image">
                   <div class="col-md-12 mb-3">
@@ -49,21 +56,21 @@ include("./includes/restaurants/addon_products/code.Addon.php");
               </div>
               <div class="form-row">
                 <div class=" col-md-6 mb-4">
-                  <label for="name">Addon name</label>
+                  <label for="name" class="redAsterick">Addon name</label>
                   <input type="text" class="form-control" name="name" placeholder="Enter addon Name" id="name" required>
                   <div class="invalid-feedback">
                     Please enter a addon name
                   </div>
                 </div>
                 <div class=" col-md-6 mb-4">
-                  <label for="price">Price</label>
+                  <label for="price" class="redAsterick">Price</label>
                   <input type="number" class="form-control" name="price" placeholder="Enter addon Name" id="price" required>
                   <div class="invalid-feedback">
                     Please enter a addon price
                   </div>
                 </div>
                 <div class=" col-md-12 mb-4">
-                  <label for="description">Description</label>
+                  <label for="description" class="redAsterick">Description</label>
                   <input type="text" class="form-control" name="description" placeholder="Enter addon description" id="description" required>
                   <div class="invalid-feedback">
                     Please enter a addon description

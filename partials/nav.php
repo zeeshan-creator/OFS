@@ -19,10 +19,13 @@
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
-
-    <!-- Notifications Dropdown Menu -->
     <li class="nav-item d-none d-sm-inline-block">
       <a href="logout" class="nav-link">Logout</a>
+    </li>
+    <li class="nav-item">
+      <a href="settings" class="nav-link">
+        <i class="fad fa-user-circle"></i>
+      </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">

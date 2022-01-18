@@ -328,7 +328,7 @@ $orderID = trim($_GET['orderID']);
                                     <div class="quantity mt-2">
                                       <input type="number" name="quantity" min="1" step="1" value="<?php echo $product["quantity"] ?>" onchange="this.form.submit()">
                                     </div>
-                                    <?php if ($product['type'] == 'product' && $product['size'] != null) : ?>
+                                    <?php if ($product['type'] == 'product' && $product['size'] > 0) : ?>
                                       <div class="">
                                         <select name="size" onchange="this.form.submit()" class="form-select w-100 border mt-1 mb-2" aria-label="Default select example">
                                           <option selected disabled>Sizes</option>
@@ -400,8 +400,8 @@ $orderID = trim($_GET['orderID']);
                         </tr>
                       </table>
                       <div class="col-12">
-                        <a href="billPrint?orderID=<?php echo $orderID?>" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                        <a href="orders" id="ordersFormButton" class="btn btn-danger float-right" style="margin-right: 5px;">
+                        <a href="billPrint?orderID=<?php echo $orderID ?>" rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                        <a href="orders" id="" class="btn btn-danger float-right" style="margin-right: 5px;">
                           <i class="fas fa-downloa"></i> Back
                         </a>
                         <button type="button" id="ordersFormButton" class="btn btn-primary float-right" style="margin-right: 5px;">

@@ -1,11 +1,21 @@
 <?php
 include './auth/login_auth.php';
-include './auth/!=main_branch_auth.php';
+// include './auth/==admin_auth.php';
 include("./includes/restaurants/code.updateRestaurants.php");
 
 $id = $_SESSION['id'];
+if ($_SESSION['role'] == 'admin') {
+  echo '<script>window.location.href = "allrestaurants";</script>';
+  exit();
+}
+if ($_SESSION['role'] == 'main_branch') {
+  $restaurant_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
+}
 
-$restaurant_query = "SELECT * FROM restaurants WHERE id='$id' LIMIT 1";
+if ($_SESSION['role'] == 'sub_branch') {
+  $restaurant_query = "SELECT * FROM sub_restaurants WHERE id='$id' LIMIT 1";
+}
+
 $result = mysqli_query($conn, $restaurant_query);
 $row = mysqli_fetch_assoc($result);
 
@@ -15,7 +25,9 @@ if ($row) {
   $phone = $row["phone"];
   $email = $row["email"];
   $password = $row["password"];
-  $logo = $row["logo"];
+  if (isset($row['logo'])) {
+    $logo = $row["logo"];
+  }
   $contact_name = $row['contact_name'];
   $contact_phone = $row['contact_phone'];
   $contact_email = $row['contact_email'];
@@ -36,6 +48,12 @@ if ($row) {
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
+<style>
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
@@ -60,38 +78,40 @@ if ($row) {
           <div class="card-body">
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
-              <div class="col-md-5 mb-3 ">
-                <label for="restaurantname" class="d-block">Restaurant Logo</label>
-                <input type="hidden" name="oldLogo" value="<?php echo $logo ?>">
-                <div class="d-flex">
-                  <img src="includes/restaurants/logos/<?php echo $logo ?>" style="width: 100px;" class="img-circle elevation-2" id="logo" alt="User Image">
-                  <div class="col-md-12 mb-3">
-                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newLogo" accept='image/*' onchange="readURL(this)" id="newLogo">
-                    <div class="invalid-feedback">
-                      Please select a restaurant logo
+              <?php if (isset($logo)) : ?>
+                <div class="col-md-5 mb-3 ">
+                  <label for="restaurantname" class="d-block redAsterick">Restaurant Logo</label>
+                  <input type="hidden" name="oldLogo" value="<?php echo $logo ?>">
+                  <div class="d-flex">
+                    <img src="includes/restaurants/logos/<?php echo $logo ?>" style="width: 100px;" class="img-circle elevation-2" id="logo" alt="User Image">
+                    <div class="col-md-12 mb-3">
+                      <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newLogo" accept='image/*' onchange="readURL(this)" id="newLogo">
+                      <div class="invalid-feedback">
+                        Please select a restaurant logo
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              <?php endif ?>
 
               <div class="form-row">
                 <input type="hidden" name="restaurantId" value="<?php echo $id; ?>">
                 <div class=" col-md-6 mb-3">
-                  <label for="restaurantname">Restaurant name</label>
+                  <label for="restaurantname" class="redAsterick">Restaurant name</label>
                   <input type="text" class="form-control" value="<?php echo $name; ?>" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant name
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="phone">Phone</label>
+                  <label for="phone" class="redAsterick">Phone</label>
                   <input type="number" class="form-control" value="<?php echo $phone; ?>" name="restaurantPhone" placeholder="Enter restaurant phone number" id="phone" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant phone number
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantEmail">Restaurant E-Mail</label>
+                  <label for="restaurantEmail" class="redAsterick">Restaurant E-Mail</label>
                   <input type="hidden" name="restaurantEmail" value="<?php echo $email; ?>">
                   <input type="email" class="form-control" value="<?php echo $email; ?>" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantname" required disabled>
                   <div class="invalid-feedback">
@@ -99,56 +119,56 @@ if ($row) {
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantPassword">Restaurant Password</label>
+                  <label for="restaurantPassword" class="redAsterick">Restaurant Password</label>
                   <input type="text" class="form-control" value="<?php echo $password; ?>" name="restaurantPassword" placeholder="Enter restaurant password" id="phone" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant password
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="contact_name">Contact Name</label>
+                  <label for="contact_name" class="redAsterick">Contact Name</label>
                   <input type="text" class="form-control" value="<?php echo $contact_name; ?>" name="contact_name" placeholder="Enter contact name" id="contact_name" required>
                   <div class="invalid-feedback">
                     Please enter a Contact Name
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="contact_phone">Contact Phone</label>
+                  <label for="contact_phone" class="redAsterick">Contact Phone</label>
                   <input type="number" class="form-control" value="<?php echo $contact_phone; ?>" name="contact_phone" placeholder="Enter contact phone" id="contact_phone" required>
                   <div class="invalid-feedback">
                     Please enter a contact phone
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="contact_email">Contact Email</label>
+                  <label for="contact_email" class="redAsterick">Contact Email</label>
                   <input type="text" class="form-control" value="<?php echo $contact_email; ?>" name="contact_email" placeholder="Enter contact email" id="contact_email" required>
                   <div class="invalid-feedback">
                     Please enter a contact email
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="country">Country</label>
+                  <label for="country" class="redAsterick">Country</label>
                   <input type="text" class="form-control" value="<?php echo $country; ?>" name="country" placeholder="Enter country" id="country" required>
                   <div class="invalid-feedback">
                     Please enter a country
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="city">City</label>
+                  <label for="city" class="redAsterick">City</label>
                   <input type="text" class="form-control" value="<?php echo $city; ?>" name="city" placeholder="Enter city" id="city" required>
                   <div class="invalid-feedback">
                     Please enter a city
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="street_address">Street Address</label>
+                  <label for="street_address" class="redAsterick">Street Address</label>
                   <input type="text" class="form-control" value="<?php echo $street_address; ?>" name="street_address" placeholder="Enter street address" id="street_address" required>
                   <div class="invalid-feedback">
                     Please enter a street_address
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="cuisine">Cuisine</label>
+                  <label for="cuisine" class="redAsterick">Cuisine</label>
                   <small>(abc, xyz, etc)</small>
                   <input type="text" class="form-control" value="<?php echo $cuisine; ?>" name="cuisine" placeholder="Enter cuisine" id="cuisine" required>
                   <div class="invalid-feedback">
@@ -156,7 +176,7 @@ if ($row) {
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="roleSelect">Active Status</label>
+                  <label for="roleSelect" class="redAsterick">Active Status</label>
                   <select class="form-control" id="roleSelect" name="active_status" required>
                     <?php
                     if ($active_status == "active") {
@@ -175,8 +195,10 @@ if ($row) {
                   <small class="ml-1 mt-1 d-block font-weight-bold">Beware of account blocking. You will not be able to log in again and will need to contact the administration.</small>
                 </div>
               </div>
-              <button class="btn btn-primary float-right" type="submit">Save</button>
-              <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Discard</button>
+              <?php if ($_SESSION['role'] == 'main_branch') : ?>
+                <button class="btn btn-primary float-right" type="submit">Save</button>
+                <button class="btn btn-danger mr-3 float-right" type="button" onclick="goBack()">Discard</button>
+              <?php endif ?>
           </div>
 
           </form>

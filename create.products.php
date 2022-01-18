@@ -23,6 +23,12 @@ $categories = mysqli_query($conn, $category_query);
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
+<style>
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
@@ -49,7 +55,7 @@ $categories = mysqli_query($conn, $category_query);
             <?php include('./errors.php'); ?>
             <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
               <div class="col-md-5 mb-3 ">
-                <label for="photo" class="d-block">Product Image</label>
+                <label for="photo" class="d-block redAsterick">Product Image</label>
                 <div class="d-flex">
                   <img src="" style="width: 100px;" class="elevation-2 d-none" id="logo" alt="product Image">
                   <div class="col-md-12 mb-3">
@@ -62,21 +68,21 @@ $categories = mysqli_query($conn, $category_query);
               </div>
               <div class="form-row">
                 <div class=" col-md-6 mb-3">
-                  <label for="productname">Product name</label>
+                  <label for="productname" class="redAsterick">Product name</label>
                   <input type="text" class="form-control" name="productName" min="3" max="15" placeholder="Enter product Name" id="productname" required>
                   <div class="invalid-feedback">
                     Please enter a product name
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="price">price</label>
+                  <label for="price" class="redAsterick">price</label>
                   <input type="number" class="form-control" name="price" placeholder="Enter product price" id="price" required>
                   <div class="invalid-feedback">
                     Please enter a product price
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="categoriesSelect">Category</label>
+                  <label for="categoriesSelect" class="redAsterick">Category</label>
                   <select class="form-control" id="categoriesSelect" name="category" required>
                     <option disabled>Select A category</option>
                     <?php
@@ -91,13 +97,12 @@ $categories = mysqli_query($conn, $category_query);
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="description">Product description</label>
+                  <label for="description" class="redAsterick">Product description</label>
                   <textarea rows="1" type="text" class="form-control" name="description" placeholder="Enter Product description" id="description" required></textarea>
                   <div class="invalid-feedback">
                     Please enter a Product description
                   </div>
                 </div>
-
 
               </div>
               <button class="btn btn-primary float-right" type="submit">ADD</button>

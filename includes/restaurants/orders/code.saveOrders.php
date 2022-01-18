@@ -75,7 +75,7 @@ if (isset($_POST['action']) && $_POST['action'] == "saveOrder") {
          $product_id = $product['id'];
          $order_id = $row['LAST_INSERT_ID()'];
          $type = $product['type'];
-         ($product['type'] == 'product') ? $size = $product['size'] : $size = '';
+         ($product['type'] == 'product') ? $size = $product['size'] : $size = null;
          $qty = $product['quantity'];
          $query = "INSERT INTO `order_products`(
                      `product_id`,

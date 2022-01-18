@@ -9,6 +9,12 @@ include("./includes/restaurants/offers/code.offer.php");
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
+<style>
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
@@ -39,21 +45,21 @@ include("./includes/restaurants/offers/code.offer.php");
                 <form method="POST" class="needs-validation" novalidate>
                   <div class="form-row">
                     <div class=" col-lg-6 mb-3">
-                      <label for="offer_name">Offer Name</label>
+                      <label for="offer_name" class="redAsterick">Offer Name</label>
                       <input type="text" class="form-control" name="offer_name" min="3" max="15" placeholder="Enter offer name" id="offer_name" required>
                       <div class="invalid-feedback">
                         Please enter a offer name
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <label for="offer_percentage">Offer Percentage</label>
+                      <label for="offer_percentage" class="redAsterick">Offer Percentage</label>
                       <input type="number" class="form-control" name="offer_percentage" placeholder="Enter offer percentage" id="offer_percentage" required>
                       <div class="invalid-feedback">
                         Please enter a offer percentage
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <label for="offer_message">Offer Message</label>
+                      <label for="offer_message" class="redAsterick">Offer Message</label>
                       <textarea rows="1" type="text" class="form-control" name="offer_message" placeholder="Enter offer message" id="offer_message" required></textarea>
                       <div class="invalid-feedback">
                         Please enter a offer message
@@ -67,14 +73,14 @@ include("./includes/restaurants/offers/code.offer.php");
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <label for="valid_from">Offer From</label>
+                      <label for="valid_from" class="redAsterick">Offer From</label>
                       <input type="date" class="form-control" name="valid_from" placeholder="Enter offer start date" id="valid_from" required>
                       <div class="invalid-feedback">
                         Please enter a offer start date
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <label for="valid_till">Offer Till</label>
+                      <label for="valid_till" class="redAsterick">Offer Till</label>
                       <input type="date" class="form-control" name="valid_till" placeholder="Enter offer end date" id="valid_till" required disabled>
                       <div class="invalid-feedback">
                         Please enter a offer end date

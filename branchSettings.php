@@ -65,6 +65,31 @@ $deliveryZones = mysqli_query($conn, $query);
     border: none;
     background: none;
   }
+
+  #add_toast,
+  #Remove_toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 9;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+  }
+
+  #add_toast.show,
+  #Remove_toast.show {
+    visibility: visible;
+    z-index: 9;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
 </style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
@@ -92,7 +117,7 @@ $deliveryZones = mysqli_query($conn, $query);
           <div class="card-body">
             <button class="btn btn-primary float-right mb-4" data-toggle="modal" data-target="#zonesModal" type="button"> <i class="fas fa-plus-circle mr-1"></i> Add Zone</button>
             <div class="form-row">
-              <div class="col-lg-12 mb-3 d-flex">
+              <div class="col-lg-12 mb-3 d-flex" id="zoneTags">
                 <label for="zone" class="m-2">Delivery Zones: </label>
                 <div class="zoneTags">
                   <?php
@@ -154,6 +179,8 @@ $deliveryZones = mysqli_query($conn, $query);
     </div>
     <!-- /.content-wrapper -->
 
+    <div id="add_toast">Added To Zones</div>
+    <div id="Remove_toast">Removed From Zones</div>
 
     <!-- Including footer -->
     <?php include './partials/footer.php' ?>
@@ -172,7 +199,8 @@ $deliveryZones = mysqli_query($conn, $query);
           })
           .done(function(response) {
             if (response == 1) {
-              location.reload();
+              $("#zoneTags").load(window.location.href + " #zoneTags");
+              Remove_toast();
             }
             if (response == 0) {
               Swal.fire('Alreay Exist!', "Already in zones", "error");
@@ -195,7 +223,8 @@ $deliveryZones = mysqli_query($conn, $query);
           })
           .done(function(response) {
             if (response == 1) {
-              location.reload();
+              $("#zoneTags").load(window.location.href + " #zoneTags");
+              add_toast();
             }
             if (response == 0) {
               Swal.fire('Alreay Exist!', "Already in zones", "error");
@@ -204,6 +233,22 @@ $deliveryZones = mysqli_query($conn, $query);
           .fail(function() {
             swal('Oops...', 'Something went wrong!', 'error');
           });
+      }
+
+      function add_toast() {
+        var x = document.getElementById("add_toast");
+        x.className = "show";
+        setTimeout(function() {
+          x.className = x.className.replace("show", "");
+        }, 3000);
+      }
+
+      function Remove_toast() {
+        var x = document.getElementById("Remove_toast");
+        x.className = "show";
+        setTimeout(function() {
+          x.className = x.className.replace("show", "");
+        }, 3000);
       }
     </script>
 

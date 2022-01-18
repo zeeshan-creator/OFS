@@ -10,6 +10,12 @@ include("./includes/restaurants/code.createrestaurants.php");
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
+<style>
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
@@ -35,11 +41,11 @@ include("./includes/restaurants/code.createrestaurants.php");
             <?php include('./errors.php'); ?>
             <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
               <div class="col-md-5 mb-3 ">
-                <label for="restaurantname" class="d-block">Restaurant Logo</label>
+                <label for="restaurantname" class="d-block redAsterick">Restaurant Logo</label>
                 <div class="d-flex">
                   <img style="width: 100px;" class="img-circle elevation-2 d-none" id="logo" alt="logo">
                   <div class="col-md-12 mb-3">
-                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="logo" accept='image/*' onchange="readURL(this)" id="logo">
+                    <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="logo" accept='image/*' onchange="readURL(this)" id="logo" required>
                     <div class="invalid-feedback">
                       Please select a restaurant's logo
                     </div>
@@ -48,14 +54,14 @@ include("./includes/restaurants/code.createrestaurants.php");
               </div>
               <div class="form-row">
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantname">Restaurant Name</label>
+                  <label for="restaurantname" class="redAsterick">Restaurant Name</label>
                   <input type="text" class="form-control" name="restaurantName" min="3" max="15" placeholder="Enter restaurant Name" id="restaurantname" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant name
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="phone">Phone</label>
+                  <label for="phone" class="redAsterick">Phone</label>
                   <input type="number" class="form-control" name="restaurantPhone" placeholder="Enter restaurant phone number" id="phone" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant phone number
@@ -63,63 +69,63 @@ include("./includes/restaurants/code.createrestaurants.php");
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantEmail">Restaurant E-Mail</label>
+                  <label for="restaurantEmail" class="redAsterick">Restaurant E-Mail</label>
                   <input type="email" class="form-control" name="restaurantEmail" max="55" placeholder="Enter restaurant Email" id="restaurantEmail" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant Email
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="restaurantPassword">Restaurant Password</label>
+                  <label for="restaurantPassword" class="redAsterick">Restaurant Password</label>
                   <input type="text" class="form-control" name="restaurantPassword" placeholder="Enter restaurant password" id="restaurantPassword" required>
                   <div class="invalid-feedback">
                     Please enter a restaurant password
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="contact_name">Contact Name</label>
+                  <label for="contact_name" class="redAsterick">Contact Name</label>
                   <input type="text" class="form-control" name="contact_name" placeholder="Enter contact name" id="contact_name" required>
                   <div class="invalid-feedback">
                     Please enter a Contact Name
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="contact_phone">Contact Phone</label>
+                  <label for="contact_phone" class="redAsterick">Contact Phone</label>
                   <input type="number" class="form-control" name="contact_phone" placeholder="Enter contact phone" id="contact_phone" required>
                   <div class="invalid-feedback">
                     Please enter a contact phone
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="contact_email">Contact Email</label>
+                  <label for="contact_email" class="redAsterick">Contact Email</label>
                   <input type="text" class="form-control" name="contact_email" placeholder="Enter contact email" id="contact_email" required>
                   <div class="invalid-feedback">
                     Please enter a contact email
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="country">Country</label>
+                  <label for="country" class="redAsterick">Country</label>
                   <input type="text" class="form-control" name="country" placeholder="Enter country" id="country" required>
                   <div class="invalid-feedback">
                     Please enter a country
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="city">City</label>
+                  <label for="city" class="redAsterick">City</label>
                   <input type="text" class="form-control" name="city" placeholder="Enter city" id="city" required>
                   <div class="invalid-feedback">
                     Please enter a city
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="street_address">Street Address</label>
+                  <label for="street_address" class="redAsterick">Street Address</label>
                   <input type="text" class="form-control" name="street_address" placeholder="Enter street address" id="street_address" required>
                   <div class="invalid-feedback">
                     Please enter a street_address
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="cuisine">Cuisine</label>
+                  <label for="cuisine" class="redAsterick">Cuisine</label>
                   <input type="text" class="form-control" name="cuisine" placeholder="Enter cuisine" id="cuisine" required>
                   <div class="invalid-feedback">
                     Please enter a cuisine

@@ -2,10 +2,9 @@
 include './auth/login_auth.php';
 include './auth/==sub_branch_auth.php';
 include("./includes/restaurants/deals/code.updateDeal.php");
-include("./includes/restaurants/deals/code.fetchCategories.php");
+include("./includes/restaurants/deals/code.fetchProducts.php");
 include("./includes/restaurants/deals/code.fetchSelects.php");
-$deal_id = $_GET['dealID'];
-$restaurant_id = $_SESSION['id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -129,6 +128,11 @@ $restaurant_id = $_SESSION['id'];
     border: none;
     background: none;
   }
+
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
 </style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
@@ -162,12 +166,12 @@ $restaurant_id = $_SESSION['id'];
                   <div class="col-lg-12">
                     <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                       <div class="col-md-5 mb-3 ">
-                        <label for="product_image" class="d-block">Deal Logo</label>
+                        <label for="product_image" class="d-block redAsterick">Deal Logo</label>
                         <input type="hidden" name="oldImage" value="<?php echo $photo; ?>">
                         <div class="d-flex">
                           <img src="includes/restaurants/deals/deals_imgs/<?php echo $photo; ?>" style="width: 100px;" class="elevation-2" id="product_image" alt="Product Image">
                           <div class="col-md-12 mb-3">
-                            <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newImage" accept='image/*' onchange="readURL(this)" id="newImage">
+                            <input type="file" class="form-control-file ml-4 mt-4 border rounded p-1" name="newImage" accept='image/*' onchange="readURL(this)" id="newImage" required>
                             <div class="invalid-feedback">
                               Please select a deal image
                             </div>
@@ -179,29 +183,29 @@ $restaurant_id = $_SESSION['id'];
                         <div class=" col-lg-6 mb-3">
                           <input type="hidden" name="dealID" value="<?Php echo $dealID   ?>">
                           <input type="hidden" name="action" value="update">
-                          <label for="dealName">Deal name</label>
+                          <label for="dealName" class="redAsterick">Deal name</label>
                           <input type="text" class="form-control" value="<?Php echo $name ?>" name="dealName" min="3" max="15" placeholder="Enter deal Name" id="dealName" required>
                           <div class="invalid-feedback">
                             Please enter a deal name
                           </div>
                         </div>
                         <div class="col-lg-6 mb-3">
-                          <label for="price">price</label>
-                          <input type="number" class="form-control" value="<?Php echo $price ?>" name="dealPrice" placeholder="Enter deal price" id="price" required onkeyup="priceToHeading()">
+                          <label for="price" class="redAsterick">price</label>
+                          <input type="number" class="form-control" value="<?Php echo $price ?>" name="dealPrice" placeholder="Enter deal price" id="price" required>
                           <div class="invalid-feedback">
                             Please enter a deal price
                           </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                          <label for="description">Deal description</label>
+                          <label for="description" class="redAsterick">Deal description</label>
                           <textarea onkeyup="textAreaAdjust(this)" type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required><?Php echo $description ?></textarea>
                           <div class="invalid-feedback">
                             Please enter a deal description
                           </div>
                         </div>
                         <div class="col-lg-6 mb-3">
-                          <label for="activeStatus">Active Status</label>
+                          <label for="activeStatus" class="redAsterick">Active Status</label>
                           <select class="form-control" id="activeStatus" name="active_status" required>
                             <?php
                             if ($active_status == "active") {
@@ -242,7 +246,6 @@ $restaurant_id = $_SESSION['id'];
 
           <div class="row">
             <div class="col-lg-8">
-              <!-- data-toggle="modal" data-target="#zonesModal"  -->
               <button class="btn btn-primary float-right mb-4" onclick="addToSelects(<?php echo $deal_id ?>,<?php echo $restaurant_id ?>)" type="button"> <i class="fas fa-plus-circle mr-1"></i>Add Select</button>
               <br>
               <table class="table">
@@ -250,6 +253,7 @@ $restaurant_id = $_SESSION['id'];
                   <th>#</th>
                   <th>Name</th>
                   <th>Products</th>
+                  <th></th>
                 </thead>
                 <tbody>
                   <?php
@@ -258,33 +262,30 @@ $restaurant_id = $_SESSION['id'];
                     $count++;
                     echo '<tr><td>' . $count . '</td>';
                     echo '<td class="w-25"><input onchange="updateSelectName(this,' . $deal_select['id'] . ')" placeholder="Enter Select Name" style="border:none; text-decoration: underline" type="text" value="' . $deal_select['select_name'] . '"></td>';
-                    echo '<td>Hello <div class="pl-2 float-right">
-                          <button type="button" onclick="removeFromSelects(' . $deal_select['id'] . ')" class="remove btn btn-danger">
-                            <span style="color:white;">
-                              <i class="fas fa-trash-alt"></i>
-                            </span>
-                          </button>
-                        </div></td></tr>';
+
+                    echo '<td><div class="zoneTags">';
+                    include("./includes/restaurants/deals/code.fetchSelectProducts.php");
+                    while ($row = mysqli_fetch_assoc($selectProducts)) {
+                      if ($row['deal_select_id'] == $deal_select['id']) {
+                        echo '<span class="tag">' . $row['name'] . ' <button class="no-btn" onclick="removeSelectProduct(' . $row['id'] . ')">
+                        <i class="fal fa-times"></i></button></span>';
+                      }
+                    }
+                    echo '</div></td>';
+                    echo '<td class="w-25"><div class="pl-2 float-right">
+                    <button type="button" onclick="getDealselect(this)" value="' . $deal_select['id'] . '" data-toggle="modal" data-target="#zonesModal" class="remove btn btn-info"><span style="color:white;"><i class="fas fa-plus-circle"></i></span></button>
+                    <button type="button" onclick="removeFromSelects(' . $deal_select['id'] . ')" class="remove btn btn-danger"><span style="color:white;"><i class="fas fa-trash-alt"></i></span></button>
+                    </div></td></tr>';
                   } ?>
                 </tbody>
               </table>
-              <!-- <div class="zoneTags"> -->
-              <?php
-              // while ($row = mysqli_fetch_assoc($deliveryZones)) {
-              //   echo '<span class="tag">' . $row['area'] . ' <button class="no-btn" onclick="removeZone(' . $row['id'] . ',' . $zoneID . ')"><i class="fal fa-times"></i></button></span>';
-              // }
-              ?>
-              <!-- </div> -->
-
-              <!-- <label for="">Select Name : </label>
-              <input type="text" name="" id="" placeholder="Enter Select Name"> -->
 
               <!-- zones Modal -->
               <div class="modal fade" id="zonesModal">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">Categories</h4>
+                      <h4 class="modal-title">Products</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -292,8 +293,8 @@ $restaurant_id = $_SESSION['id'];
                     <div class="modal-body">
                       <div class="areas">
                         <?php
-                        while ($category = mysqli_fetch_assoc($categories)) {
-                          echo "<p><button class='no-btn w-100' onclick='addZone(" . $category['id'] . ")'>" . $category['category_name'] . "</button></p>";
+                        while ($product = mysqli_fetch_assoc($products)) {
+                          echo "<p><button class='no-btn w-100' onclick='addProduct(" . $product['id'] . ")'>" . $product['productName'] . "</button></p>";
                         }
                         ?>
                       </div>
@@ -325,12 +326,7 @@ $restaurant_id = $_SESSION['id'];
 
 
   <script>
-    var input = document.getElementById("price");
-    var dealPrice = document.getElementById("dealPrice");
-    dealPrice.innerHTML = input.value;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const branchId = urlParams.get('branchId');
+    $select_id;
 
     function textAreaAdjust(element) {
       element.style.height = "1px";
@@ -348,12 +344,6 @@ $restaurant_id = $_SESSION['id'];
         reader.readAsDataURL(input.files[0]);
       }
     };
-
-    function priceToHeading() {
-      var input = document.getElementById("price");
-      var dealPrice = document.getElementById("dealPrice");
-      dealPrice.innerHTML = input.value;
-    }
 
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -374,119 +364,13 @@ $restaurant_id = $_SESSION['id'];
       }, false);
     })();
 
-    $(function() {
-      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-          alwaysShowClose: true
-        });
-      });
-
-      $('.filter-container').filterizr({
-        gutterPixels: 3
-      });
-      $('.btn[data-filter]').on('click', function() {
-        $('.btn[data-filter]').removeClass('active');
-        $(this).addClass('active');
-      });
-    })
-
-    function addProductToDeal(productID, dealID) {
-      var selectOption = document.getElementById(`product_size_${productID}`);
-      var product_size = selectOption.options[selectOption.selectedIndex].text;
-
-      if (product_size != null && product_size != 'Sizes') {
-        $.ajax({
-            url: 'addToDeal',
-            type: 'POST',
-            data: {
-              productID: productID,
-              dealID: dealID,
-              type: 'product',
-              product_size: product_size
-            },
-          })
-          .done(function(response) {
-            if (response == 1) {
-              window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
-            }
-            if (response == 0) {
-              Swal.fire('Alreay Exist!', "Product already in deal", "error");
-            }
-          })
-          .fail(function() {
-            swal('Oops...', 'Something went wrong!', 'error');
-          });
-      } else {
-        Swal.fire('Please Select Size!', "Product size is required", "error");
-        exit;
-      }
-    }
-
-    function addAddonToDeal(productID, dealID) {
-      $.ajax({
-          url: 'addToDeal',
-          type: 'POST',
-          data: {
-            productID: productID,
-            dealID: dealID,
-            type: 'addon',
-          },
-        })
-        .done(function(response) {
-          if (response == 1) {
-            window.location.href = `update.deals?dealID=${dealID}&branchId=${branchId}`;
-          }
-          if (response == 0) {
-            Swal.fire('Alreay Exist!', "Product already in deal", "error");
-          }
-        })
-        .fail(function() {
-          swal('Oops...', 'Something went wrong!', 'error');
-        });
-    }
-
-    $(document).ready(function() {
-      jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up"><span class="white"><i class="fas fa-angle-up"></i></span></button><button class="quantity-button quantity-down"><span class="white"><i class="fas fa-angle-down"></i></span></button></div>').insertAfter('.quantity input');
-      jQuery('.quantity').each(function() {
-        var spinner = jQuery(this),
-          input = spinner.find('input[type="number"]'),
-          btnUp = spinner.find('.quantity-up'),
-          btnDown = spinner.find('.quantity-down'),
-          min = input.attr('min'),
-          max = input.attr('max');
-
-        btnUp.click(function() {
-          var oldValue = parseFloat(input.val());
-          if (oldValue >= max) {
-            var newVal = oldValue;
-          } else {
-            var newVal = oldValue + 1;
-          }
-          spinner.find("input").val(newVal);
-          spinner.find("input").trigger("change");
-        });
-
-        btnDown.click(function() {
-          var oldValue = parseFloat(input.val());
-          if (oldValue <= min) {
-            var newVal = oldValue;
-          } else {
-            var newVal = oldValue - 1;
-          }
-          spinner.find("input").val(newVal);
-          spinner.find("input").trigger("change");
-        });
-
-      });
-    });
-
     function addToSelects(dealID, Restaurant_id) {
       $.ajax({
           url: 'addToSelects',
           type: 'POST',
           data: {
             dealID: dealID,
+            action: "addToSelect",
             Restaurant_id: Restaurant_id,
           },
         })
@@ -531,8 +415,45 @@ $restaurant_id = $_SESSION['id'];
           swal('Oops...', 'Something went wrong!', 'error');
         });
     }
-  </script>
 
+    function getDealselect(btn) {
+      $select_id = btn.value;
+    }
+
+    function addProduct(productID, selectID) {
+      $.ajax({
+          url: 'addToSelects',
+          type: 'POST',
+          data: {
+            action: 'addToSelectProduct',
+            productID: productID,
+            selectID: $select_id
+          },
+        })
+        .done(function(response) {
+          location.reload();
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
+
+    function removeSelectProduct(productID) {
+      $.ajax({
+          url: 'code.removeFromSelectProducts ',
+          type: 'POST',
+          data: {
+            ID: productID,
+          },
+        })
+        .done(function(response) {
+          location.reload();
+        })
+        .fail(function() {
+          swal('Oops...', 'Something went wrong!', 'error');
+        });
+    }
+  </script>
 
 </body>
 

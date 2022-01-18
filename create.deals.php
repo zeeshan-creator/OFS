@@ -9,6 +9,12 @@ include("./includes/restaurants/deals/code.Deal.php");
 
 <!-- Including Header -->
 <?php include './partials/head.php' ?>
+<style>
+  .redAsterick:after {
+    content: " *";
+    color: red;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
@@ -38,7 +44,7 @@ include("./includes/restaurants/deals/code.Deal.php");
 
                 <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                   <div class="col-md-5 mb-3 ">
-                    <label for="photo" class="d-block">Deal Image</label>
+                    <label for="photo" class="d-block redAsterick">Deal Image</label>
                     <div class="d-flex">
                       <img src="" style="width: 100px;" class="elevation-2 d-none" id="logo" alt="product Image">
                       <div class="col-md-12 mb-3">
@@ -51,21 +57,21 @@ include("./includes/restaurants/deals/code.Deal.php");
                   </div>
                   <div class="form-row">
                     <div class=" col-lg-6 mb-3">
-                      <label for="dealName">Deal name</label>
+                      <label for="dealName" class="redAsterick">Deal name</label>
                       <input type="text" class="form-control" name="dealName" min="3" max="15" placeholder="Enter deal Name" id="dealName" required>
                       <div class="invalid-feedback">
                         Please enter a deal name
                       </div>
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <label for="price">price</label>
+                      <label for="price" class="redAsterick">price</label>
                       <input type="number" class="form-control" name="dealPrice" placeholder="Enter deal price" id="price" required>
                       <div class="invalid-feedback">
                         Please enter a deal price
                       </div>
                     </div>
                     <div class="col-lg-12 mb-3">
-                      <label for="description">Deal description</label>
+                      <label for="description" class="redAsterick">Deal description</label>
                       <textarea rows="1" type="text" class="form-control" name="dealDesc" placeholder="Enter deal description" id="description" required></textarea>
                       <div class="invalid-feedback">
                         Please enter a deal description

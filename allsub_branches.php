@@ -53,7 +53,7 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
               <?php if ($_SESSION['role'] == 'admin') : ?>
                 <th>Main Branch</th>
               <?php endif ?>
-              <th>Actions</th>
+              <th>Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -80,12 +80,12 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
                     <i class='far fa-edit'></i>
                   </span>
                 </a>
-                <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
+                <!-- <button type='button' rel='tooltip' id='delete-restaurant' title='Delete'
                 s onclick='deleteSub_branch(" . $row['id'] . ")' class='btn btn-danger btn-link btn-icon btn-sm'>
                   <span style='color:white;'>
                     <i class='fas fa-trash-alt'></i>
                   </span>
-                </button>
+                </button> -->
               </td>
             </tr>";
               $count++;
@@ -132,7 +132,7 @@ include("./includes/sub_branch/code.fetchSub_branches.php");
                 url: 'code.deleteSub_branch',
                 type: 'POST',
                 data: {
-                  subRestaurantId: id
+                  id: id
                 },
               })
               .done(function(response) {

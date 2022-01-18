@@ -122,7 +122,7 @@ if (isset($_GET['orderID'])) {
             $qty = $rows['qty'];
             $size = $rows['size'];
 
-            if ($size != null) {
+            if ($size != null && $size != 0) {
                $result = mysqli_query($conn, "SELECT * FROM `sizes` WHERE `id`='$size'");
                $size_row = mysqli_fetch_assoc($result);
                $price = $size_row['price'];
